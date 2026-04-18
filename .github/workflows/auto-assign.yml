@@ -11,7 +11,23 @@ permissions:
   pull-requests: write
 
 jobs:
-  auto-assign:
+  assign-issue:
+    if: github.event_name == 'issues'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Assign default maintainer
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              assignees: ['Godimas101']
+            });
+
+  assign-pr:
+    if: github.event_name == 'pull_request_target'
     runs-on: ubuntu-latest
     steps:
       - name: Assign default maintainer
