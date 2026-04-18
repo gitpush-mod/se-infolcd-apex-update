@@ -177,7 +177,10 @@ namespace MahrianeIndustries.LCDInfo
                 {
                     displayName = MahUtillities.GetSubstring(displayName, surfaceData, true);
                     WriteTextSprite(ref frame, position, surfaceData, displayName, TextAlignment.LEFT, surfaceData.surface.ScriptForegroundColor);
-                    WriteTextSprite(ref frame, position, surfaceData, MahDefinitions.KiloFormat(currentAmount), TextAlignment.RIGHT, surfaceData.surface.ScriptForegroundColor);
+                    if (surfaceData.showRatio && minAmount > 0)
+                        WriteTextSprite(ref frame, position, surfaceData, $"{(((double)currentAmount / minAmount) * 100).ToString("#0.0")} %", TextAlignment.RIGHT, surfaceData.surface.ScriptForegroundColor);
+                    else
+                        WriteTextSprite(ref frame, position, surfaceData, MahDefinitions.KiloFormat(currentAmount), TextAlignment.RIGHT, surfaceData.surface.ScriptForegroundColor);
                     position += surfaceData.newLine;
                 }
                 else
