@@ -121,8 +121,8 @@ namespace MahrianeIndustries.LCDInfo
             sb.AppendLine($"[{CONFIG_SECTION_ID}]");
             sb.AppendLine();
             sb.AppendLine("; [ COMPONENTS - GENERAL OPTIONS ]");
-            sb.AppendLine("SearchId=*");
-            sb.AppendLine("ExcludeIds=");
+            sb.AppendLine($"SearchId={(!string.IsNullOrEmpty(searchId) ? searchId : "*")}");
+            sb.AppendLine($"ExcludeIds={string.Join(",", excludeIds)}");
             sb.AppendLine($"ShowHeader={surfaceData.showHeader}");
             sb.AppendLine($"ShowSummary={surfaceData.showSummary}");
             sb.AppendLine($"ShowMissing={surfaceData.showMissing}");
