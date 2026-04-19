@@ -115,10 +115,10 @@ namespace MahrianeIndustries.LCDInfo
             sb.AppendLine($"[{CONFIG_SECTION_ID}]");
             sb.AppendLine();
             sb.AppendLine("; [ COMPONENTS - GENERAL OPTIONS ]");
-            sb.AppendLine("SearchId=*");
+            sb.AppendLine($"SearchId={(!string.IsNullOrEmpty(searchId) ? searchId : "*")}");
             sb.AppendLine("; Block name filter: Use '*' for all, or text to match block names (case-insensitive substring match)");
             sb.AppendLine("; Examples: 'Cargo' matches 'Main Cargo', 'Engineering,Medical' matches blocks containing either word");
-            sb.AppendLine("ExcludeIds=");
+            sb.AppendLine($"ExcludeIds={string.Join(",", excludeIds)}");
             sb.AppendLine("; Exclude blocks containing these words (comma-separated, case-insensitive)");
             sb.AppendLine("; Example: 'Airlock,Backup' excludes blocks with 'Airlock' or 'Backup' in their names");
             ConfigHelpers.AppendShowHeaderConfig(sb, surfaceData.showHeader);
