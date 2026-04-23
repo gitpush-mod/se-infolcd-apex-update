@@ -902,7 +902,9 @@ namespace MahrianeIndustries.LCDInfo
 
                                 if (s.Length > 2)
                                 {
-                                    bool isMinutes = s.Contains("min");
+                                    // s is a string[]; .Contains("min") here was Enumerable.Contains (exact
+                                    // element equality) and therefore always false. Check the actual line we parse.
+                                    bool isMinutes = s[2].Contains("min");
                                     rechargeInfo = (isMinutes ? s[2].Replace(" min", "") : s[2].Replace(" sec", "")).Replace("Fully recharged in: ", "");
                                     int.TryParse(rechargeInfo, out secondsLeftToRecharge);
                                     secondsLeftToRecharge *= isMinutes ? 60 : 1;
@@ -1214,7 +1216,9 @@ namespace MahrianeIndustries.LCDInfo
 
                         if (s.Length > 2)
                         {
-                            bool isMinutes = s.Contains("min");
+                            // s is a string[]; .Contains("min") here was Enumerable.Contains (exact
+                            // element equality) and therefore always false. Check the actual line we parse.
+                            bool isMinutes = s[2].Contains("min");
                             rechargeInfo = (isMinutes ? s[2].Replace(" min", "") : s[2].Replace(" sec", "")).Replace("Fully recharged in: ", "");
                             int.TryParse(rechargeInfo, out secondsLeftToRecharge);
                             secondsLeftToRecharge *= isMinutes ? 60 : 1;

@@ -454,7 +454,12 @@ namespace MahrianeIndustries.LCDInfo
                     if (oxygenFarm == null) continue;
 
                     var name = oxygenFarm.CustomName;
-                    var currentOutput = oxygenFarm.DetailedInfo.Split('\n')[2].Replace("Oxygen Output:", "").Trim();
+                    // Live oxygen output via ResourceSource.MaxOutput — sun-adjusted production capability
+                    // (L/s). CurrentOutput is 0 when nothing consumes; MaxOutput reflects what the farm is
+                    // producing right now. *60 for L/min display.
+                    var source = oxygenFarm.Components.Get<MyResourceSourceComponent>();
+                    float outputLPerMin = source != null ? source.MaxOutput * 60f : 0f;
+                    var currentOutput = $"{MahDefinitions.LiterFormat(outputLPerMin)}/min";
                     var state = $"{(!oxygenFarm.IsWorking ? "    Off" : !oxygenFarm.CanProduce ? "  Idle" : "    On")}";
 
                     WriteTextSprite(ref frame, position, surfaceData, $"{state}", TextAlignment.LEFT, !surfaceData.useColors ? surfaceData.surface.ScriptForegroundColor : state.Contains("Off") ? Color.Orange : state.Contains("Idle") ? Color.Yellow : Color.GreenYellow);
