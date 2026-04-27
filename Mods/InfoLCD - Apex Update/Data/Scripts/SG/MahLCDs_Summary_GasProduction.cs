@@ -666,11 +666,12 @@ namespace MahrianeIndustries.LCDInfo
                     if (farm == null) continue;
 
                     var name = farm.CustomName;
-                    var currentOutputString = farm.DetailedInfo.Split('\n')[2].Replace("Oxygen Output:", "").Replace("L/min", "").Trim();
-
-                    var currentOutput = 0.0f;
-                    float.TryParse(currentOutputString, out currentOutput);
-                    outputOverall += currentOutput;
+                    // Live oxygen output via ResourceSource.MaxOutput — the current sun-adjusted production
+                    // capability (L/s). CurrentOutput would be 0 when nothing is consuming, but players want
+                    // to see what the farm IS producing, not what's being pulled. *60 for L/min display.
+                    var source = farm.Components.Get<MyResourceSourceComponent>();
+                    if (source != null)
+                        outputOverall += source.MaxOutput * 60f;
                 }
 
                 SurfaceDrawer.WriteTextSprite(ref frame, position, surfaceData, $"{MahDefinitions.LiterFormat(outputOverall)}/min", TextAlignment.RIGHT, surfaceData.useColors ? Color.GreenYellow : surfaceData.surface.ScriptForegroundColor);
@@ -815,7 +816,12 @@ namespace MahrianeIndustries.LCDInfo
                     string name = oxygenFarm.CustomName;
                     if (name.Length > maxNameLength) name = name.Substring(0, maxNameLength);
 
-                    var currentOutput = oxygenFarm.DetailedInfo.Split('\n')[2].Replace("Oxygen Output:", "").Trim();
+                    // Live oxygen output via ResourceSource.MaxOutput — sun-adjusted production capability
+                    // (L/s). CurrentOutput is 0 when nothing consumes; MaxOutput reflects what the farm is
+                    // producing right now. *60 for L/min display.
+                    var source = oxygenFarm.Components.Get<MyResourceSourceComponent>();
+                    float outputLPerMin = source != null ? source.MaxOutput * 60f : 0f;
+                    var currentOutput = $"{MahDefinitions.LiterFormat(outputLPerMin)}/min";
                     var state = $"{(!oxygenFarm.IsWorking ? "    Off" : !oxygenFarm.CanProduce ? "  Idle" : "    On")}";
                     var stateColor = !surfaceData.useColors ? surfaceData.surface.ScriptForegroundColor : state.Contains("Off") ? Color.Orange : state.Contains("Idle") ? Color.Yellow : Color.GreenYellow;
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<BlockVariantGroups>
+
+<!--
+	Override vanilla ThrusterAtmoGroup: removes the 8 flat thrusters
+	(they now live in their own per-geometry 3-tier groups below).
+	Standard atmo + SciFi reskins keep their original entry.
+-->
+		<BlockVariantGroup>
+			<Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="ThrusterAtmoGroup" />
+			<Icon>Textures\GUI\Icons\Cubes\AtmosphericThrusterLargeLarge.dds</Icon>
+			<DisplayName>DisplayName_Block_LargeAtmoThrust</DisplayName>
+			<Description>Description_AtmosphericThrust</Description>
+			<Blocks>
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeAtmosphericThrustSciFi" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallAtmosphericThrustSciFi" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeAtmosphericThrustSciFi" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallAtmosphericThrustSciFi" />
+			</Blocks>
+		</BlockVariantGroup>
+
+<!--
+	Per-geometry 3-tier groups. Each group covers one flat thruster
+	geometry across both grid sizes (L-grid + S-grid), with all three
+	tiers (Base, Upgraded, Advanced) cycling via skin arrows.
+-->
+
+		<!-- Large flat (Flat shape), L-grid + S-grid, 3 tiers each -->
+		<BlockVariantGroup>
+			<Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="ThrusterAtmoFlatLargeGroup" />
+			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterLarge.dds</Icon>
+			<DisplayName>DisplayName_Block_LargeAtmoThrustFlat</DisplayName>
+			<Description>Description_AtmosphericThrust</Description>
+			<Blocks>
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrustBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrustUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrustBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrustUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrust" />
+			</Blocks>
+		</BlockVariantGroup>
+
+		<!-- Large flat (D-Shape), L-grid + S-grid, 3 tiers each -->
+		<BlockVariantGroup>
+			<Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="ThrusterAtmoFlatLargeDShapeGroup" />
+			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterDShapeLarge.dds</Icon>
+			<DisplayName>DisplayName_Block_LargeAtmoThrustFlatDShape</DisplayName>
+			<Description>Description_AtmosphericThrust</Description>
+			<Blocks>
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrustDShapeBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrustDShapeUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockLargeFlatAtmosphericThrustDShape" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrustDShapeBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrustDShapeUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockLargeFlatAtmosphericThrustDShape" />
+			</Blocks>
+		</BlockVariantGroup>
+
+		<!-- Small flat (Flat shape), L-grid + S-grid, 3 tiers each -->
+		<BlockVariantGroup>
+			<Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="ThrusterAtmoFlatSmallGroup" />
+			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterSmall.dds</Icon>
+			<DisplayName>DisplayName_Block_SmallAtmoThrustFlat</DisplayName>
+			<Description>Description_AtmosphericThrust</Description>
+			<Blocks>
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrustBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrustUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrust" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrustBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrustUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrust" />
+			</Blocks>
+		</BlockVariantGroup>
+
+		<!-- Small flat (D-Shape), L-grid + S-grid, 3 tiers each -->
+		<BlockVariantGroup>
+			<Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="ThrusterAtmoFlatSmallDShapeGroup" />
+			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterDShapeSmall.dds</Icon>
+			<DisplayName>DisplayName_Block_SmallAtmoThrustFlatDShape</DisplayName>
+			<Description>Description_AtmosphericThrust</Description>
+			<Blocks>
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrustDShapeBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrustDShapeUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="LargeBlockSmallFlatAtmosphericThrustDShape" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrustDShapeBase" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrustDShapeUpgraded" />
+				<Block Type="MyObjectBuilder_Thrust" Subtype="SmallBlockSmallFlatAtmosphericThrustDShape" />
+			</Blocks>
+		</BlockVariantGroup>
+
+	</BlockVariantGroups>
+</Definitions>

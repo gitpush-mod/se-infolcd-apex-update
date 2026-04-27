@@ -1085,7 +1085,9 @@ namespace MahrianeIndustries.LCDInfo
                     if (farm == null) continue;
 
                     var name = farm.CustomName;
-                    float progress = ParseProgressPercent(farm.DetailedInfo);
+                    // IMyOxygenFarm.GetOutput() returns live 0-1 production rate regardless of terminal observer,
+                    // unlike DetailedInfo which only refreshes when a player has the terminal open.
+                    float progress = farm.GetOutput();
                     var state = $"{(!farm.IsWorking ? "    Off" : progress > 0f ? "  Work" : "   Idle")}";
 
                     SurfaceDrawer.WriteTextSprite(ref frame, position, surfaceData, $"{state}", TextAlignment.LEFT, !surfaceData.useColors ? surfaceData.surface.ScriptForegroundColor : state.Contains("Off") ? Color.Orange : state.Contains("Idle") ? Color.Yellow : Color.GreenYellow);
@@ -1145,8 +1147,38 @@ namespace MahrianeIndustries.LCDInfo
                     if (block == null) continue;
 
                     var name = block.CustomName;
-                    float progress = ParseProgressPercent(block.DetailedInfo);
-                    var state = $"{(!block.IsWorking ? "    Off" : progress > 0f ? "  Work" : "   Idle")}";
+                    // Read live production data via IMySolarFoodGenerator (Sandbox.ModAPI, whitelisted).
+                    // ItemsPerMinute + TimeRemainingUntilNextBatch are sourced from the component's
+                    // local calculation — same source of truth the game uses for its own DetailedInfo.
+                    // Iterate MyCubeBlock.Components since Components.Get<T> requires T:MyComponentBase
+                    // (interfaces don't qualify), same pattern used for IMyFarmPlotLogic in Farming.cs.
+                    float progress = 0f;
+                    bool occluded = false;
+                    float itemsPerMin = 0f;
+                    var cubeBlock = block as MyCubeBlock;
+                    if (cubeBlock != null && cubeBlock.Components != null)
+                    {
+                        foreach (var comp in cubeBlock.Components)
+                        {
+                            var so = comp as IMySolarOccludable;
+                            if (so != null) occluded = so.IsSolarOccluded;
+                            var foodGen = comp as IMySolarFoodGenerator;
+                            if (foodGen != null)
+                            {
+                                itemsPerMin = foodGen.ItemsPerMinute;
+                                if (itemsPerMin > 0f)
+                                {
+                                    float batchSeconds = 60f / itemsPerMin;
+                                    float remaining = foodGen.TimeRemainingUntilNextBatch;
+                                    progress = Math.Max(0f, Math.Min(1f, 1f - (remaining / batchSeconds)));
+                                }
+                            }
+                        }
+                    }
+                    var sink = block.Components.Get<MyResourceSinkComponent>();
+                    float powerDraw = sink != null ? sink.CurrentInputByType(MyResourceDistributorComponent.ElectricityId) : 0f;
+                    bool isProducing = block.IsWorking && powerDraw > 0f && !occluded;
+                    var state = $"{(!block.IsWorking ? "    Off" : isProducing ? "  Work" : "   Idle")}";
 
                     SurfaceDrawer.WriteTextSprite(ref frame, position, surfaceData, $"{state}", TextAlignment.LEFT, !surfaceData.useColors ? surfaceData.surface.ScriptForegroundColor : state.Contains("Off") ? Color.Orange : state.Contains("Idle") ? Color.Yellow : Color.GreenYellow);
                     SurfaceDrawer.WriteTextSprite(ref frame, position, surfaceData, $"[          ] {name}", TextAlignment.LEFT, surfaceData.surface.ScriptForegroundColor);
