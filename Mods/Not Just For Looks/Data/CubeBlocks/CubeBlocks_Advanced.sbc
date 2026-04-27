@@ -8,6 +8,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallModularThruster</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 2 SC + 1 RC tax -->
 			<DisplayName>Advanced Warfare Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallGridModularIonThrusterSmall.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -24,7 +25,8 @@
 				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
 				<Component Subtype="LargeTube" Count="3" /> <!-- Tripple from 1 -->
 				<Component Subtype="Thrust" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
+				<Component Subtype="Reactor" Count="1" /> <!-- Platinum tax (S-grid Small block) -->
 				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
 				<Component Subtype="SteelPlate" Count="3" /> <!-- Tripple from 1 -->
 			</Components>
@@ -59,8 +61,7 @@
 			<BuildTimeSeconds>10</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 57600 (4x from 14400) -->
-			<ForceMagnitude>104251</ForceMagnitude> <!-- Recalc: 2x base N/kg target (Upgraded ratio 238.016529) -->
+			<ForceMagnitude>129600</ForceMagnitude> <!-- 9x vanilla 14,400 (3x T:W with 3x mass) -->
 			<MaxPowerConsumption>0.200</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -106,6 +107,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeModularThruster</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 4 SC + 2 RC tax -->
 			<DisplayName>Advanced Large Warfare Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallGridModularIonThrusterLarge.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -121,7 +123,8 @@
 				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
 				<Component Subtype="LargeTube" Count="15" /> <!-- Tripple from 5 -->
 				<Component Subtype="Thrust" Count="36" /> <!-- Tripple from 12 -->
-				<Component Subtype="Superconductor" Count="7" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
 				<Component Subtype="SteelPlate" Count="12" /> <!-- Tripple from 4 -->
 			</Components>
@@ -160,8 +163,7 @@
 			<BuildTimeSeconds>20</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 691200 (4x from 172800) -->
-			<ForceMagnitude>1630695</ForceMagnitude> <!-- Recalc: 3x base N/kg target (Advanced ratio 719.001387) -->
+			<ForceMagnitude>1555200</ForceMagnitude> <!-- 9x vanilla 172,800 (3x T:W with 3x mass) -->
 			<MaxPowerConsumption>2.4</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -207,6 +209,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallModularThruster</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 5 SC + 2 RC tax -->
 			<DisplayName>Advanced Warfare Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeGridModularIonThrusterSmall.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -220,10 +223,11 @@
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
 				<Component Subtype="SteelPlate" Count="45" /> <!-- Tripple from 15 -->
-				<Component Subtype="Construction" Count="80" /> <!-- Tripple from 40 -->
+				<Component Subtype="Construction" Count="120" /> <!-- Tripple from 40 -->
 				<Component Subtype="LargeTube" Count="24" /> <!-- Tripple from 8 -->
 				<Component Subtype="Thrust" Count="240" /> <!-- Tripple from 80 -->
-				<Component Subtype="Superconductor" Count="8" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="60" /> <!-- Tripple from 20 -->
 				<Component Subtype="SteelPlate" Count="30" /> <!-- Tripple from 10 -->
 			</Components>
@@ -259,8 +263,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>40</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 1382400 (4x from 345600) -->
-			<ForceMagnitude>3063058</ForceMagnitude> <!-- Recalc: 3x base N/kg target (Advanced ratio 236.71232877) -->
+			<ForceMagnitude>3110400</ForceMagnitude> <!-- 9x vanilla 345,600 (3x T:W with 3x mass) -->
 			<MaxPowerConsumption>3.36</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -305,6 +308,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeModularThruster</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 10 SC + 5 RC tax -->
 			<DisplayName>Advanced Large Warfare Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeGridModularIonThrusterLarge.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -320,7 +324,8 @@
 				<Component Subtype="Construction" Count="210" /> <!-- Tripple from 70 -->
 				<Component Subtype="LargeTube" Count="120" /> <!-- Tripple from 40 -->
 				<Component Subtype="Thrust" Count="2880" /> <!-- Tripple from 960 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="10" /> <!-- Tax (L-grid Large block) -->
+				<Component Subtype="Reactor" Count="5" /> <!-- Platinum tax (L-grid Large block) -->
 				<Component Subtype="Construction" Count="90" /> <!-- Tripple from 30 -->
 				<Component Subtype="SteelPlate" Count="150" /> <!-- Tripple from 50 -->
 			</Components>
@@ -360,8 +365,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>90</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 17280000 (4x from 4320000) -->
-			<ForceMagnitude>38925000</ForceMagnitude> <!-- Recalc: 3x base N/kg target (Advanced ratio 300) -->
+			<ForceMagnitude>38880000</ForceMagnitude> <!-- 9x vanilla 4,320,000 (3x T:W with 3x mass) -->
 			<MaxPowerConsumption>33.6</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -407,6 +411,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeFlatAtmosphericThrust</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 10 SC + 5 RC tax -->
 			<DisplayName>Advanced Large Flat Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterLarge.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -418,14 +423,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="160" /> <!-- Tripple from 40 -->
-				<Component Subtype="Construction" Count="45" /> <!-- Tripple from 15 -->
-				<Component Subtype="LargeTube" Count="60" /> <!-- Tripple from 20 -->
-				<Component Subtype="MetalGrid" Count="45" /> <!-- Tripple from 15 -->
-				<Component Subtype="Motor" Count="1600" /> <!-- Tripple from 400 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="SteelPlate" Count="150" /> <!-- Tripple from 50 -->
+				<Component Subtype="SteelPlate" Count="300" /> <!-- 3x vanilla atmo 100 -->
+				<Component Subtype="Construction" Count="120" /> <!-- 3x vanilla atmo 40 -->
+				<Component Subtype="LargeTube" Count="150" /> <!-- 3x vanilla atmo 50 -->
+				<Component Subtype="MetalGrid" Count="120" /> <!-- 3x vanilla atmo 40 -->
+				<Component Subtype="Motor" Count="3300" /> <!-- 3x vanilla atmo 1100 -->
+				<Component Subtype="Superconductor" Count="10" /> <!-- Tax (L-grid Large block) -->
+				<Component Subtype="Reactor" Count="5" /> <!-- Platinum tax (L-grid Large block) -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="SteelPlate" Count="390" /> <!-- 3x vanilla atmo 130 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -463,9 +469,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>50</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 25920000 (4x std atmo 6480000) -->
-			<ForceMagnitude>30150615</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 639.8687448) -->
-			<MaxPowerConsumption>6.7</MaxPowerConsumption>
+			<ForceMagnitude>58320000</ForceMagnitude> <!-- 9x vanilla atmo 6,480,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>16.8</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -522,6 +527,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeFlatAtmosphericThrustDShape</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 10 SC + 5 RC tax -->
 			<DisplayName>Advanced Large Flat Atmospheric Thruster D-Shape</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterDShapeLarge.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -533,14 +539,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="160" /> <!-- Tripple from 40 -->
-				<Component Subtype="Construction" Count="45" /> <!-- Tripple from 15 -->
-				<Component Subtype="LargeTube" Count="60" /> <!-- Tripple from 20 -->
-				<Component Subtype="MetalGrid" Count="45" /> <!-- Tripple from 15 -->
-				<Component Subtype="Motor" Count="1600" /> <!-- Tripple from 400 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="SteelPlate" Count="150" /> <!-- Tripple from 50 -->
+				<Component Subtype="SteelPlate" Count="300" /> <!-- 3x vanilla atmo 100 -->
+				<Component Subtype="Construction" Count="120" /> <!-- 3x vanilla atmo 40 -->
+				<Component Subtype="LargeTube" Count="150" /> <!-- 3x vanilla atmo 50 -->
+				<Component Subtype="MetalGrid" Count="120" /> <!-- 3x vanilla atmo 40 -->
+				<Component Subtype="Motor" Count="3300" /> <!-- 3x vanilla atmo 1100 -->
+				<Component Subtype="Superconductor" Count="10" /> <!-- Tax (L-grid Large block) -->
+				<Component Subtype="Reactor" Count="5" /> <!-- Platinum tax (L-grid Large block) -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="SteelPlate" Count="390" /> <!-- 3x vanilla atmo 130 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -578,9 +585,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>50</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 25920000 (4x std atmo 6480000) -->
-			<ForceMagnitude>30150615</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 639.8687448) -->
-			<MaxPowerConsumption>6.7</MaxPowerConsumption>
+			<ForceMagnitude>58320000</ForceMagnitude> <!-- 9x vanilla atmo 6,480,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>16.8</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -637,6 +643,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallFlatAtmosphericThrust</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 5 SC + 2 RC tax -->
 			<DisplayName>Advanced Flat Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterSmall.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -649,14 +656,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="15" /> <!-- Tripple from 5 -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="MetalGrid" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="Motor" Count="90" /> <!-- Tripple from 30 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="SteelPlate" Count="30" /> <!-- Tripple from 10 -->
+				<Component Subtype="SteelPlate" Count="45" /> <!-- 3x vanilla atmo 15 -->
+				<Component Subtype="Construction" Count="90" /> <!-- 3x vanilla atmo 30 -->
+				<Component Subtype="LargeTube" Count="24" /> <!-- 3x vanilla atmo 8 -->
+				<Component Subtype="MetalGrid" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="Motor" Count="330" /> <!-- 3x vanilla atmo 110 -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (L-grid Small block) -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="SteelPlate" Count="60" /> <!-- 3x vanilla atmo 20 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -693,9 +701,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>25</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 25921000 (4x std atmo 648000) -->
-			<ForceMagnitude>1870699</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 471.3275727) -->
-			<MaxPowerConsumption>0.8</MaxPowerConsumption>
+			<ForceMagnitude>5832000</ForceMagnitude> <!-- 9x vanilla atmo 648,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>2.4</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -752,6 +759,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallFlatAtmosphericThrustDShape</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 5 SC + 2 RC tax -->
 			<DisplayName>Advanced Flat Atmospheric Thruster D-Shape</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterDShapeSmall.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -764,14 +772,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="15" /> <!-- Tripple from 5 -->
-				<Component Subtype="Construction" Count="60" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="MetalGrid" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="Motor" Count="90" /> <!-- Tripple from 30 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="SteelPlate" Count="30" /> <!-- Tripple from 10 -->
+				<Component Subtype="SteelPlate" Count="45" /> <!-- 3x vanilla atmo 15 -->
+				<Component Subtype="Construction" Count="90" /> <!-- 3x vanilla atmo 30 -->
+				<Component Subtype="LargeTube" Count="24" /> <!-- 3x vanilla atmo 8 -->
+				<Component Subtype="MetalGrid" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="Motor" Count="330" /> <!-- 3x vanilla atmo 110 -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (L-grid Small block) -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="SteelPlate" Count="60" /> <!-- 3x vanilla atmo 20 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -808,9 +817,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>25</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 2592000 (4x std atmo 648000) -->
-			<ForceMagnitude>1983818</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 471.3275727) -->
-			<MaxPowerConsumption>0.8</MaxPowerConsumption>
+			<ForceMagnitude>5832000</ForceMagnitude> <!-- 9x vanilla atmo 648,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>2.4</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -867,6 +875,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeFlatAtmosphericThrust</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 4 SC + 2 RC tax -->
 			<DisplayName>Advanced Large Flat Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LargeFlatAtmosphericThrusterSmall.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -878,14 +887,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="12" /> <!-- Tripple from 4 -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="6" /> <!-- Tripple from 2 -->
-				<Component Subtype="MetalGrid" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="Motor" Count="90" /> <!-- Tripple from 30 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="12" /> <!-- Tripple from 4 -->
-				<Component Subtype="SteelPlate" Count="12" /> <!-- Tripple from 4 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="LargeTube" Count="12" /> <!-- 3x vanilla atmo 4 -->
+				<Component Subtype="MetalGrid" Count="24" /> <!-- 3x vanilla atmo 8 -->
+				<Component Subtype="Motor" Count="270" /> <!-- 3x vanilla atmo 90 -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (S-grid Large block) -->
+				<Component Subtype="Construction" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- 3x vanilla atmo 10 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -922,9 +932,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>15</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 2304000 (4x std atmo 576000) -->
-			<ForceMagnitude>2118821</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 650.9433963) -->
-			<MaxPowerConsumption>1</MaxPowerConsumption>
+			<ForceMagnitude>5184000</ForceMagnitude> <!-- 9x vanilla atmo 576,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>2.4</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -982,6 +991,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeFlatAtmosphericThrustDShape</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 4 SC + 2 RC tax -->
 			<DisplayName>Advanced Large Flat Atmospheric Thruster D-Shape</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallFlatAtmosphericThrusterDShapeLarge.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -993,14 +1003,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="16" /> <!-- Tripple from 4 -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="6" /> <!-- Tripple from 2 -->
-				<Component Subtype="MetalGrid" Count="9" /> <!-- Tripple from 3 -->
-				<Component Subtype="Motor" Count="90" /> <!-- Tripple from 30 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="12" /> <!-- Tripple from 4 -->
-				<Component Subtype="SteelPlate" Count="12" /> <!-- Tripple from 4 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="LargeTube" Count="12" /> <!-- 3x vanilla atmo 4 -->
+				<Component Subtype="MetalGrid" Count="24" /> <!-- 3x vanilla atmo 8 -->
+				<Component Subtype="Motor" Count="270" /> <!-- 3x vanilla atmo 90 -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (S-grid Large block) -->
+				<Component Subtype="Construction" Count="30" /> <!-- 3x vanilla atmo 10 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- 3x vanilla atmo 10 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -1037,9 +1048,8 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>15</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 2304000 (4x std atmo 576000) -->
-			<ForceMagnitude>2170896</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 650.9433963) -->
-			<MaxPowerConsumption>1</MaxPowerConsumption>
+			<ForceMagnitude>5184000</ForceMagnitude> <!-- 9x vanilla atmo 576,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>2.4</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -1097,6 +1107,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallFlatAtmosphericThrust</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 2 SC + 1 RC tax -->
 			<DisplayName>Advanced Flat Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallFlatAtmosphericThrusterSmall.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1109,14 +1120,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="MetalGrid" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="Motor" Count="18" /> <!-- Tripple from 6 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="SteelPlate" Count="3" /> <!-- Tripple from 1 -->
+				<Component Subtype="SteelPlate" Count="6" /> <!-- 3x vanilla atmo 2 -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="LargeTube" Count="3" /> <!-- 3x vanilla atmo 1 -->
+				<Component Subtype="MetalGrid" Count="3" /> <!-- 3x vanilla atmo 1 -->
+				<Component Subtype="Motor" Count="54" /> <!-- 3x vanilla atmo 18 -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
+				<Component Subtype="Reactor" Count="1" /> <!-- Platinum tax (S-grid Small block) -->
+				<Component Subtype="Construction" Count="6" /> <!-- 3x vanilla atmo 2 -->
+				<Component Subtype="SteelPlate" Count="3" /> <!-- 3x vanilla atmo 1 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -1152,9 +1164,8 @@
 			<BuildTimeSeconds>8</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 384000 (4x std atmo 96000) -->
-			<ForceMagnitude>311762</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 316.8316833) -->
-			<MaxPowerConsumption>0.200</MaxPowerConsumption>
+			<ForceMagnitude>864000</ForceMagnitude> <!-- 9x vanilla atmo 96,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>0.600</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -1213,6 +1224,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallFlatAtmosphericThrustDShape</SubtypeId>
 			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 2 SC + 1 RC tax -->
 			<DisplayName>Advanced Flat Atmospheric Thruster D-Shape</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallFlatAtmosphericThrusterDShapeSmall.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1225,14 +1237,15 @@
 			<ThrusterType>Atmospheric</ThrusterType>
 			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
 			<Components>
-				<Component Subtype="SteelPlate" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="Construction" Count="30" /> <!-- Tripple from 10 -->
-				<Component Subtype="LargeTube" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="MetalGrid" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="Motor" Count="18" /> <!-- Tripple from 6 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-				<Component Subtype="Construction" Count="3" /> <!-- Tripple from 1 -->
-				<Component Subtype="SteelPlate" Count="3" /> <!-- Tripple from 1 -->
+				<Component Subtype="SteelPlate" Count="6" /> <!-- 3x vanilla atmo 2 -->
+				<Component Subtype="Construction" Count="60" /> <!-- 3x vanilla atmo 20 -->
+				<Component Subtype="LargeTube" Count="3" /> <!-- 3x vanilla atmo 1 -->
+				<Component Subtype="MetalGrid" Count="3" /> <!-- 3x vanilla atmo 1 -->
+				<Component Subtype="Motor" Count="54" /> <!-- 3x vanilla atmo 18 -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
+				<Component Subtype="Reactor" Count="1" /> <!-- Platinum tax (S-grid Small block) -->
+				<Component Subtype="Construction" Count="6" /> <!-- 3x vanilla atmo 2 -->
+				<Component Subtype="SteelPlate" Count="3" /> <!-- 3x vanilla atmo 1 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
 			<MountPoints>
@@ -1268,9 +1281,8 @@
 			<BuildTimeSeconds>8</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 384000 (4x std atmo 96000) -->
-			<ForceMagnitude>311762</ForceMagnitude> <!-- Recalc: 3x base N/kg target (ratio 316.8316833) -->
-			<MaxPowerConsumption>0.200</MaxPowerConsumption>
+			<ForceMagnitude>864000</ForceMagnitude> <!-- 9x vanilla atmo 96,000 (3x T:W with 3x mass) -->
+			<MaxPowerConsumption>0.600</MaxPowerConsumption> <!-- vanilla atmo -->
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
 			<MinPlanetaryInfluence>0.3</MinPlanetaryInfluence>
@@ -1322,5 +1334,441 @@
 				<string>Propulsion</string>
 			</TargetingGroups>
 		</Definition>
+
+<!-- CORE SYSTEMS PACK - SCI-FI HYDROGEN THRUSTERS -->
+
+		<!-- Large Sci-Fi Hydrogen Thruster (L grid) - LargeBlockLargeHydrogenThrustReskin -->
+		<Definition xsi:type="MyObjectBuilder_ThrustDefinition">
+			<Id>
+				<TypeId>Thrust</TypeId>
+				<SubtypeId>LargeBlockLargeHydrogenThrustReskin</SubtypeId>
+			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 10 SC + 5 RC tax -->
+			<DisplayName>Advanced Large Sci-Fi Hydrogen Thruster</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\SciFiHydrogenThrusterLargeLarge.dds</Icon>
+			<Description>Description_HydrogenThrust</Description>
+			<CubeSize>Large</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="3" y="3" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\ScifiHydrogenThruster.mwm</Model>
+			<ThrusterType>Hydrogen</ThrusterType>
+			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
+			<Components>
+				<Component Subtype="SteelPlate" Count="300" /> <!-- Tripled from 100 -->
+				<Component Subtype="Construction" Count="450" /> <!-- Tripled from 150 -->
+				<Component Subtype="MetalGrid" Count="750" /> <!-- Tripled from 250 -->
+				<Component Subtype="LargeTube" Count="120" /> <!-- Tripled from 40 -->
+				<Component Subtype="Superconductor" Count="10" /> <!-- Tax (L-grid Large block) -->
+				<Component Subtype="Reactor" Count="5" /> <!-- Platinum tax (L-grid Large block) -->
+				<Component Subtype="Construction" Count="90" /> <!-- Tripled from 30 -->
+				<Component Subtype="SteelPlate" Count="150" /> <!-- Tripled from 50 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<Center x="1" y="1" z="2" />
+			<MountPoints>
+				<MountPoint Side="Back" StartX="0" StartY="0.5" EndX="3" EndY="2.5" Default="true"/>
+				<MountPoint Side="Back" StartX="0.5" StartY="0" EndX="2.5" EndY="3" />
+				<MountPoint Side="Right" StartX="0" StartY="0.5" EndX="0.5" EndY="2.5" />
+				<MountPoint Side="Left" StartX="2.5" StartY="0.5" EndX="3" EndY="2.5" />
+				<MountPoint Side="Bottom" StartX="0.5" StartY="2.5" EndX="2.5" EndY="3" />
+				<MountPoint Side="Top" StartX="0.5" StartY="0" EndX="2.5" EndY="0.5" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\SciFiHydrogenThruster_Construction1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\SciFiHydrogenThruster_Construction2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\SciFiHydrogenThruster_Construction3.mwm" />
+			</BuildProgressModels>
+			<VoxelPlacement>
+				<StaticMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</StaticMode>
+				<DynamicMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</DynamicMode>
+			</VoxelPlacement>
+			<BlockPairName>LargeHydrogenThrustReskin</BlockPairName>
+			<MirroringY>Z</MirroringY>
+			<MirroringZ>Y</MirroringZ>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>90</BuildTimeSeconds>
+			<FuelConverter>
+				<FuelId>
+					<TypeId>GasProperties</TypeId>
+					<SubtypeId>Hydrogen</SubtypeId>
+				</FuelId>
+				<Efficiency>1</Efficiency>
+			</FuelConverter>
+			<MaxPowerConsumption>7.5</MaxPowerConsumption>
+			<MinPowerConsumption>0.000000001</MinPowerConsumption>
+			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
+			<ForceMagnitude>64800000</ForceMagnitude> <!-- 9x vanilla 7,200,000 -->
+			<SlowdownFactor>1</SlowdownFactor>
+			<FlameDamageLengthScale>0.6</FlameDamageLengthScale>
+			<FlameLengthScale>1.15</FlameLengthScale>
+			<FlameIdleColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameIdleColor>
+			<FlameFullColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameFullColor>
+			<FlamePointMaterial>EngineThrustMiddle</FlamePointMaterial>
+			<FlameLengthMaterial>SciFiThrusterFlame</FlameLengthMaterial>
+			<FlameFlare>LargeGridLargeThruster</FlameFlare>
+			<FlameVisibilityDistance>700</FlameVisibilityDistance>
+			<FlameGlareQuerySize>1.5</FlameGlareQuerySize>
+			<PrimarySound>LrgShipLrgJetHydrogen</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<Public>true</Public>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<TieredUpdateTimes>
+				<unsignedInt>100</unsignedInt>
+				<unsignedInt>3600</unsignedInt>
+				<unsignedInt>0</unsignedInt>
+			</TieredUpdateTimes>
+			<TargetingGroups>
+				<string>Propulsion</string>
+			</TargetingGroups>
+			<PCU>12</PCU>
+			<DLC>CoreSystems</DLC>
+		</Definition>
+
+		<!-- Small Sci-Fi Hydrogen Thruster (L grid) - LargeBlockSmallHydrogenThrustReskin -->
+		<Definition xsi:type="MyObjectBuilder_ThrustDefinition">
+			<Id>
+				<TypeId>Thrust</TypeId>
+				<SubtypeId>LargeBlockSmallHydrogenThrustReskin</SubtypeId>
+			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 5 SC + 2 RC tax -->
+			<DisplayName>Advanced Small Sci-Fi Hydrogen Thruster</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\SciFiHydrogenThrusterLargeSmall.dds</Icon>
+			<Description>Description_HydrogenThrust</Description>
+			<CubeSize>Large</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="1" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\ScifiHydrogenThrusterSmall.mwm</Model>
+			<ThrusterType>Hydrogen</ThrusterType>
+			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
+			<Components>
+				<Component Subtype="SteelPlate" Count="45" /> <!-- Tripled from 15 -->
+				<Component Subtype="Construction" Count="120" /> <!-- Tripled from 40 -->
+				<Component Subtype="MetalGrid" Count="120" /> <!-- Tripled from 40 -->
+				<Component Subtype="LargeTube" Count="24" /> <!-- Tripled from 8 -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (L-grid Small block) -->
+				<Component Subtype="Construction" Count="60" /> <!-- Tripled from 20 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- Tripled from 10 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="1" EndY="1" Default="true"/>
+				<MountPoint Side="Right" StartX="0" StartY="0.15" EndX="0.2" EndY="0.85" />
+				<MountPoint Side="Left" StartX="0.8" StartY="0.15" EndX="1" EndY="0.85" />
+				<MountPoint Side="Bottom" StartX="0.15" StartY="0.8" EndX="0.85" EndY="1" />
+				<MountPoint Side="Top" StartX="0.15" StartY="0" EndX="0.85" EndY="0.2" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\SciFiHydrogenThrusterSmall_Construction1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\SciFiHydrogenThrusterSmall_Construction2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\SciFiHydrogenThrusterSmall_Construction3.mwm" />
+			</BuildProgressModels>
+			<VoxelPlacement>
+				<StaticMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</StaticMode>
+				<DynamicMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</DynamicMode>
+			</VoxelPlacement>
+			<BlockPairName>SmallHydrogenThrustReskin</BlockPairName>
+			<Center x="0" y="0" z="0" />
+			<MirroringZ>Y</MirroringZ>
+			<MirroringY>Z</MirroringY>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>40</BuildTimeSeconds>
+			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
+			<ForceMagnitude>9720000</ForceMagnitude> <!-- 9x vanilla 1,080,000 -->
+			<SlowdownFactor>1</SlowdownFactor>
+			<FuelConverter>
+				<FuelId>
+					<TypeId>GasProperties</TypeId>
+					<SubtypeId>Hydrogen</SubtypeId>
+				</FuelId>
+				<Efficiency>1</Efficiency>
+			</FuelConverter>
+			<MaxPowerConsumption>1.25</MaxPowerConsumption>
+			<MinPowerConsumption>0.000000001</MinPowerConsumption>
+			<FlameDamageLengthScale>0.6</FlameDamageLengthScale>
+			<FlameLengthScale>1.15</FlameLengthScale>
+			<FlameIdleColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameIdleColor>
+			<FlameFullColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameFullColor>
+			<FlamePointMaterial>EngineThrustMiddle</FlamePointMaterial>
+			<FlameLengthMaterial>SciFiThrusterFlame</FlameLengthMaterial>
+			<FlameFlare>LargeGridSmallThruster</FlameFlare>
+			<FlameVisibilityDistance>500</FlameVisibilityDistance>
+			<FlameGlareQuerySize>1</FlameGlareQuerySize>
+			<PrimarySound>LrgShipSmJetHydrogen</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<Public>true</Public>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<IsAirTight>false</IsAirTight>
+			<TieredUpdateTimes>
+				<unsignedInt>100</unsignedInt>
+				<unsignedInt>3600</unsignedInt>
+				<unsignedInt>0</unsignedInt>
+			</TieredUpdateTimes>
+			<TargetingGroups>
+				<string>Propulsion</string>
+			</TargetingGroups>
+			<PCU>12</PCU>
+			<DLC>CoreSystems</DLC>
+		</Definition>
+
+		<!-- Large Sci-Fi Hydrogen Thruster (S grid) - SmallBlockLargeHydrogenThrustReskin -->
+		<Definition xsi:type="MyObjectBuilder_ThrustDefinition">
+			<Id>
+				<TypeId>Thrust</TypeId>
+				<SubtypeId>SmallBlockLargeHydrogenThrustReskin</SubtypeId>
+			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 4 SC + 2 RC tax -->
+			<DisplayName>Advanced Large Sci-Fi Hydrogen Thruster</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\SciFiHydrogenThrusterSmallLarge.dds</Icon>
+			<Description>Description_HydrogenThrust</Description>
+			<CubeSize>Small</CubeSize>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="3" y="3" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Small\ScifiHydrogenThrusterLarge.mwm</Model>
+			<ThrusterType>Hydrogen</ThrusterType>
+			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
+			<Components>
+				<Component Subtype="SteelPlate" Count="60" /> <!-- Tripled from 20 -->
+				<Component Subtype="Construction" Count="60" /> <!-- Tripled from 20 -->
+				<Component Subtype="MetalGrid" Count="66" /> <!-- Tripled from 22 -->
+				<Component Subtype="LargeTube" Count="30" /> <!-- Tripled from 10 -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
+				<Component Subtype="Reactor" Count="2" /> <!-- Platinum tax (S-grid Large block) -->
+				<Component Subtype="Construction" Count="30" /> <!-- Tripled from 10 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- Tripled from 10 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<Center x="1" y="1" z="2" />
+			<MountPoints>
+				<MountPoint Side="Back" StartX="0" StartY="0.5" EndX="3" EndY="2.5" Default="true"/>
+				<MountPoint Side="Back" StartX="0.5" StartY="0" EndX="2.5" EndY="3" />
+				<MountPoint Side="Right" StartX="0" StartY="0.5" EndX="0.5" EndY="2.5" />
+				<MountPoint Side="Left" StartX="2.5" StartY="0.5" EndX="3" EndY="2.5" />
+				<MountPoint Side="Bottom" StartX="0.5" StartY="2.5" EndX="2.5" EndY="3" />
+				<MountPoint Side="Top" StartX="0.5" StartY="0" EndX="2.5" EndY="0.5" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Small\SciFiHydrogenThrusterLarge_Construction1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Small\SciFiHydrogenThrusterLarge_Construction2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Small\SciFiHydrogenThrusterLarge_Construction3.mwm" />
+			</BuildProgressModels>
+			<VoxelPlacement>
+				<StaticMode>
+					<PlacementMode>OutsideVoxel</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</StaticMode>
+				<DynamicMode>
+					<PlacementMode>OutsideVoxel</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</DynamicMode>
+			</VoxelPlacement>
+			<BlockPairName>LargeHydrogenThrustReskin</BlockPairName>
+			<MirroringY>Z</MirroringY>
+			<MirroringZ>Y</MirroringZ>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>20</BuildTimeSeconds>
+			<FuelConverter>
+				<FuelId>
+					<TypeId>GasProperties</TypeId>
+					<SubtypeId>Hydrogen</SubtypeId>
+				</FuelId>
+				<Efficiency>1</Efficiency>
+			</FuelConverter>
+			<MaxPowerConsumption>0.6</MaxPowerConsumption>
+			<MinPowerConsumption>0.000000001</MinPowerConsumption>
+			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
+			<ForceMagnitude>4320000</ForceMagnitude> <!-- 9x vanilla 480,000 -->
+			<SlowdownFactor>1</SlowdownFactor>
+			<FlameDamageLengthScale>0.6</FlameDamageLengthScale>
+			<FlameLengthScale>1.15</FlameLengthScale>
+			<FlameIdleColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameIdleColor>
+			<FlameFullColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameFullColor>
+			<FlamePointMaterial>EngineThrustMiddle</FlamePointMaterial>
+			<FlameLengthMaterial>SciFiThrusterFlame</FlameLengthMaterial>
+			<FlameFlare>LargeGridLargeThruster</FlameFlare>
+			<FlameVisibilityDistance>700</FlameVisibilityDistance>
+			<FlameGlareQuerySize>1.5</FlameGlareQuerySize>
+			<PrimarySound>SmShipLrgJetHydrogen</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<TieredUpdateTimes>
+				<unsignedInt>100</unsignedInt>
+				<unsignedInt>3600</unsignedInt>
+				<unsignedInt>0</unsignedInt>
+			</TieredUpdateTimes>
+			<TargetingGroups>
+				<string>Propulsion</string>
+			</TargetingGroups>
+			<PCU>12</PCU>
+			<DLC>CoreSystems</DLC>
+		</Definition>
+
+		<!-- Small Sci-Fi Hydrogen Thruster (S grid) - SmallBlockSmallHydrogenThrustReskin -->
+		<Definition xsi:type="MyObjectBuilder_ThrustDefinition">
+			<Id>
+				<TypeId>Thrust</TypeId>
+				<SubtypeId>SmallBlockSmallHydrogenThrustReskin</SubtypeId>
+			</Id>
+			<!-- Advanced tier: 3x components, 9x vanilla force (=> 3x T:W), vanilla power, 2 SC + 1 RC tax -->
+			<DisplayName>Advanced Small Sci-Fi Hydrogen Thruster</DisplayName>
+			<Icon>Textures\GUI\Icons\Cubes\SciFiHydrogenThrusterSmallSmall.dds</Icon>
+			<Description>Description_HydrogenThrust</Description>
+			<CubeSize>Small</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="1" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Small\ScifiHydrogenThrusterSmall.mwm</Model>
+			<ThrusterType>Hydrogen</ThrusterType>
+			<SilenceableByShipSoundSystem>true</SilenceableByShipSoundSystem>
+			<Components>
+				<Component Subtype="SteelPlate" Count="6" /> <!-- Tripled from 2 -->
+				<Component Subtype="Construction" Count="30" /> <!-- Tripled from 10 -->
+				<Component Subtype="MetalGrid" Count="12" /> <!-- Tripled from 4 -->
+				<Component Subtype="LargeTube" Count="6" /> <!-- Tripled from 2 -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
+				<Component Subtype="Reactor" Count="1" /> <!-- Platinum tax (S-grid Small block) -->
+				<Component Subtype="Construction" Count="15" /> <!-- Tripled from 5 -->
+				<Component Subtype="SteelPlate" Count="15" /> <!-- Tripled from 5 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="1" EndY="1" Default="true"/>
+				<MountPoint Side="Right" StartX="0" StartY="0.2" EndX="0.1" EndY="0.8" />
+				<MountPoint Side="Left" StartX="0.9" StartY="0.2" EndX="1" EndY="0.8" />
+				<MountPoint Side="Bottom" StartX="0.2" StartY="0.9" EndX="0.8" EndY="1" />
+				<MountPoint Side="Top" StartX="0.2" StartY="0" EndX="0.8" EndY="0.1" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Small\SciFiHydrogenThrusterSmall_Construction1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Small\SciFiHydrogenThrusterSmall_Construction2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Small\SciFiHydrogenThrusterSmall_Construction3.mwm" />
+			</BuildProgressModels>
+			<VoxelPlacement>
+				<StaticMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</StaticMode>
+				<DynamicMode>
+					<PlacementMode>Volumetric</PlacementMode>
+					<MaxAllowed>0.2</MaxAllowed>
+					<MinAllowed>0</MinAllowed>
+				</DynamicMode>
+			</VoxelPlacement>
+			<BlockPairName>SmallHydrogenThrustReskin</BlockPairName>
+			<Center x="0" y="0" z="0" />
+			<MirroringZ>Y</MirroringZ>
+			<MirroringY>Z</MirroringY>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>10</BuildTimeSeconds>
+			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
+			<ForceMagnitude>885600</ForceMagnitude> <!-- 9x vanilla 98,400 -->
+			<FuelConverter>
+				<FuelId>
+					<TypeId>GasProperties</TypeId>
+					<SubtypeId>Hydrogen</SubtypeId>
+				</FuelId>
+				<Efficiency>1</Efficiency>
+			</FuelConverter>
+			<MaxPowerConsumption>0.125</MaxPowerConsumption>
+			<MinPowerConsumption>0.000000001</MinPowerConsumption>
+			<SlowdownFactor>1</SlowdownFactor>
+			<FlameDamageLengthScale>0.34</FlameDamageLengthScale>
+			<FlameLengthScale>1.5</FlameLengthScale>
+			<FlameIdleColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameIdleColor>
+			<FlameFullColor>
+				<X>1</X>
+				<Y>0.75</Y>
+				<Z>0.35</Z>
+				<W>0.75</W>
+			</FlameFullColor>
+			<FlamePointMaterial>EngineThrustMiddle</FlamePointMaterial>
+			<FlameLengthMaterial>SciFiThrusterFlame</FlameLengthMaterial>
+			<FlameFlare>LargeGridSmallThruster</FlameFlare>
+			<FlameVisibilityDistance>500</FlameVisibilityDistance>
+			<FlameGlareQuerySize>1</FlameGlareQuerySize>
+			<PrimarySound>SmShipSmJetHydrogen</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<Public>true</Public>
+			<DestroyEffect>BlockDestroyedExplosion_Small</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<IsAirTight>false</IsAirTight>
+			<TieredUpdateTimes>
+				<unsignedInt>100</unsignedInt>
+				<unsignedInt>3600</unsignedInt>
+				<unsignedInt>0</unsignedInt>
+			</TieredUpdateTimes>
+			<TargetingGroups>
+				<string>Propulsion</string>
+			</TargetingGroups>
+			<PCU>12</PCU>
+			<DLC>CoreSystems</DLC>
+		</Definition>
+
 	</CubeBlocks>
 </Definitions>

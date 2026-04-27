@@ -8,6 +8,7 @@
 				<TypeId>Reactor</TypeId>
 				<SubtypeId>LargeBlockSmallGeneratorWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x vanilla power output, half fuel consumption (Ratio=2), 100 SC tax (heavy gate due to 4x efficiency) -->
 			<DisplayName>Upgraded Small Warfare Reactor</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\ReactorReskinSmall.dds</Icon>
 			<Description>Description_Reactor</Description>
@@ -24,7 +25,7 @@
 				<Component Subtype="Reactor" Count="200" /> <!-- Doubled from 100 -->
 				<Component Subtype="Motor" Count="12" /> <!-- Doubled from 6 -->
 				<Component Subtype="Computer" Count="50" /> <!-- Doubled from 25 -->
-				<Component Subtype="Superconductor" Count="8" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="100" /> <!-- Heavy gate: reactor 4x efficiency justifies large gold cost -->
 				<Component Subtype="SteelPlate" Count="60" /> <!-- Doubled from 30 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -63,6 +64,8 @@
 					</Id>
 				</FuelInfo>
 			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>14400</FuelProductionToCapacityMultiplier> <!-- 4x vanilla default (3600) — combined with 2x MaxPowerOutput, gives same absolute burn as vanilla half-power reactor / 4x energy per Uranium ingot -->
+
 			<PrimarySound>ShipLrgNuclearSm</PrimarySound>
 			<DamageEffectName>Damage_Reactor_Damaged</DamageEffectName>
 			<DamagedSound>ParticleReactor</DamagedSound>
@@ -88,6 +91,7 @@
 				<TypeId>Reactor</TypeId>
 				<SubtypeId>LargeBlockLargeGeneratorWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components (incl. 2x vanilla SC=200 since reactor produces 2x power + half fuel = 4x efficiency), 2x vanilla power output, half fuel consumption (Ratio=2) -->
 			<DisplayName>Upgraded Large Warfare Reactor</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\ReactorReskinLarge.dds</Icon>
 			<Description>Description_Reactor</Description>
@@ -102,19 +106,13 @@
 				<Component Subtype="Construction" Count="140" /> <!-- Doubled from 70 -->
 				<Component Subtype="MetalGrid" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="LargeTube" Count="80" /> <!-- Doubled from 40 -->
-				<Component Subtype="Superconductor" Count="200" /> <!-- Doubled from 100 -->
+				<Component Subtype="Superconductor" Count="200" /> <!-- 2x vanilla 100, justifies 4x efficiency -->
 				<Component Subtype="Reactor" Count="4000" /> <!-- Doubled from 2000 -->
 				<Component Subtype="Motor" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="Computer" Count="150" /> <!-- Doubled from 75 -->
-				<Component Subtype="PowerCell" Count="200"> <!-- Additional cost -->
-					<DeconstructId>
-						<TypeId>Ore</TypeId>
-						<SubtypeId>Scrap</SubtypeId>
-					</DeconstructId>
-				</Component>	
 				<Component Subtype="SteelPlate" Count="400" /> <!-- Doubled from 200 -->
 			</Components>
-			<CriticalComponent Subtype="PowerCell" Index="0" /> <!-- Updated -->
+			<CriticalComponent Subtype="Superconductor" Index="0" />
 			<MountPoints>
 				<MountPoint Side="Right" StartX="0.9" StartY="1.3" EndX="2.1" EndY="2.6" />
 				<MountPoint Side="Left" StartX="0.5" StartY="0" EndX="2.5" EndY="0.5" />
@@ -153,6 +151,8 @@
 					</Id>
 				</FuelInfo>
 			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>14400</FuelProductionToCapacityMultiplier> <!-- 4x vanilla default (3600) — combined with 2x MaxPowerOutput, gives same absolute burn as vanilla half-power reactor / 4x energy per Uranium ingot -->
+
 			<PrimarySound>ShipLrgNuclearLrg</PrimarySound>
 			<DamageEffectName>Damage_Reactor_Damaged</DamageEffectName>
 			<DamagedSound>ParticleReactor</DamagedSound>
@@ -178,6 +178,7 @@
 				<TypeId>Reactor</TypeId>
 				<SubtypeId>SmallBlockSmallGeneratorWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x vanilla power output, half fuel consumption (Ratio=2), 5 SC tax (S-grid Small reactor) -->
 			<DisplayName>Upgraded Small Warfare Reactor</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallGridReactorReskinSmall.dds</Icon>
 			<Description>Description_Reactor</Description>
@@ -195,7 +196,7 @@
 				<Component Subtype="Reactor" Count="6" /> <!-- Doubled from 3 -->
 				<Component Subtype="Motor" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Computer" Count="20" /> <!-- Doubled from 10 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Heavy gate: reactor 4x efficiency justifies extra gold cost -->
 				<Component Subtype="SteelPlate" Count="4" /> <!-- Doubled from 2 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -238,6 +239,8 @@
 					</Id>
 				</FuelInfo>
 			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>14400</FuelProductionToCapacityMultiplier> <!-- 4x vanilla default (3600) — combined with 2x MaxPowerOutput, gives same absolute burn as vanilla half-power reactor / 4x energy per Uranium ingot -->
+
 			<PrimarySound>ShipSmNuclearSm</PrimarySound>
 			<DamageEffectName>Damage_Reactor_Damaged</DamageEffectName>
 			<DamagedSound>ParticleReactor</DamagedSound>
@@ -263,6 +266,7 @@
 				<TypeId>Reactor</TypeId>
 				<SubtypeId>SmallBlockLargeGeneratorWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x vanilla power output, half fuel consumption (Ratio=2), 20 SC tax (S-grid Large reactor) -->
 			<DisplayName>Upgraded Large Warfare Reactor</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\SmallGridReactorReskinLarge.dds</Icon>
 			<Description>Description_Reactor</Description>
@@ -281,7 +285,7 @@
 				<Component Subtype="Reactor" Count="190" /> <!-- Doubled from 95 -->
 				<Component Subtype="Motor" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="Computer" Count="50" /> <!-- Doubled from 25 -->
-				<Component Subtype="Superconductor" Count="6" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="20" /> <!-- Heavy gate: reactor 4x efficiency justifies extra gold cost -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -324,6 +328,8 @@
 					</Id>
 				</FuelInfo>
 			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>14400</FuelProductionToCapacityMultiplier> <!-- 4x vanilla default (3600) — combined with 2x MaxPowerOutput, gives same absolute burn as vanilla half-power reactor / 4x energy per Uranium ingot -->
+
 			<PrimarySound>ShipSmNuclearLrg</PrimarySound>
 			<DamageEffectName>Damage_Reactor_Damaged</DamageEffectName>
 			<DamagedSound>ParticleReactor</DamagedSound>
@@ -348,6 +354,7 @@
 				<TypeId>SmallMissileLauncher</TypeId>
 				<SubtypeId>SmallMissileLauncherWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 2 SC tax (S-grid Small block, 1x1x4) -->
 			<DisplayName>Upgraded Warfare Rocket Launcher</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\RocketlauncherReskin.dds</Icon>
 			<Description>Description_RocketLauncher</Description>
@@ -364,7 +371,7 @@
 				<Component Subtype="LargeTube" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="Motor" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Computer" Count="2" /> <!-- Doubled from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="6" /> <!-- Doubled from 3 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -404,6 +411,7 @@
 				<TypeId>SmallGatlingGun</TypeId>
 				<SubtypeId>SmallGatlingGunWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 2 SC tax (S-grid Small block, 1x1x4) -->
 			<DisplayName>Upgraded Warfare Gatling Gun</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\gatlingGunReskin.dds</Icon>
 			<Description>Description_GatlingGun</Description>
@@ -419,7 +427,7 @@
 				<Component Subtype="SmallTube" Count="12" /> <!-- Doubled from 6 -->
 				<Component Subtype="Motor" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Computer" Count="2" /> <!-- Doubled from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="6" /> <!-- Doubled from 3 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -461,6 +469,7 @@
 				<TypeId>BatteryBlock</TypeId>
 				<SubtypeId>LargeBlockBatteryBlockWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x storage, 2x I/O power (kept per user — battery acts like a fuel tank), 10 SC tax (kept per user) -->
 			<DisplayName>Upgraded Warfare Battery</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\BatteryReskin.dds</Icon>
 			<Description>Description_Battery</Description>
@@ -527,6 +536,7 @@
 				<TypeId>BatteryBlock</TypeId>
 				<SubtypeId>SmallBlockBatteryBlockWarfare2</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x storage, 2x I/O power (kept per user — battery acts like a fuel tank), 5 SC tax (kept per user) -->
 			<DisplayName>Upgraded Warfare Battery</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\BatteryReskin_Small.dds</Icon>
 			<Description>Description_Battery</Description>
@@ -599,6 +609,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 2 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Small_IonThrusterSmall_SciFi.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -615,7 +626,7 @@
 				<Component Subtype="Construction" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="LargeTube" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Thrust" Count="2" /> <!-- Doubled from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="Construction" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="SteelPlate" Count="2" /> <!-- Doubled from 1 -->
 			</Components>
@@ -650,8 +661,7 @@
 			<BuildTimeSeconds>10</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 86400 (old N/kg ratio 272.555205) -->
-			<ForceMagnitude>75451</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 238.016529) -->
+			<ForceMagnitude>57600</ForceMagnitude> <!-- 4x vanilla 14,400 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>0.200</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -697,6 +707,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 4 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Large Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Small_IonThrusterLarge_SciFi.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -712,7 +723,7 @@
 				<Component Subtype="Construction" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="LargeTube" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="Thrust" Count="24" /> <!-- Doubled from 12 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="SteelPlate" Count="8" /> <!-- Doubled from 4 -->
 			</Components>
@@ -747,8 +758,7 @@
 			<BuildTimeSeconds>20</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 518400 (old N/kg ratio 341.7270929) -->
-			<ForceMagnitude>1090725</ForceMagnitude> <!-- Recalc: 2x base N/kg target (Advanced reference ratio 719.001387) -->
+			<ForceMagnitude>691200</ForceMagnitude> <!-- 4x vanilla 172,800 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>2.4</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -794,6 +804,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 5 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\large_IonThrusterSmall_SciFi.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -810,7 +821,7 @@
 				<Component Subtype="Construction" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="LargeTube" Count="16" /> <!-- Doubled from 8 -->
 				<Component Subtype="Thrust" Count="160" /> <!-- Doubled from 80 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -846,8 +857,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>40</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 1036800 (old N/kg ratio 116.3636364) -->
-			<ForceMagnitude>1406071</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 157.80821918) -->
+			<ForceMagnitude>1382400</ForceMagnitude> <!-- 4x vanilla 345,600 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>3.36</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -892,6 +902,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 10 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Large Ion Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\large_IonThrusterLarge_SciFi.dds</Icon>
 			<Description>Description_IonThrust</Description>
@@ -945,8 +956,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>90</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 12960000 (old N/kg ratio 149.7400347) -->
-			<ForceMagnitude>17310000</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 200) -->
+			<ForceMagnitude>17280000</ForceMagnitude> <!-- 4x vanilla 4,320,000 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>33.6</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -991,6 +1001,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeAtmosphericThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 10 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Large Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Large_AtmosphericThrusterLarge_SciFi.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1041,8 +1052,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>90</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 19440000 (old N/kg ratio 294.1443486) -->
-			<ForceMagnitude>25978963</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 393.0846224) -->
+			<ForceMagnitude>25920000</ForceMagnitude> <!-- 4x vanilla 6,480,000 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>16.8</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -1096,6 +1106,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallAtmosphericThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 5 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Large_AtmosphericThrusterSmall_SciFi.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1113,7 +1124,7 @@
 				<Component Subtype="LargeTube" Count="16" /> <!-- Doubled from 8 -->
 				<Component Subtype="MetalGrid" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="Motor" Count="220" /> <!-- Doubled from 110 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
@@ -1148,8 +1159,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>40</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 1944000 (old N/kg ratio 238.5276074) -->
-			<ForceMagnitude>2640600</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 324) -->
+			<ForceMagnitude>2592000</ForceMagnitude> <!-- 4x vanilla 648,000 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>2.4</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -1203,6 +1213,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeAtmosphericThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 4 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Large Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Small_AtmosphericThrusterLarge_SciFi.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1219,7 +1230,7 @@
 				<Component Subtype="LargeTube" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="MetalGrid" Count="16" /> <!-- Doubled from 8 -->
 				<Component Subtype="Motor" Count="180" /> <!-- Doubled from 90 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -1253,8 +1264,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>20</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 1728000 (old N/kg ratio 289.3987607) -->
-			<ForceMagnitude>2333308</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 390.7734056) -->
+			<ForceMagnitude>2304000</ForceMagnitude> <!-- 4x vanilla 576,000 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>2.4</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -1309,6 +1319,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallAtmosphericThrustSciFi</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 2 SC tax -->
 			<DisplayName>Upgraded Sci-Fi Atmospheric Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Small_AtmosphericThrusterSmall_SciFi.dds</Icon>
 			<Description>Description_AtmosphericThrust</Description>
@@ -1326,7 +1337,7 @@
 				<Component Subtype="LargeTube" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="MetalGrid" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Motor" Count="36" /> <!-- Doubled from 18 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="Construction" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="SteelPlate" Count="2" /> <!-- Doubled from 1 -->
 			</Components>
@@ -1360,8 +1371,7 @@
 			<BuildTimeSeconds>10</BuildTimeSeconds>
 			<EdgeType>Light</EdgeType>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 288000 (old N/kg ratio 195.5193483) -->
-			<ForceMagnitude>404601</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 274.6781116) -->
+			<ForceMagnitude>384000</ForceMagnitude> <!-- 4x vanilla 96,000 (2x T:W with 2x mass) -->
 			<MaxPowerConsumption>0.600</MaxPowerConsumption>
 			<MinPowerConsumption>0.000002</MinPowerConsumption>
 			<SlowdownFactor>1</SlowdownFactor>
@@ -1418,6 +1428,7 @@
 				<TypeId>CargoContainer</TypeId>
 				<SubtypeId>LargeBlockLargeIndustrialContainer</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing capacity tweak, 10 SC tax (L-grid Large block, 3x3x3) -->
 			<DisplayName>Upgraded Large Industrial Cargo Container</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\CargoContainer.dds</Icon>
 			<Description>Description_LargeCargoContainer</Description>
@@ -1494,6 +1505,7 @@
 				<TypeId>OxygenTank</TypeId>
 				<SubtypeId>LargeHydrogenTankIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing capacity tweak, 10 SC tax (L-grid Large block, 3x3x3) -->
 			<DisplayName>Upgraded Industrial Hydrogen Tank</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\HydrogenTankIndustrial.dds</Icon>
 			<Description>Description_HydrogenTank</Description>
@@ -1583,6 +1595,7 @@
 				<TypeId>Assembler</TypeId>
 				<SubtypeId>LargeAssemblerIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing assembly speed tweak, 5 SC tax (L-grid Small block, 1x2x2) -->
 			<DisplayName>Upgraded Industrial Assembler</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\AdvancedAssemblerIndustrial.dds</Icon>
 			<Description>Description_Assembler</Description>
@@ -1599,7 +1612,7 @@
 				<Component Subtype="Display" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="MetalGrid" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="Computer" Count="320" /> <!-- Doubled from 160 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -1673,6 +1686,7 @@
 				<TypeId>Refinery</TypeId>
 				<SubtypeId>LargeRefineryIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing refine speed tweak, 10 SC tax (L-grid Large block, 2x4x2) -->
 			<DisplayName>Upgraded Industrial Refinery</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\AdvancedRefinery.dds</Icon>
 			<Description>Description_Refinery</Description>
@@ -1767,6 +1781,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockLargeHydrogenThrustIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 10 SC tax -->
 			<DisplayName>Upgraded Industrial Large Hydrogen Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\HydrogenThrusterIndustrialLarge.dds</Icon>
 			<Description>Description_HydrogenThrust</Description>
@@ -1827,8 +1842,7 @@
 			<MaxPowerConsumption>7.5</MaxPowerConsumption>
 			<MinPowerConsumption>0.000000001</MinPowerConsumption>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 21600000 (old N/kg ratio 1539.55809) -->
-			<ForceMagnitude>29111239</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 2074.927954) -->
+			<ForceMagnitude>28800000</ForceMagnitude> <!-- 4x vanilla 7,200,000 (2x T:W with 2x mass) -->
 			<SlowdownFactor>1</SlowdownFactor>
 			<FlameDamageLengthScale>0.6</FlameDamageLengthScale>
 			<FlameLengthScale>1.15</FlameLengthScale>
@@ -1873,6 +1887,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>LargeBlockSmallHydrogenThrustIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 5 SC tax -->
 			<DisplayName>Upgraded Industrial Hydrogen Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\HydrogenThrusterIndustrialSmall.dds</Icon>
 			<Description>Description_HydrogenThrust</Description>
@@ -1889,7 +1904,7 @@
 				<Component Subtype="Construction" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="MetalGrid" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="LargeTube" Count="16" /> <!-- Doubled from 8 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -1920,8 +1935,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>40</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 3240000 (old N/kg ratio 1083.61204) -->
-			<ForceMagnitude>4548169</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 1521.1267606) -->
+			<ForceMagnitude>4320000</ForceMagnitude> <!-- 4x vanilla 1,080,000 (2x T:W with 2x mass) -->
 			<SlowdownFactor>1</SlowdownFactor>
 			<FuelConverter>
 				<FuelId>
@@ -1976,6 +1990,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockLargeHydrogenThrustIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 4 SC tax -->
 			<DisplayName>Upgraded Industrial Large Hydrogen Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\HydrogenThrusterIndustrialLarge.dds</Icon>
 			<Description>Description_HydrogenThrust</Description>
@@ -1991,7 +2006,7 @@
 				<Component Subtype="Construction" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="MetalGrid" Count="44" /> <!-- Doubled from 22 -->
 				<Component Subtype="LargeTube" Count="20" /> <!-- Doubled from 10 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -2035,8 +2050,7 @@
 			<MaxPowerConsumption>0.6</MaxPowerConsumption>
 			<MinPowerConsumption>0.000000001</MinPowerConsumption>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 1440000 (old N/kg ratio 571.6554188) -->
-			<ForceMagnitude>1978920</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 785.5973814) -->
+			<ForceMagnitude>1920000</ForceMagnitude> <!-- 4x vanilla 480,000 (2x T:W with 2x mass) -->
 			<SlowdownFactor>1</SlowdownFactor>
 			<FlameDamageLengthScale>0.6</FlameDamageLengthScale>
 			<FlameLengthScale>1.15</FlameLengthScale>
@@ -2080,6 +2094,7 @@
 				<TypeId>Thrust</TypeId>
 				<SubtypeId>SmallBlockSmallHydrogenThrustIndustrial</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 4x vanilla force (=> 2x T:W), vanilla power, 2 SC tax -->
 			<DisplayName>Upgraded Industrial Hydrogen Thruster</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\HydrogenThrusterIndustrialSmall.dds</Icon>
 			<Description>Description_HydrogenThrust</Description>
@@ -2096,7 +2111,7 @@
 				<Component Subtype="Construction" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="MetalGrid" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="LargeTube" Count="4" /> <!-- Doubled from 2 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="Construction" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="SteelPlate" Count="10" /> <!-- Doubled from 5 -->
 			</Components>
@@ -2126,8 +2141,7 @@
 			<EdgeType>Light</EdgeType>
 			<BuildTimeSeconds>10</BuildTimeSeconds>
 			<ResourceSinkGroup>Thrust</ResourceSinkGroup>
-			<!-- Original ForceMagnitude 295200 (old N/kg ratio 397.30821) -->
-			<ForceMagnitude>437792</ForceMagnitude> <!-- Recalc: 2x base N/kg target (ratio 589.2215568) -->
+			<ForceMagnitude>393600</ForceMagnitude> <!-- 4x vanilla 98,400 (2x T:W with 2x mass) -->
 			<FuelConverter>
 				<FuelId>
 					<TypeId>GasProperties</TypeId>
@@ -2183,6 +2197,7 @@
 				<TypeId>OxygenTank</TypeId>
 				<SubtypeId>LargeHydrogenTankSmallLab</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing capacity tweak, 5 SC tax (L-grid Small block, 2x1x1) -->
 			<DisplayName>Upgraded Lab Small Hydrogen Tank</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Lab_SmallHydrogenTank.dds</Icon>
 			<Description>Description_HydrogenTank</Description>
@@ -2198,7 +2213,7 @@
 				<Component Subtype="LargeTube" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="SmallTube" Count="120" /> <!-- Doubled from 60 -->
 				<Component Subtype="Computer" Count="16" /> <!-- Doubled from 8 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
@@ -2268,6 +2283,7 @@
 				<TypeId>OxygenTank</TypeId>
 				<SubtypeId>SmallHydrogenTankLab</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing capacity tweak, 4 SC tax (S-grid Large block, 5x5x5) -->
 			<DisplayName>Upgraded Lab Hydrogen Tank</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\LabHydrogenTank.dds</Icon>
 			<Description>Description_HydrogenTank</Description>
@@ -2283,7 +2299,7 @@
 				<Component Subtype="LargeTube" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="SmallTube" Count="60" /> <!-- Doubled from 30 -->
 				<Component Subtype="Computer" Count="8" /> <!-- Doubled from 4 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="40" /> <!-- Doubled from 20 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -2354,6 +2370,7 @@
 				<TypeId>OxygenTank</TypeId>
 				<SubtypeId>LargeBlockOxygenTankLab</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing capacity tweak, 5 SC tax (L-grid Small block, 2x1x1) -->
 			<DisplayName>Upgraded Lab Small Oxygen Tank</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\Lab_SmallOxygenTank.dds</Icon>
 			<Description>Description_OxygenTank</Description>
@@ -2367,7 +2384,7 @@
 				<Component Subtype="LargeTube" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="SmallTube" Count="120" /> <!-- Doubled from 60 -->
 				<Component Subtype="Computer" Count="16" /> <!-- Doubled from 8 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Construction" Count="80" /> <!-- Doubled from 40 -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
@@ -2438,6 +2455,7 @@
                 <TypeId>OxygenGenerator</TypeId>
                 <SubtypeId>LargeBlockOxygenGeneratorLab</SubtypeId>
             </Id>
+            <!-- Upgraded tier: 2x components, vanilla power, existing production tweak, 5 SC tax (L-grid Small block, 1x2x2) -->
             <DisplayName>Upgraded Lab O2/H2 Generator</DisplayName> <!-- Updated name -->
             <Icon>Textures\GUI\Icons\Cubes\Lab_O2H2_Generator.dds</Icon>
             <Description>Description_OxygenGenerator</Description>
@@ -2452,7 +2470,7 @@
                 <Component Subtype="LargeTube" Count="4" /> <!-- Doubled from 4 -->
                 <Component Subtype="Motor" Count="4" /> <!-- Doubled from 4 -->
                 <Component Subtype="Computer" Count="5" /> <!-- Doubled from 5 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
                 <Component Subtype="BulletproofGlass" Count="40" /> <!-- Doubled from 40 -->
             </Components>
             <CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -2543,6 +2561,7 @@
 				<TypeId>WindTurbine</TypeId>
 				<SubtypeId>LargeBlockWindTurbineReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, 2x vanilla power output (kept per user), 10 SC tax (L-grid Large block, 5x5x5) -->
 			<DisplayName>Upgraded Twin-blade Wind Turbine</DisplayName> <!-- Updated name -->
 			<Description>Description_WindTurbine</Description>
 			<Icon>Textures\GUI\Icons\Cubes\WindTurbineReskin_Large.dds</Icon>
@@ -2615,6 +2634,7 @@
 				<TypeId>LargeMissileTurret</TypeId>
 				<SubtypeId>LargeMissileTurretReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 10 SC tax (L-grid Large block, 3x3x3) -->
 			<DisplayName>Upgraded Rocket Turret Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\RocketTurretReskinLarge.dds</Icon>
 			<Description>Description_MissileTurret</Description>
@@ -2707,6 +2727,7 @@
 				<TypeId>LargeMissileTurret</TypeId>
 				<SubtypeId>SmallMissileTurretReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 4 SC tax (S-grid Large block, 5x5x5) -->
 			<DisplayName>Upgraded Rocket Turret Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\RocketTurretReskinSmall.dds</Icon>
 			<Description>Description_MissileTurret</Description>
@@ -2726,7 +2747,7 @@
 				<Component Subtype="LargeTube" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="Motor" Count="16" /> <!-- Doubled from 8 -->
 				<Component Subtype="Computer" Count="20" /> <!-- Doubled from 10 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="20" /> <!-- Doubled from 10 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -2800,6 +2821,7 @@
 				<TypeId>LargeGatlingTurret</TypeId>
 				<SubtypeId>LargeGatlingTurretReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 10 SC tax (L-grid Large block, 3x3x3) -->
 			<DisplayName>Upgraded Gatling Turret Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\GatlingTurretReskinLarge.dds</Icon>
 			<Description>Description_GatlingTurret</Description>
@@ -2890,6 +2912,7 @@
 				<TypeId>LargeGatlingTurret</TypeId>
 				<SubtypeId>SmallGatlingTurretReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing damage tweak, 4 SC tax (S-grid Large block, 5x5x5) -->
 			<DisplayName>Upgraded Gatling Turret Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\GatlingTurretReskinSmall.dds</Icon>
 			<Description>Description_GatlingTurret</Description>
@@ -2908,7 +2931,7 @@
 				<Component Subtype="SmallTube" Count="12" /> <!-- Doubled from 6 -->
 				<Component Subtype="Motor" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="Computer" Count="20" /> <!-- Doubled from 10 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Construction" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="SteelPlate" Count="20" /> <!-- Doubled from 10 -->
 			</Components>
@@ -2984,6 +3007,7 @@
 				<TypeId>Drill</TypeId>
 				<SubtypeId>LargeBlockDrillReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius/speed tweak, 5 SC tax (L-grid Small block, 1x1x3) -->
 			<DisplayName>Upgraded Drill Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\DrillReskin.dds</Icon>
 			<Description>Description_Drill</Description>
@@ -3002,7 +3026,7 @@
 				<Component Subtype="LargeTube" Count="24" /> <!-- Doubled from 12 -->
 				<Component Subtype="Motor" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="Computer" Count="10" /> <!-- Doubled from 5 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="240" /> <!-- Doubled from 120 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -3063,6 +3087,7 @@
 				<TypeId>Drill</TypeId>
 				<SubtypeId>SmallBlockDrillReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius/speed tweak, 4 SC tax (S-grid Large block, 3x3x6) -->
 			<DisplayName>Upgraded Drill Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\DrillReskinSmall.dds</Icon>
 			<Description>Description_Drill</Description>
@@ -3080,7 +3105,7 @@
 				<Component Subtype="LargeTube" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="Motor" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Computer" Count="2" /> <!-- Doubled from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="SteelPlate" Count="24" /> <!-- Doubled from 12 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -3139,6 +3164,7 @@
 				<TypeId>ShipGrinder</TypeId>
 				<SubtypeId>LargeShipGrinderReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius tweak, 5 SC tax (L-grid Small block, 1x1x2) -->
 			<DisplayName>Upgraded Grinder Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\GrinderReskin.dds</Icon>
 			<Description>Description_ShipGrinder</Description>
@@ -3155,7 +3181,7 @@
 				<Component Subtype="Construction" Count="50" /> <!-- Doubled from 25 -->
 				<Component Subtype="LargeTube" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Motor" Count="8" /> <!-- Doubled from 4 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Computer" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="Construction" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="SteelPlate" Count="10" /> <!-- Doubled from 5 -->
@@ -3207,6 +3233,7 @@
 				<TypeId>ShipGrinder</TypeId>
 				<SubtypeId>SmallShipGrinderReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius tweak, 4 SC tax (S-grid Large block, 3x3x6) -->
 			<DisplayName>Upgraded Grinder Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\GrinderReskinSmall.dds</Icon>
 			<Description>Description_ShipGrinder</Description>
@@ -3223,7 +3250,7 @@
 				<Component Subtype="Construction" Count="30" /> <!-- Doubled from 15 -->
 				<Component Subtype="SmallTube" Count="8" /> <!-- Doubled from 4 -->
 				<Component Subtype="Motor" Count="8" /> <!-- Doubled from 4 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Computer" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="Construction" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="SteelPlate" Count="4" /> <!-- Doubled from 2 -->
@@ -3275,6 +3302,7 @@
 				<TypeId>ShipWelder</TypeId>
 				<SubtypeId>LargeShipWelderReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius tweak, 5 SC tax (L-grid Small block, 1x1x2) -->
 			<DisplayName>Upgraded Welder Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\WelderReskin.dds</Icon>
 			<Description>Description_ShipWelder</Description>
@@ -3292,7 +3320,7 @@
 				<Component Subtype="Construction" Count="50" /> <!-- Doubled from 25 -->
 				<Component Subtype="LargeTube" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Motor" Count="4" /> <!-- Doubled from 2 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="Computer" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="Construction" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="SteelPlate" Count="10" /> <!-- Doubled from 5 -->
@@ -3345,6 +3373,7 @@
 				<TypeId>ShipWelder</TypeId>
 				<SubtypeId>SmallShipWelderReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing radius tweak, 4 SC tax (S-grid Large block, 3x3x6) -->
 			<DisplayName>Upgraded Welder Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\WelderReskinSmall.dds</Icon>
 			<Description>Description_ShipWelder</Description>
@@ -3362,7 +3391,7 @@
 				<Component Subtype="Construction" Count="30" /> <!-- Doubled from 15 -->
 				<Component Subtype="SmallTube" Count="12" /> <!-- Doubled from 6 -->
 				<Component Subtype="Motor" Count="4" /> <!-- Doubled from 2 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
 				<Component Subtype="Computer" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="Construction" Count="4" /> <!-- Doubled from 2 -->
 				<Component Subtype="SteelPlate" Count="4" /> <!-- Doubled from 2 -->
@@ -3403,6 +3432,7 @@
 				<TypeId>OreDetector</TypeId>
 				<SubtypeId>LargeOreDetectorReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing range tweak, 5 SC tax (L-grid Small block, 1x2x1) -->
 			<DisplayName>Upgraded Ore Detector Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\OreDetectorReskin.dds</Icon>
 			<Description>Description_OreDetector</Description>
@@ -3418,7 +3448,7 @@
 				<Component Subtype="Motor" Count="10" /> <!-- Doubled from 5 -->
 				<Component Subtype="Computer" Count="50" /> <!-- Doubled from 25 -->
 				<Component Subtype="Detector" Count="40" /> <!-- Doubled from 20 -->
-				<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -3457,6 +3487,7 @@
 				<TypeId>OreDetector</TypeId>
 				<SubtypeId>SmallOreDetectorReskin</SubtypeId>
 			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power, existing range tweak, 2 SC tax (S-grid Small block, 1x2x1) -->
 			<DisplayName>Upgraded Ore Detector Type II</DisplayName> <!-- Updated name -->
 			<Icon>Textures\GUI\Icons\Cubes\OreDetectorReskinSmall.dds</Icon>
 			<Description>Description_OreDetector</Description>
@@ -3472,7 +3503,7 @@
 				<Component Subtype="Motor" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Computer" Count="2" /> <!-- Doubled from 1 -->
 				<Component Subtype="Detector" Count="2" /> <!-- Doubled from 1 -->
-				<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
+				<Component Subtype="Superconductor" Count="2" /> <!-- Tax (S-grid Small block) -->
 				<Component Subtype="SteelPlate" Count="4" /> <!-- Doubled from 2 -->
 			</Components>
 			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
@@ -3503,5 +3534,167 @@
 			<PCU>40</PCU>
 			<DLC>ApexSurvival</DLC>
 		</Definition>
+
+<!-- CORE SYSTEMS PACK BLOCKS -->
+		<!-- Sci-Fi Hydrogen Engine (L grid) - LargeHydrogenEngineReskin -->
+		<Definition xsi:type="MyObjectBuilder_HydrogenEngineDefinition">
+			<Id>
+				<TypeId>HydrogenEngine</TypeId>
+				<SubtypeId>LargeHydrogenEngineReskin</SubtypeId>
+			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power output, 2x fuel capacity, half fuel consumption (Ratio=2), 5 SC tax -->
+			<DisplayName>Upgraded Sci-Fi Hydrogen Engine</DisplayName>
+			<Description>Description_PowerGenerator</Description>
+			<Icon>Textures\GUI\Icons\Cubes\HydrogenEngineReskin.dds</Icon>
+			<CubeSize>Large</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="1" y="1" z="2" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\HydrogenEngineReskin.mwm</Model>
+			<Components>
+				<Component Subtype="SteelPlate" Count="160" /> <!-- Doubled from 80 -->
+				<Component Subtype="Construction" Count="120" /> <!-- Doubled from 60 -->
+				<Component Subtype="LargeTube" Count="24" /> <!-- Doubled from 12 -->
+				<Component Subtype="SmallTube" Count="40" /> <!-- Doubled from 20 -->
+				<Component Subtype="Motor" Count="24" /> <!-- Doubled from 12 -->
+				<Component Subtype="Computer" Count="8" /> <!-- Doubled from 4 -->
+				<Component Subtype="PowerCell" Count="2" /> <!-- Doubled from 1 -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- Tax (L-grid Small block) -->
+				<Component Subtype="Construction" Count="20" /> <!-- Doubled from 10 -->
+				<Component Subtype="SteelPlate" Count="40" /> <!-- Doubled from 20 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Bottom" StartX="0.1" StartY="0.1" EndX="0.9" EndY="1.9" Default="true" />
+				<MountPoint Side="Top" StartX="0.25" StartY="0.2" EndX="0.75" EndY="0.75" />
+				<MountPoint Side="Front" StartX="0.15" StartY="0" EndX="0.85" EndY="0.85" />
+				<MountPoint Side="Back" StartX="0.1" StartY="0" EndX="0.9" EndY="0.1" />
+				<MountPoint Side="Back" StartX="0.1" StartY="0.7" EndX="0.9" EndY="0.9" />
+				<MountPoint Side="Left" StartX="0.2" StartY="0" EndX="1.8" EndY="0.1" />
+				<MountPoint Side="Right" StartX="0.2" StartY="0" EndX="1.8" EndY="0.1" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\HydrogenEngineReskinConstruction_1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\HydrogenEngineReskinConstruction_2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\HydrogenEngineReskinConstruction_3.mwm" />
+			</BuildProgressModels>
+			<BlockPairName>HydrogenEngineReskin</BlockPairName>
+			<MirroringY>Z</MirroringY>
+			<MirroringZ>Y</MirroringZ>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>60</BuildTimeSeconds>
+			<ResourceSinkGroup>Generators</ResourceSinkGroup>
+			<ResourceSourceGroup>Reactors</ResourceSourceGroup>
+			<MaxPowerOutput>5</MaxPowerOutput> <!-- vanilla -->
+			<FuelCapacity>200000</FuelCapacity> <!-- Doubled from 100000 -->
+			<EmissiveColorPreset>Extended</EmissiveColorPreset>
+			<IsAirTight>false</IsAirTight>
+			<InventorySize>
+				<X>1</X>
+				<Y>1</Y>
+				<Z>1</Z>
+			</InventorySize>
+			<FuelInfos>
+				<FuelInfo>
+					<Id>
+						<TypeId>GasProperties</TypeId>
+						<SubtypeId>Hydrogen</SubtypeId>
+					</Id>
+				</FuelInfo>
+			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>0.02</FuelProductionToCapacityMultiplier> <!-- TEST: doubled from vanilla 0.01 to halve fuel consumption -->
+			<PrimarySound>ArcBlockHydrogenEngine</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<DestroyEffect>Explosion_Warhead_02</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>20</PCU>
+			<TargetingGroups>
+				<string>PowerSystems</string>
+			</TargetingGroups>
+			<DLC>SparksOfTheFuture</DLC>
+		</Definition>
+
+		<!-- Sci-Fi Hydrogen Engine (S grid) - SmallHydrogenEngineReskin -->
+		<Definition xsi:type="MyObjectBuilder_HydrogenEngineDefinition">
+			<Id>
+				<TypeId>HydrogenEngine</TypeId>
+				<SubtypeId>SmallHydrogenEngineReskin</SubtypeId>
+			</Id>
+			<!-- Upgraded tier: 2x components, vanilla power output, 2x fuel capacity, half fuel consumption (Ratio=2), 4 SC tax -->
+			<DisplayName>Upgraded Sci-Fi Hydrogen Engine</DisplayName>
+			<Description>Description_PowerGenerator</Description>
+			<Icon>Textures\GUI\Icons\Cubes\HydrogenEngineReskin_Small.dds</Icon>
+			<CubeSize>Small</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="3" y="2" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Small\HydrogenEngineReskin_Small.mwm</Model>
+			<Components>
+				<Component Subtype="SteelPlate" Count="50" /> <!-- Doubled from 25 -->
+				<Component Subtype="Construction" Count="36" /> <!-- Doubled from 18 -->
+				<Component Subtype="LargeTube" Count="8" /> <!-- Doubled from 4 -->
+				<Component Subtype="SmallTube" Count="12" /> <!-- Doubled from 6 -->
+				<Component Subtype="Motor" Count="8" /> <!-- Doubled from 4 -->
+				<Component Subtype="Computer" Count="2" /> <!-- Doubled from 1 -->
+				<Component Subtype="PowerCell" Count="2" /> <!-- Doubled from 1 -->
+				<Component Subtype="Superconductor" Count="4" /> <!-- Tax (S-grid Large block) -->
+				<Component Subtype="Construction" Count="4" /> <!-- Doubled from 2 -->
+				<Component Subtype="SteelPlate" Count="30" /> <!-- Doubled from 15 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" />
+			<MountPoints>
+				<MountPoint Side="Right" StartX="0.4" StartY="0" EndX="2.6" EndY="0.1" />
+				<MountPoint Side="Right" StartX="0.4" StartY="1.6" EndX="2.6" EndY="1.8" />
+				<MountPoint Side="Right" StartX="0.1" StartY="0.9" EndX="0.4" EndY="1.8" />
+				<MountPoint Side="Right" StartX="2.6" StartY="0.2" EndX="2.9" EndY="1.8" />
+				<MountPoint Side="Left" StartX="0.4" StartY="0" EndX="2.6" EndY="0.1" />
+				<MountPoint Side="Left" StartX="0.4" StartY="1.6" EndX="2.6" EndY="1.8" />
+				<MountPoint Side="Bottom" StartX="0.1" StartY="0.1" EndX="2.9" EndY="2.9" Default="true" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Small\HydrogenEngineReskin_SmallConstruction_1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Small\HydrogenEngineReskin_SmallConstruction_2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Small\HydrogenEngineReskin_SmallConstruction_3.mwm" />
+			</BuildProgressModels>
+			<BlockPairName>HydrogenEngineReskin</BlockPairName>
+			<MirroringY>Z</MirroringY>
+			<MirroringZ>Y</MirroringZ>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>30</BuildTimeSeconds>
+			<ResourceSinkGroup>Generators</ResourceSinkGroup>
+			<ResourceSourceGroup>Reactors</ResourceSourceGroup>
+			<MaxPowerOutput>0.5</MaxPowerOutput> <!-- vanilla -->
+			<FuelCapacity>10000</FuelCapacity> <!-- Doubled from 5000 -->
+			<EmissiveColorPreset>Extended</EmissiveColorPreset>
+			<IsAirTight>false</IsAirTight>
+			<InventorySize>
+				<X>1</X>
+				<Y>1</Y>
+				<Z>1</Z>
+			</InventorySize>
+			<FuelInfos>
+				<FuelInfo>
+					<Id>
+						<TypeId>GasProperties</TypeId>
+						<SubtypeId>Hydrogen</SubtypeId>
+					</Id>
+				</FuelInfo>
+			</FuelInfos>
+			<FuelProductionToCapacityMultiplier>0.02</FuelProductionToCapacityMultiplier> <!-- doubled from vanilla 0.01 to halve fuel consumption -->
+			<PrimarySound>ArcBlockHydrogenEngine</PrimarySound>
+			<DamageEffectName>Damage_WeapExpl_Damaged</DamageEffectName>
+			<DamagedSound>ParticleWeapExpl</DamagedSound>
+			<DestroyEffect>Explosion_Warhead_02</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>20</PCU>
+			<TargetingGroups>
+				<string>PowerSystems</string>
+			</TargetingGroups>
+			<DLC>SparksOfTheFuture</DLC>
+		</Definition>
+
 	</CubeBlocks>
 </Definitions>
