@@ -15,44 +15,45 @@
       <Size x="3" y="1" z="3" />
       <ModelOffset x="0" y="0" z="0" />
       <Components>
-        <Component Subtype="SteelPlate" Count="100" /> <!-- Updated from 180 -->
-		<Component Subtype="PrototechCapacitor" Count="10" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCircuitry" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCoolingUnit" Count="5" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechFrame" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-        <Component Subtype="Construction" Count="10" /> <!-- Updated from 80 -->
-        <Component Subtype="PowerCell" Count="720" > <!-- Updated from 180 -->
+        <!-- Reordered to vanilla Prototech build pattern: Frame first, panels last. Quantities scaled for 81 MWh capacity (was 30). -->
+        <Component Subtype="PrototechFrame" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="SteelPlate" Count="150" />
+        <Component Subtype="Construction" Count="15" />
+        <Component Subtype="PrototechCircuitry" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCapacitor" Count="15" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCoolingUnit" Count="8" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PowerCell" Count="1080" >
           <DeconstructId>
             <TypeId>Ore</TypeId>
             <SubtypeId>Scrap</SubtypeId>
           </DeconstructId>
         </Component>
-        <Component Subtype="Computer" Count="225" /> <!-- Updated from 200 -->
-		<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-        <Component Subtype="Construction" Count="80" /> <!-- Updated from 200 -->
-        <Component Subtype="SteelPlate" Count="170" /> <!-- Updated from 480 -->
+        <Component Subtype="Computer" Count="340" />
+        <Component Subtype="Superconductor" Count="10" />
+        <Component Subtype="Construction" Count="120" />
+        <Component Subtype="SteelPlate" Count="255" />
       </Components>
-      <CriticalComponent Subtype="PowerCell" Index="0" />
+      <CriticalComponent Subtype="PrototechCapacitor" Index="0" />
       <BuildProgressModels>
 
       </BuildProgressModels>
@@ -60,11 +61,11 @@
       <EdgeType>Light</EdgeType>
       <BuildTimeSeconds>90</BuildTimeSeconds>
       <ResourceSourceGroup>Battery</ResourceSourceGroup>
-      <MaxPowerOutput>120</MaxPowerOutput> <!-- Updated from 110 -->
+      <MaxPowerOutput>324</MaxPowerOutput> <!-- 9 blocks x 36 MW/block (3x vanilla density) -->
       <ResourceSinkGroup>BatteryBlock</ResourceSinkGroup>
-      <RequiredPowerInput>120</RequiredPowerInput> <!-- Updated from 110 -->
+      <RequiredPowerInput>648</RequiredPowerInput> <!-- 1:2 fast-recharge ratio (Mafoo signature) -->
       <AdaptibleInput>true</AdaptibleInput>
-      <MaxStoredPower>30</MaxStoredPower> <!-- Unchanged -->
+      <MaxStoredPower>81</MaxStoredPower> <!-- 9 blocks x 9 MWh/block (3x vanilla density, between NJFL and Prototech) -->
       <InitialStoredPowerRatio>0.3</InitialStoredPowerRatio>
       <DamageEffectName>Damage_Electrical_Damaged</DamageEffectName>
       <DamagedSound>ParticleElectrical</DamagedSound>
@@ -88,44 +89,45 @@
       <Size x="3" y="2" z="3" />
       <ModelOffset x="0" y="0" z="0" />
       <Components>
-        <Component Subtype="SteelPlate" Count="120" /> <!-- Updated from 320 -->
-		<Component Subtype="PrototechCapacitor" Count="15" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCircuitry" Count="2" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCoolingUnit" Count="7" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechFrame" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-        <Component Subtype="Construction" Count="70" /> <!-- Updated from 280 -->
-        <Component Subtype="PowerCell" Count="1360"> <!-- Updated from 320 -->
+        <!-- Reordered to vanilla Prototech build pattern. Quantities scaled for 162 MWh capacity (was 60). -->
+        <Component Subtype="PrototechFrame" Count="2" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="SteelPlate" Count="180" />
+        <Component Subtype="Construction" Count="105" />
+        <Component Subtype="PrototechCircuitry" Count="2" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCapacitor" Count="22" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCoolingUnit" Count="11" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PowerCell" Count="2040" >
           <DeconstructId>
             <TypeId>Ore</TypeId>
             <SubtypeId>Scrap</SubtypeId>
           </DeconstructId>
         </Component>
-        <Component Subtype="Computer" Count="425" /> <!-- Updated from 400 -->
-		<Component Subtype="Superconductor" Count="10" /> <!-- Additional cost -->
-        <Component Subtype="Construction" Count="100" /> <!-- Updated from 500 -->
-        <Component Subtype="SteelPlate" Count="390" /> <!-- Updated from 960 -->
+        <Component Subtype="Computer" Count="638" />
+        <Component Subtype="Superconductor" Count="10" />
+        <Component Subtype="Construction" Count="150" />
+        <Component Subtype="SteelPlate" Count="585" />
       </Components>
-      <CriticalComponent Subtype="PowerCell" Index="0" />
+      <CriticalComponent Subtype="PrototechCapacitor" Index="0" />
       <BuildProgressModels>
 
       </BuildProgressModels>
@@ -133,11 +135,11 @@
       <EdgeType>Light</EdgeType>
       <BuildTimeSeconds>180</BuildTimeSeconds>
       <ResourceSourceGroup>Battery</ResourceSourceGroup>
-      <MaxPowerOutput>240</MaxPowerOutput> <!-- Updated from 230 -->
+      <MaxPowerOutput>648</MaxPowerOutput> <!-- 18 blocks x 36 MW/block (3x vanilla density) -->
       <ResourceSinkGroup>BatteryBlock</ResourceSinkGroup>
-      <RequiredPowerInput>240</RequiredPowerInput> <!-- Updated from 230 -->
+      <RequiredPowerInput>1296</RequiredPowerInput> <!-- 1:2 fast-recharge ratio (Mafoo signature) -->
       <AdaptibleInput>true</AdaptibleInput>
-      <MaxStoredPower>60</MaxStoredPower> <!-- Unchanged -->
+      <MaxStoredPower>162</MaxStoredPower> <!-- 18 blocks x 9 MWh/block (3x vanilla density) -->
       <InitialStoredPowerRatio>0.3</InitialStoredPowerRatio>
       <DamageEffectName>Damage_Electrical_Damaged</DamageEffectName>
       <DamagedSound>ParticleElectrical</DamagedSound>
@@ -161,44 +163,45 @@
       <Size x="3" y="2" z="6" />
       <ModelOffset x="0" y="0" z="0" />
       <Components>
-        <Component Subtype="SteelPlate" Count="40" /> <!-- Updated from 50 -->
-		<Component Subtype="PrototechCapacitor" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCircuitry" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechFrame" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechPanel" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-        <Component Subtype="Construction" Count="12" /> <!-- Updated from 20 -->
-        <Component Subtype="PowerCell" Count="72" > <!-- Updated from 80 -->
+        <!-- Reordered to vanilla Prototech build pattern. Cost-reduced as the tradeoff for 36-block footprint (vs NJFL's 18). PrototechPanel removed in favor of PrototechCoolingUnit for consistency with other Mafoo batteries. -->
+        <Component Subtype="PrototechFrame" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="SteelPlate" Count="30" />
+        <Component Subtype="Construction" Count="8" />
+        <Component Subtype="PrototechCircuitry" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCapacitor" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCoolingUnit" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PowerCell" Count="50" >
           <DeconstructId>
             <TypeId>Ore</TypeId>
             <SubtypeId>Scrap</SubtypeId>
           </DeconstructId>
         </Component>
-        <Component Subtype="Computer" Count="72" /> <!-- Updated from 100 -->
-		<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-        <Component Subtype="Construction" Count="60" /> <!-- Updated from 150 -->
-        <Component Subtype="SteelPlate" Count="104" /> <!-- Updated from 100 -->
+        <Component Subtype="Computer" Count="50" />
+        <Component Subtype="Superconductor" Count="4" />
+        <Component Subtype="Construction" Count="40" />
+        <Component Subtype="SteelPlate" Count="70" />
       </Components>
-      <CriticalComponent Subtype="PowerCell" Index="0" />
+      <CriticalComponent Subtype="PrototechCapacitor" Index="0" />
       <BuildProgressModels>
 
       </BuildProgressModels>
@@ -206,10 +209,11 @@
       <EdgeType>Light</EdgeType>
       <BuildTimeSeconds>150</BuildTimeSeconds>
       <ResourceSourceGroup>Battery</ResourceSourceGroup>
-      <MaxPowerOutput>8</MaxPowerOutput> <!-- Updated from 6 -->
+      <MaxPowerOutput>24</MaxPowerOutput> <!-- 36 SG blocks x 0.67 MW/block (3x vanilla SG output density) -->
       <ResourceSinkGroup>BatteryBlock</ResourceSinkGroup>
-      <RequiredPowerInput>8</RequiredPowerInput> <!-- Updated from 6 -->
-      <MaxStoredPower>2</MaxStoredPower> <!-- Unchanged -->
+      <RequiredPowerInput>48</RequiredPowerInput> <!-- 1:2 fast-recharge ratio (Mafoo signature) -->
+      <AdaptibleInput>true</AdaptibleInput>
+      <MaxStoredPower>6</MaxStoredPower> <!-- 36 SG blocks x 0.167 MWh/block (3x vanilla SG density) -->
       <InitialStoredPowerRatio>0.3</InitialStoredPowerRatio>
       <DamageEffectName>Damage_Electrical_Damaged</DamageEffectName>
       <DamagedSound>ParticleElectrical</DamagedSound>
@@ -232,44 +236,45 @@
       <Size x="8" y="5" z="8" />
       <ModelOffset x="0" y="0" z="0" />
       <Components>
-        <Component Subtype="SteelPlate" Count="190" /> <!-- Updated from 75 -->
-		<Component Subtype="PrototechCapacitor" Count="5" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCircuitry" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechCoolingUnit" Count="3" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-		<Component Subtype="PrototechFrame" Count="1" > <!-- Additional cost -->
-			<DeconstructId>
-				<TypeId>Ingot</TypeId>
-				<SubtypeId>PrototechScrap</SubtypeId>
-			</DeconstructId>
-		</Component>
-        <Component Subtype="Construction" Count="95" /> <!-- Updated from 100 -->
-        <Component Subtype="PowerCell" Count="595"> <!-- Updated from 300 -->
+        <!-- Reordered to vanilla Prototech build pattern. Quantities scaled for 53 MWh capacity (was 18). -->
+        <Component Subtype="PrototechFrame" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="SteelPlate" Count="285" />
+        <Component Subtype="Construction" Count="145" />
+        <Component Subtype="PrototechCircuitry" Count="1" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCapacitor" Count="8" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCoolingUnit" Count="5" >
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PowerCell" Count="895" >
           <DeconstructId>
             <TypeId>Ore</TypeId>
             <SubtypeId>Scrap</SubtypeId>
           </DeconstructId>
         </Component>
-        <Component Subtype="Computer" Count="595" /> <!-- Updated from 200 -->
-		<Component Subtype="Superconductor" Count="5" /> <!-- Additional cost -->
-        <Component Subtype="Construction" Count="500" /> <!-- Updated from 180 -->
-        <Component Subtype="SteelPlate" Count="1000" /> <!-- Updated from 300 -->
+        <Component Subtype="Computer" Count="895" />
+        <Component Subtype="Superconductor" Count="5" />
+        <Component Subtype="Construction" Count="750" />
+        <Component Subtype="SteelPlate" Count="1500" />
       </Components>
-      <CriticalComponent Subtype="PowerCell" Index="0" />
+      <CriticalComponent Subtype="PrototechCapacitor" Index="0" />
       <BuildProgressModels>
 
       </BuildProgressModels>
@@ -277,10 +282,11 @@
       <EdgeType>Light</EdgeType>
       <BuildTimeSeconds>150</BuildTimeSeconds>
       <ResourceSourceGroup>Battery</ResourceSourceGroup>
-      <MaxPowerOutput>70</MaxPowerOutput> <!-- Updated from 60 -->
+      <MaxPowerOutput>214</MaxPowerOutput> <!-- 320 SG blocks x 0.67 MW/block (3x vanilla SG output density) -->
       <ResourceSinkGroup>BatteryBlock</ResourceSinkGroup>
-      <RequiredPowerInput>70</RequiredPowerInput> <!-- Updated from 60 -->
-      <MaxStoredPower>18</MaxStoredPower> <!-- Updated from 20 -->
+      <RequiredPowerInput>428</RequiredPowerInput> <!-- 1:2 fast-recharge ratio (Mafoo signature) -->
+      <AdaptibleInput>true</AdaptibleInput>
+      <MaxStoredPower>53</MaxStoredPower> <!-- 320 SG blocks x 0.167 MWh/block (3x vanilla SG density) -->
       <InitialStoredPowerRatio>0.3</InitialStoredPowerRatio>
       <DamageEffectName>Damage_Electrical_Damaged</DamageEffectName>
       <DamagedSound>ParticleElectrical</DamagedSound>
