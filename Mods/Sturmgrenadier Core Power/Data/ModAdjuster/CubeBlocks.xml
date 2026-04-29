@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Sturmgrenadier Core Power — Battery Tier Adjustments
+  ====================================================
+  Pushes vanilla LargeBlockPrototechBattery up to the top of the battery
+  hierarchy (Vanilla < NJFL < Mafoo < Prototech) by bumping capacity and
+  throughput. Keeps vanilla components, asymmetric output:input ratio,
+  and RechargeMultiplier (efficiency loss) intact.
+
+  SmallBlockPrototechBattery is intentionally left alone — its existing
+  asymmetric stockpile design (slow drain, fast intake) and density
+  (0.333 MWh/block) already place it above Mafoo SG in the hierarchy.
+-->
+
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CubeBlocks>
+
+    <Definition xsi:type="MyObjectBuilder_BatteryBlockDefinition">
+      <Id>
+        <TypeId>BatteryBlock</TypeId>
+        <SubtypeId>LargeBlockPrototechBattery</SubtypeId>
+      </Id>
+      <DisplayName>DisplayName_Block_PrototechBattery</DisplayName>
+      <Icon>Textures\GUI\Icons\Cubes\PrototechBattery.dds</Icon>
+      <Description>Description_Prototech_Battery</Description>
+      <CubeSize>Large</CubeSize>
+      <BlockTopology>TriangleMesh</BlockTopology>
+      <Size x="2" y="1" z="1" />
+      <ModelOffset x="0" y="0" z="0" />
+      <Model>Models\Cubes\Large\PrototechBattery.mwm</Model>
+      <Components>
+        <Component Subtype="PrototechFrame" Count="1">
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="Construction" Count="10" />
+        <Component Subtype="PrototechCircuitry" Count="3">
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="PrototechCapacitor" Count="20">
+          <DeconstructId>
+            <TypeId>Ingot</TypeId>
+            <SubtypeId>PrototechScrap</SubtypeId>
+          </DeconstructId>
+        </Component>
+        <Component Subtype="MetalGrid" Count="16" />
+        <Component Subtype="Construction" Count="20" />
+        <Component Subtype="Computer" Count="25" />
+        <Component Subtype="PrototechPanel" Count="60" />
+      </Components>
+      <CriticalComponent Subtype="PrototechCapacitor" Index="0" />
+      <MountPoints>
+        <MountPoint Side="Front" StartX="0" StartY="0.1" EndX="2" EndY="0.9" />
+        <MountPoint Side="Top" StartX="0" StartY="0.1" EndX="2" EndY="0.9" />
+        <MountPoint Side="Bottom" StartX="0" StartY="0" EndX="2" EndY="1" />
+        <MountPoint Side="Back" StartX="0" StartY="0.1" EndX="2" EndY="0.9" />
+        <MountPoint Side="Right" StartX="0.1" StartY="0" EndX="0.9" EndY="1" />
+        <MountPoint Side="Left" StartX="0.1" StartY="0" EndX="0.9" EndY="1" />
+      </MountPoints>
+      <BuildProgressModels>
+        <Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\PrototechBattery_Construction_1.mwm" />
+        <Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\PrototechBattery_Construction_2.mwm" />
+        <Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\PrototechBattery_Construction_3.mwm" />
+      </BuildProgressModels>
+      <BlockPairName>PrototechBattery</BlockPairName>
+      <EdgeType>Light</EdgeType>
+      <BuildTimeSeconds>60</BuildTimeSeconds>
+      <DisassembleRatio>5</DisassembleRatio>
+      <ResourceSourceGroup>Battery</ResourceSourceGroup>
+      <ResourceSinkGroup>BatteryBlock</ResourceSinkGroup>
+      <MaxPowerOutput>96</MaxPowerOutput> <!-- 2x vanilla 48 — preserved 2:1 output:input asymmetry -->
+      <RequiredPowerInput>48</RequiredPowerInput> <!-- 2x vanilla 24 -->
+      <AdaptibleInput>true</AdaptibleInput>
+      <MaxStoredPower>24</MaxStoredPower> <!-- 12 MWh/block (4x vanilla density), tops the hierarchy above Mafoo's 9 MWh/block -->
+      <InitialStoreddPowerRatio>0.3</InitialStoreddPowerRatio>
+      <RechargeMultiplier>0.9</RechargeMultiplier>
+      <DamageEffectName>Damage_Electrical_Prototech_Battery_L</DamageEffectName>
+      <DamagedSound>ParticleElectrical</DamagedSound>
+      <EmissiveColorPreset>Extended</EmissiveColorPreset>
+      <DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+      <DestroySound>WepSmallWarheadExpl</DestroySound>
+      <PCU>15</PCU>
+      <IsAirTight>true</IsAirTight>
+      <MirroringX>Y</MirroringX>
+      <MirroringY>X</MirroringY>
+      <TargetingGroups>
+        <string>PowerSystems</string>
+      </TargetingGroups>
+    </Definition>
+
+  </CubeBlocks>
+</Definitions>
