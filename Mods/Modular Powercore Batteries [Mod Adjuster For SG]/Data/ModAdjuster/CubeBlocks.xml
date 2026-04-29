@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Modular Powercore Batteries [Mod Adjuster For SG]
+  =================================================
+  Patches the Modular Powercore Batteries mod (Workshop ID 3622757513) to
+  fit the Sturmgrenadier server's battery balance hierarchy:
+
+      Vanilla < NJFL < Powercore < Mafoo < Prototech
+
+  Identity: HIGH POWER, SHORT-LIVED. Best for brief combat / mining bursts.
+  Slow recharge (30 min) forces players to rotate multiple frames or accept
+  downtime — designed around active management.
+
+  Module mechanic (defined in the mod's compiled session component):
+    Effective capacity = (modules installed / max modules) * MaxStoredPower
+    Max modules: 4 LG / 1 SG (HARDCODED in script — not XML-tweakable)
+
+  By bumping MaxStoredPower from 4->8 (LG) and 1->2 (SG), each PowerCoreModule
+  now provides 2 MWh of capacity instead of 1.
+
+  Per-block density target: 8 MWh/block (LG) — sits between NJFL (6) and
+  Mafoo (9). No Prototech components — small Superconductor tax matches NJFL.
+
+  Discharge time:  7.5 min  (vs universal 15 min — half as long)
+  Recharge time:   30 min   (4x the discharge — drives rotation gameplay)
+  Output density:  64 MW/block LG — highest in the entire roster
+-->
+
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CubeBlocks>
+
+    <!-- LG frame: 1x1x1, max 4 modules. 8 MWh / 64 MW out / 16 MW in. -->
+    <Definition xsi:type="BatteryBlockDefinition">
+      <Id Type="MyObjectBuilder_BatteryBlock" Subtype="LargePowerCoreFrame" />
+      <MaxStoredPower>8</MaxStoredPower>
+      <MaxPowerOutput>64</MaxPowerOutput>
+      <RequiredPowerInput>16</RequiredPowerInput>
+      <AdaptibleInput>true</AdaptibleInput>
+      <Components>
+        <Component Subtype="SteelPlate" Count="30" />
+        <Component Subtype="Construction" Count="15" />
+        <Component Subtype="InteriorPlate" Count="30" />
+        <Component Subtype="Girder" Count="30" />
+        <Component Subtype="Computer" Count="22" />
+        <Component Subtype="Superconductor" Count="5" />
+        <Component Subtype="Construction" Count="30" />
+        <Component Subtype="SteelPlate" Count="90" />
+      </Components>
+      <CriticalComponent Subtype="Computer" Index="0" />
+    </Definition>
+
+    <!-- SG frame: 2x3x3 = 18 SG blocks, max 1 module. 2 MWh / 16 MW out / 4 MW in. -->
+    <Definition xsi:type="BatteryBlockDefinition">
+      <Id Type="MyObjectBuilder_BatteryBlock" Subtype="SmallPowerCoreFrame" />
+      <MaxStoredPower>2</MaxStoredPower>
+      <MaxPowerOutput>16</MaxPowerOutput>
+      <RequiredPowerInput>4</RequiredPowerInput>
+      <AdaptibleInput>true</AdaptibleInput>
+      <Components>
+        <Component Subtype="SteelPlate" Count="8" />
+        <Component Subtype="Construction" Count="3" />
+        <Component Subtype="InteriorPlate" Count="8" />
+        <Component Subtype="Girder" Count="8" />
+        <Component Subtype="Computer" Count="8" />
+        <Component Subtype="Superconductor" Count="2" />
+        <Component Subtype="Construction" Count="5" />
+        <Component Subtype="SteelPlate" Count="30" />
+      </Components>
+      <CriticalComponent Subtype="Computer" Index="0" />
+    </Definition>
+
+  </CubeBlocks>
+</Definitions>
