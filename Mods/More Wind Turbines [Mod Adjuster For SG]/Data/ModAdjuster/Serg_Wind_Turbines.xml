@@ -7,7 +7,7 @@
                 <TypeId>WindTurbine</TypeId>
                 <SubtypeId>Serg_25MW_Wind_Turbine</SubtypeId>
             </Id>
-            <DisplayName>Prototech Windmill</DisplayName> <!-- Updated name -->
+            <DisplayName>Prototech Mega Windmill (50MW)</DisplayName> <!-- Updated name -->
             <Description>Unlimited Power</Description>
             <CubeSize>Large</CubeSize>
             <GuiVisible>false</GuiVisible>
@@ -18,7 +18,7 @@
             <Components>
                 <Component Subtype="SteelPlate" Count="200" /> <!-- Updated from 2000 -->
                 <Component Subtype="Motor" Count="750" /> <!-- Updated from 300 -->
-                <Component Subtype="Construction" Count="1875" /> <!-- Updated from 2000 -->
+                <Component Subtype="Construction" Count="2075" /> <!-- Updated from 2000; +200 SG endgame cost -->
                 <Component Subtype="Girder" Count="2250" /> <!-- Updated from 1000 -->
                 <Component Subtype="InteriorPlate" Count="3750" /> <!-- Additional Cost -->
                 <Component Subtype="LargeTube" Count="350" /> <!-- Additional Cost -->
@@ -55,7 +55,7 @@
 					</DeconstructId>
 				</Component>
 				<Component Subtype="PrototechPanel" Count= "15" /> <!-- Additional Cost -->
-                <Component Subtype="SteelPlate" Count="800" /> <!-- Updated from 1200 -->
+                <Component Subtype="SteelPlate" Count="1300" /> <!-- Updated from 1200; +500 SG endgame cost -->
             </Components>
             <CriticalComponent Subtype="Superconductor" Index="0" />
             <MountPoints>
@@ -144,7 +144,7 @@
             <ActionSound>ArcBlockWindTurbine</ActionSound>
             <DamagedSound>ParticleElectrical</DamagedSound>
             <ResourceSourceGroup>SolarPanels</ResourceSourceGroup>
-            <MaxPowerOutput>8</MaxPowerOutput> <!-- Updated from 5 -->
+            <MaxPowerOutput>12</MaxPowerOutput> <!-- Updated from 5; SG mid-tier bump -->
             <EmissiveColorPreset>Default</EmissiveColorPreset>
             <IsAirTight>false</IsAirTight>
 
@@ -226,7 +226,7 @@
             <ActionSound>ArcBlockWindTurbine</ActionSound>
             <DamagedSound>ParticleElectrical</DamagedSound>
             <ResourceSourceGroup>SolarPanels</ResourceSourceGroup>
-            <MaxPowerOutput>8</MaxPowerOutput> <!-- Updated from 5 -->
+            <MaxPowerOutput>12</MaxPowerOutput> <!-- Updated from 5; SG mid-tier bump -->
             <EmissiveColorPreset>Default</EmissiveColorPreset>
             <IsAirTight>false</IsAirTight>
             <VoxelPlacement>
@@ -254,7 +254,7 @@
                 <TypeId>WindTurbine</TypeId>
                 <SubtypeId>Serg_10MW_Wind_Turbine</SubtypeId>
             </Id>
-            <DisplayName>Prototech Wind Turbine</DisplayName> <!-- Updated name -->
+            <DisplayName>Prototech Wind Turbine (7.5MW)</DisplayName> <!-- Updated name -->
             <Description>Unlimited Power</Description>
             <CubeSize>Large</CubeSize>
             <GuiVisible>false</GuiVisible>
@@ -306,7 +306,7 @@
             <DamagedSound>ParticleElectrical</DamagedSound>
 
             <ResourceSourceGroup>SolarPanels</ResourceSourceGroup>
-            <MaxPowerOutput>6</MaxPowerOutput> <!-- Updated from 550 -->
+            <MaxPowerOutput>7.5</MaxPowerOutput> <!-- Updated from 550; SG bump matching display name -->
             <EmissiveColorPreset>Default</EmissiveColorPreset>
             <IsAirTight>false</IsAirTight>
             <VoxelPlacement>

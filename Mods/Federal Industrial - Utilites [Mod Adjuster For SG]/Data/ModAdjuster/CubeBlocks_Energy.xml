@@ -18,7 +18,7 @@
 
             <Components>
                 <Component Subtype="SteelPlate" Count="30" /> <!-- Updated from 300 -->
-                <Component Subtype="Motor" Count="75" /> <!-- Updated from 300 -->
+                <Component Subtype="Motor" Count="120" /> <!-- Updated from 300; SG bump for higher output -->
                 <Component Subtype="Construction" Count="190" /> <!-- Updated from 300 -->
                 <Component Subtype="Girder" Count="230" /> <!-- Updated from 1500 -->
 				<!-- <Component Subtype="PowerCell" Count="850" >
@@ -28,9 +28,10 @@
 					</DeconstructId>
 				</Component> -->
 				<!-- <Component Subtype="Superconductor" Count="150" /> -->
-                <Component Subtype="Computer" Count="20" />
+                <Component Subtype="Computer" Count="30" /> <!-- SG bump from 20 -->
 				<Component Subtype="InteriorPlate" Count="380" /> <!-- Additional cost -->
-                <Component Subtype="SteelPlate" Count="70" /> <!-- Updated from 15 -->
+				<Component Subtype="Superconductor" Count="5" /> <!-- SG addition: power tax for higher output -->
+                <Component Subtype="SteelPlate" Count="170" /> <!-- Updated from 15; +100 SG bulk -->
             </Components>
             <CriticalComponent Subtype="Motor" Index="0" /> <!-- Updated -->
             <MountPoints>
@@ -48,7 +49,7 @@
             <ActionSound>ArcBlockWindTurbine</ActionSound>
             <DamagedSound>ParticleElectrical</DamagedSound>
             <ResourceSourceGroup>SolarPanels</ResourceSourceGroup>
-            <MaxPowerOutput>4</MaxPowerOutput> <!-- Updated from 15 -->
+            <MaxPowerOutput>5</MaxPowerOutput> <!-- Updated from 15; SG bump 4 → 5 with cost increase -->
             <EmissiveColorPreset>Default</EmissiveColorPreset>
             <IsAirTight>false</IsAirTight>
             <VoxelPlacement>
