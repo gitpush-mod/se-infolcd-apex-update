@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Cascading Demolition — Warhead Buffs
+  ====================================
+  Doubles damage and bumps blast radius on vanilla warheads. The engine clamps
+  ExplosionRadius to 30m hardcoded, so LargeWarhead's nominal 2x (44.88) caps at 30.
+  SmallWarhead has more headroom (4.49 -> 8.98) since 2x stays under the cap.
+
+  Damage scales linearly — no clamp documented. 30000 = 2x vanilla 15000.
+
+  Pairs with the compiled session component (Data/Scripts/CascadingDemolition/)
+  which converts "armed warhead destroyed by another blast" into "armed warhead
+  detonates before destruction" — chain reaction.
+-->
+
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CubeBlocks>
+
+    <!-- Large Grid Warhead: 22.4415m -> 30m (engine cap), 15000 -> 30000 dmg -->
+    <Definition xsi:type="MyObjectBuilder_WarheadDefinition">
+      <Id>
+        <TypeId>Warhead</TypeId>
+        <SubtypeId>LargeWarhead</SubtypeId>
+      </Id>
+      <ExplosionRadius>30</ExplosionRadius>
+      <WarheadExplosionDamage>30000</WarheadExplosionDamage>
+    </Definition>
+
+    <!-- Small Grid Warhead: 4.4883m -> 8.9766m, 15000 -> 30000 dmg -->
+    <Definition xsi:type="MyObjectBuilder_WarheadDefinition">
+      <Id>
+        <TypeId>Warhead</TypeId>
+        <SubtypeId>SmallWarhead</SubtypeId>
+      </Id>
+      <ExplosionRadius>8.9766</ExplosionRadius>
+      <WarheadExplosionDamage>30000</WarheadExplosionDamage>
+    </Definition>
+
+  </CubeBlocks>
+</Definitions>

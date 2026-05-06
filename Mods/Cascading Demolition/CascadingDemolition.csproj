@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <Platforms>x64</Platforms>
+    <LangVersion>6</LangVersion>
+    <!-- Suppress auto-generated attributes that can conflict with SE's runtime compiler -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateNeutralResourcesLanguageAttribute>false</GenerateNeutralResourcesLanguageAttribute>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Whitelist analyzer: red squiggles in the IDE for disallowed API calls -->
+    <PackageReference Include="Mal.Mdk2.ModAnalyzers" Version="*" />
+    <!-- Auto-resolves SE DLL references — no hardcoded Steam paths -->
+    <PackageReference Include="Mal.Mdk2.References" Version="*" />
+    <!-- Packages output into the workshop folder structure (optional but useful) -->
+    <PackageReference Include="Mal.Mdk2.ModPackager" Version="*" />
+  </ItemGroup>
+</Project>
