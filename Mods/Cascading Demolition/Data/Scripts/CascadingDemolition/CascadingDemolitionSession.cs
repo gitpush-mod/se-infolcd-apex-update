@@ -1,6 +1,7 @@
 using Sandbox.Definitions;
 using Sandbox.Game;
 using Sandbox.ModAPI;
+using System.Collections.Generic;
 using VRage.Game;
 using VRage.Game.Components;
 using VRage.Game.Entity;
@@ -11,79 +12,130 @@ using VRageMath;
 namespace CascadingDemolition
 {
     /// <summary>
-    /// Server-side session component that converts "armed warhead destroyed by
-    /// another blast" into "armed warhead detonates BEFORE its block dies".
+    /// Server-side session component. Two purposes:
     ///
-    /// Vanilla SE has the inverse problem: when warhead A's explosion destroys
-    /// warhead B's block, B is removed via normal block-destruction without
-    /// firing its own explosion. We hook the damage system to pre-empt that:
-    /// when a damage event would kill an armed warhead, we manually create our
-    /// own explosion at that warhead's position. The original damage finalizes
-    /// and destroys the block, our explosion fires alongside it, and any other
-    /// armed warheads in the new blast radius go through the same path.
+    /// 1. Make the warhead chain reliable. Vanilla SE chains warheads via Explosion
+    ///    damage events plus an internal MarkForExplosion grid scan, but the result
+    ///    is inconsistent: counting-down warheads often vanish silently, some chained
+    ///    warheads detonate at reduced strength, others don't fire at all.
     ///
-    /// Two safeguards on the chain:
+    /// 2. Stop chained warheads from cratering terrain. Vanilla's auto-detonate-on-
+    ///    death calls IMyWarhead.Detonate() which spawns an explosion with
+    ///    AFFECT_VOXELS — so each chained warhead carves a crater wherever it sits
+    ///    when it dies. Multi-warhead clusters near terrain produce stacked craters.
     ///
-    /// 1. Spatial filter — SE's vanilla MarkForExplosion mechanism damages ALL
-    ///    warheads on a grid when one detonates, regardless of distance. We
-    ///    resolve the damage event's AttackerId; if it's a warhead, we only
-    ///    chain when the target is within the source's base ExplosionRadius.
-    ///    For warheads OUTSIDE that radius we mutate info.Amount to 0 so they
-    ///    don't even take damage — preserves staggered-timer demolition setups.
+    /// Approach (BeforeDamageHandler):
     ///
-    /// 2. No voxel damage from chained warheads — instead of calling vanilla
-    ///    IMyWarhead.Detonate() (which spawns an explosion with AFFECT_VOXELS),
-    ///    we build a MyExplosionInfo ourselves and pass it to MyExplosions.
-    ///    AddExplosion with the AFFECT_VOXELS flag deliberately omitted. Block
-    ///    damage, force, deformation, decals, debris, sound — all preserved.
-    ///    Voxels stay intact.
+    ///   When fatal damage is about to hit an armed warhead, we take over:
+    ///   - Disarm the warhead (this is the kill switch — vanilla checks IsArmed
+    ///     before auto-detonating on death, so disarming makes vanilla skip its
+    ///     voxel-damaging explosion when the block finally dies).
+    ///   - Stop any active countdown.
+    ///   - Fire OUR custom block-only explosion at the warhead's position. We build
+    ///     MyExplosionInfo manually with AFFECT_VOXELS deliberately omitted — block
+    ///     damage, force, deformation, decals, debris, sound all preserved, voxels
+    ///     untouched.
+    ///   - Cancel the incoming damage (info.Amount = 0) so vanilla doesn't kill the
+    ///     block via the damage path (which can have side effects on warheads).
+    ///   - Queue the slim block for clean removal next tick via grid.RemoveBlock.
     ///
-    ///    Known limitation: the FIRST warhead (the one the player triggers via
-    ///    UI/timer) still uses vanilla Detonate() and damages voxels — we can't
-    ///    intercept the player's direct trigger without a per-block GameLogic
-    ///    component. So a single user-triggered warhead leaves a vanilla-sized
-    ///    crater; chained warheads don't add to it.
+    /// Two safeguards:
+    ///
+    /// 1. Spatial filter — if the damage source is another warhead and the target
+    ///    is outside the source's blast radius, we cancel damage entirely. This
+    ///    prevents vanilla MarkForExplosion (grid-wide warhead damage regardless of
+    ///    distance) from killing warheads that are physically outside the actual
+    ///    blast. Independent staggered-timer setups keep their countdowns intact.
+    ///
+    /// 2. Self-attacker skip — when warhead A's own vanilla explosion damages its
+    ///    own block (the block sits at the explosion's center), we let it die
+    ///    normally. Otherwise we'd add a second explosion on top of the player-
+    ///    triggered one, doubling damage to surrounding blocks.
+    ///
+    /// Known limitation: the FIRST warhead (the one the player triggers via UI/
+    /// timer) still goes through vanilla IMyWarhead.Detonate() — we can't intercept
+    /// the player's direct trigger without a per-block GameLogicComponent. So a
+    /// player-triggered warhead at low altitude will leave a vanilla-sized crater.
+    /// At altitude, vanilla's explosion sphere doesn't reach terrain and there's no
+    /// crater. Chained warheads (which is where multi-crater "stacked" damage comes
+    /// from) are fully voxel-safe.
     /// </summary>
-    [MySessionComponentDescriptor(MyUpdateOrder.NoUpdate)]
+    [MySessionComponentDescriptor(MyUpdateOrder.AfterSimulation)]
     public class CascadingDemolitionSession : MySessionComponentBase
     {
+        // Warhead EntityIds we've already taken over. Vanilla can fire multiple
+        // damage events on the same target before it dies (MarkForExplosion +
+        // chain hits), and our manual explosion produces additional events on the
+        // same target until the block is actually removed next tick — without
+        // this set we'd recursively re-process and double-fire.
+        private readonly HashSet<long> _detonated = new HashSet<long>();
+
+        // Slim blocks queued for manual removal. We can't safely remove during the
+        // damage handler (mutating the world from inside a damage callback can
+        // break vanilla iteration state), so we defer to UpdateAfterSimulation.
+        private readonly List<IMySlimBlock> _pendingRemoval = new List<IMySlimBlock>();
+
         public override void LoadData()
         {
-            // Damage handlers are server-authoritative. Running on a client in MP
-            // would just produce ghost detonations that don't match the server.
+            // Damage handlers are server-authoritative. On a client this would
+            // produce ghost detonations that don't match the server.
             if (!MyAPIGateway.Multiplayer.IsServer) return;
-
             if (MyAPIGateway.Session?.DamageSystem == null) return;
 
-            // Priority 0 — runs alongside other handlers. We mutate info.Amount
-            // for out-of-radius warheads, so positioning matters less than for
-            // pure-read handlers, but 0 is fine for our use case.
             MyAPIGateway.Session.DamageSystem.RegisterBeforeDamageHandler(0, OnBeforeDamage);
+        }
+
+        public override void UpdateAfterSimulation()
+        {
+            for (int i = 0; i < _pendingRemoval.Count; i++)
+            {
+                var slim = _pendingRemoval[i];
+                if (slim?.CubeGrid == null) continue;
+                try { slim.CubeGrid.RemoveBlock(slim, true); } catch { }
+            }
+            _pendingRemoval.Clear();
+
+            // Bound the dedup set so it doesn't grow forever across long sessions.
+            // Chain reactions resolve in a handful of ticks; once the chain ends
+            // the set's contents are stale.
+            if (_detonated.Count > 1024) _detonated.Clear();
         }
 
         private void OnBeforeDamage(object target, ref MyDamageInformation info)
         {
-            // Hot path — every bullet, grinder hit, voxel collision, etc. comes
-            // through here. Bail as fast as possible on the common case.
+            // Hot path — every bullet, grinder hit, voxel collision flows through
+            // here. Bail fast on the common case (most events have nothing to do
+            // with armed warheads).
             var slim = target as IMySlimBlock;
             if (slim == null) return;
 
             var warhead = slim.FatBlock as IMyWarhead;
             if (warhead == null) return;
 
+            // Already taken over — suppress all subsequent damage on this warhead
+            // until UpdateAfterSimulation removes the block.
+            if (_detonated.Contains(warhead.EntityId))
+            {
+                info.Amount = 0;
+                return;
+            }
+
             // Unarmed warhead is just a block. Let it die normally.
             if (!warhead.IsArmed) return;
 
-            // Will this damage actually destroy the block? slim.Integrity is the
-            // current remaining integrity. If incoming damage doesn't kill it,
-            // no need to chain — let the block soak the hit and stay armed.
+            // Will this damage destroy the block? If not, no need to chain.
             if (info.Amount < slim.Integrity) return;
 
-            // Spatial filter: if damage came from another warhead, only chain
-            // when target is within the source warhead's base ExplosionRadius.
-            // Otherwise we cancel the damage entirely so SE's vanilla
-            // MarkForExplosion (grid-wide warhead damage) can't kill warheads
-            // that are physically outside the actual blast.
+            // Self-damage skip: when this warhead's own vanilla explosion damages
+            // its own block (the block sits at the explosion's center), let it die
+            // normally. Taking over here would fire a second explosion on top of
+            // the one vanilla already fired, doubling damage to nearby blocks.
+            if (info.AttackerId == warhead.EntityId) return;
+
+            // Spatial filter: if attacker is a different warhead, only chain when
+            // target is within source's blast radius. Otherwise cancel damage so
+            // vanilla MarkForExplosion (which damages all grid warheads regardless
+            // of distance) can't kill warheads physically outside the actual blast.
             if (info.AttackerId != 0)
             {
                 IMyEntity attackerEntity;
@@ -99,9 +151,8 @@ namespace CascadingDemolition
 
                         if (distance > sourceRadius)
                         {
-                            // Out of radius — cancel damage AND don't chain. The
-                            // warhead survives intact and any independent timer
-                            // it has continues running.
+                            // Out of radius — preserve the warhead intact. Its
+                            // independent countdown (if any) keeps running.
                             info.Amount = 0;
                             return;
                         }
@@ -109,12 +160,21 @@ namespace CascadingDemolition
                 }
             }
 
-            // In radius (or non-warhead source). Fire our own explosion at this
-            // warhead's position with no voxel damage. Original incoming damage
-            // still finalizes and destroys this block normally — we just inject
-            // our own explosion alongside, which damages neighbors and propagates
-            // the cascade through the BeforeDamageHandler the next time it fires.
+            // Take over the detonation:
+            //   1. Mark as handled (prevents recursion / double-fire).
+            //   2. Disarm + stop countdown — vanilla checks IsArmed before auto-
+            //      detonating on death, so this stops vanilla from firing its
+            //      voxel-damaging explosion when the block dies.
+            //   3. Fire our block-only explosion (no AFFECT_VOXELS).
+            //   4. Cancel incoming damage so the block doesn't die via the damage
+            //      path (warheads have special destroy behavior we want to skip).
+            //   5. Queue the slim block for clean removal next simulation tick.
+            _detonated.Add(warhead.EntityId);
+            warhead.IsArmed = false;
+            warhead.StopCountdown();
             FireBlockOnlyExplosion(warhead);
+            info.Amount = 0;
+            _pendingRemoval.Add(slim);
         }
 
         private static void FireBlockOnlyExplosion(IMyWarhead warhead)
@@ -123,9 +183,9 @@ namespace CascadingDemolition
             float damage = GetWarheadDamage(warhead);
             Vector3D position = warhead.GetPosition();
 
-            // Particle preset by radius — matches the bucketing pattern used by
-            // Modular Encounters System's DamageHelper, which is the canonical
-            // reference for mod-driven explosions in the SE ecosystem.
+            // Particle preset by radius — bucketing matches Modular Encounters
+            // System's DamageHelper, the canonical reference for mod-driven
+            // explosions in the SE ecosystem.
             MyExplosionTypeEnum particleType =
                 radius <= 6.0 ? MyExplosionTypeEnum.WARHEAD_EXPLOSION_02 :
                 radius <= 20.0 ? MyExplosionTypeEnum.WARHEAD_EXPLOSION_15 :
@@ -145,9 +205,9 @@ namespace CascadingDemolition
                 OwnerEntity = warhead as MyEntity,
                 HitEntity = warhead as MyEntity,
                 // The deliberately-missing flag here is AFFECT_VOXELS. Without it,
-                // SE's explosion routine skips the voxel-carve step entirely. All
-                // other vanilla effects (block damage, force, deformation, debris,
-                // decals, particles, shrapnel) are preserved.
+                // SE's explosion routine skips the voxel-carve step. All other
+                // vanilla effects (block damage, force, deformation, debris,
+                // decals, particles, shrapnel, sound) are preserved.
                 ExplosionFlags = MyExplosionFlags.APPLY_FORCE_AND_DAMAGE
                                  | MyExplosionFlags.CREATE_DECALS
                                  | MyExplosionFlags.CREATE_PARTICLE_EFFECT
@@ -165,19 +225,17 @@ namespace CascadingDemolition
 
         private static float GetWarheadRadius(IMyWarhead warhead)
         {
-            var slim = warhead?.SlimBlock;
-            var def = slim?.BlockDefinition as MyWarheadDefinition;
-            // Default to engine's hardcoded 30m cap if we can't read the
-            // definition (e.g. attacker block was already closed).
+            var def = warhead?.SlimBlock?.BlockDefinition as MyWarheadDefinition;
+            // Default to engine's hardcoded 30m cap if the definition can't be
+            // read (e.g. attacker block was already closed).
             return def?.ExplosionRadius ?? 30f;
         }
 
         private static float GetWarheadDamage(IMyWarhead warhead)
         {
-            var slim = warhead?.SlimBlock;
-            var def = slim?.BlockDefinition as MyWarheadDefinition;
-            // Default matches our SBC override. If the SBC didn't load for some
-            // reason, this still gives meaningful damage.
+            var def = warhead?.SlimBlock?.BlockDefinition as MyWarheadDefinition;
+            // Default matches our SBC override. Falls back gracefully if the SBC
+            // definition didn't load.
             return def?.WarheadExplosionDamage ?? 30000f;
         }
     }
