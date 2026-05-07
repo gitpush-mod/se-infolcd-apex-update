@@ -75,12 +75,20 @@ namespace CascadingDemolition
                             sourceWarhead.GetPosition(),
                             warhead.GetPosition());
 
-                        // Outside source's actual blast — don't chain. The block
-                        // will still die from this damage event (vanilla
-                        // MarkForExplosion behavior), it just won't fire its own
-                        // explosion. That preserves staggered-timer demolition
-                        // sequences where each warhead has its own trigger.
-                        if (distance > sourceRadius) return;
+                        // Outside source's actual blast — cancel the damage
+                        // entirely. SE's vanilla MarkForExplosion damages every
+                        // warhead on the grid regardless of distance; if we just
+                        // returned here the block would still die, killing its
+                        // independent countdown timer before it could fire.
+                        // Mutating info.Amount = 0 makes the damage a no-op so
+                        // distant warheads survive intact and keep ticking.
+                        // MyDamageInformation is a struct passed by ref, so this
+                        // mutation propagates back to SE's damage pipeline.
+                        if (distance > sourceRadius)
+                        {
+                            info.Amount = 0;
+                            return;
+                        }
                     }
                 }
             }
