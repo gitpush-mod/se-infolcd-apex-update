@@ -21,7 +21,8 @@
 
   Source for vanilla baseline: [SE]\Content\Data\CubeBlocks\CubeBlocks_Weapons.sbc
   Modified fields (vs vanilla):
-    - LargeWarhead.ExplosionRadius:        22.4415 -> 30
+    - LargeWarhead.ExplosionRadius:        22.4415 -> 22.4415 (unchanged; cascade already
+                                                                multiplies effective yield)
     - LargeWarhead.WarheadExplosionDamage: 15000   -> 30000
     - SmallWarhead.ExplosionRadius:         4.4883 -> 8.9766
     - SmallWarhead.WarheadExplosionDamage: 15000   -> 30000
@@ -71,7 +72,7 @@
       <ActionSound>WepLrgWarheadExpl</ActionSound>
       <EdgeType>Light</EdgeType>
       <BuildTimeSeconds>30</BuildTimeSeconds>
-      <ExplosionRadius>30</ExplosionRadius>
+      <ExplosionRadius>22.4415</ExplosionRadius>
       <WarheadExplosionDamage>30000</WarheadExplosionDamage>
       <EmissiveColorPreset>Timer</EmissiveColorPreset>
       <DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
