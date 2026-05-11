@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <EntityComponents>
+
+    <!--
+      BULK CARGO CONTAINER INVENTORY OVERRIDES
+      ========================================
+      Inventory volume is set per-subtype via the Inventory component (vanilla
+      cargo containers would otherwise auto-size from the physical block
+      bounding box: 15 x 7.5 x 7.5 = ~844 m^3 for the 6x3x3 bulk container).
+
+      Volumes scale from the NJFL Upgraded Industrial Cargo Container baseline
+      (~844 m^3 in a 27-cell 3x3x3 block):
+          Base Bulk     -> 1.5x NJFL = ~1266 m^3
+          Upgraded Bulk -> 3.0x NJFL = ~2531 m^3  (2x Base)
+          Advanced Bulk -> 4.5x NJFL = ~3797 m^3  (3x Base)
+
+      Z axis is the scaled dimension (mirrors the NJFL convention used on the
+      upgraded Industrial Cargo Container in NJFL/Data/CubeBlocks/EntityComponents.sbc).
+    -->
+
+    <!-- Base Bulk Cargo Container — 1.5x NJFL inventory (z scaled from 7.5 to 11.25) -->
+    <EntityComponent xsi:type="MyObjectBuilder_InventoryComponentDefinition">
+      <Id>
+        <TypeId>Inventory</TypeId>
+        <SubtypeId>LargeBlockBulkContainerB</SubtypeId>
+      </Id>
+      <Size x="15" y="7.5" z="11.25" />
+    </EntityComponent>
+
+    <!-- Upgraded Bulk Cargo Container — 3x NJFL inventory (z scaled from 7.5 to 22.5) -->
+    <EntityComponent xsi:type="MyObjectBuilder_InventoryComponentDefinition">
+      <Id>
+        <TypeId>Inventory</TypeId>
+        <SubtypeId>LargeBlockBulkContainerA</SubtypeId>
+      </Id>
+      <Size x="15" y="7.5" z="22.5" />
+    </EntityComponent>
+
+    <!-- Advanced Bulk Cargo Container — 4.5x NJFL inventory (z scaled from 7.5 to 33.75) -->
+    <EntityComponent xsi:type="MyObjectBuilder_InventoryComponentDefinition">
+      <Id>
+        <TypeId>Inventory</TypeId>
+        <SubtypeId>LargeBlockBulkContainerC</SubtypeId>
+      </Id>
+      <Size x="15" y="7.5" z="33.75" />
+    </EntityComponent>
+
+  </EntityComponents>
+</Definitions>

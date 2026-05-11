@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<CubeBlocks>
+<!--
+	NOT JUST FOR LOOKS - ADDITIONS: BULK CARGO CONTAINERS
+	=====================================================
+	Three Bulk Cargo Container variants from Economy 2 DLC, re-tiered into a
+	Base / Upgraded / Advanced ladder. All three tiers sit above the NJFL
+	Upgraded Industrial Cargo Container (which stays as a denser-per-cell
+	alternative — same Superconductor gate, smaller footprint).
+
+	Tier mapping (Inventory ratios benchmarked against the NJFL Upgraded
+	Industrial Cargo Container = ~844 m^3):
+
+		Bulk Cargo Container B  ->  Bulk Cargo Container          (Base,     1.5x NJFL inv, 1.5x cost, 15 SC)
+		Bulk Cargo Container A  ->  Upgraded Bulk Cargo Container (Upgraded, 3.0x NJFL inv, 3.0x cost, 20 SC + 5 RC)
+		Bulk Cargo Container C  ->  Advanced Bulk Cargo Container (Advanced, 4.5x NJFL inv, 4.5x cost, 25 SC + 10 RC)
+
+	Inventory size overrides live in EntityComponents.sbc — vanilla cargo
+	containers compute inventory from physical bounding box; we override per
+	subtype to set the actual volume.
+
+	NJFL Upgraded Industrial Cargo Container is NOT modified. It remains the
+	denser 3x3x3 alternative for cramped builds (~844 m^3 in 27 cells = 31 m^3/cell)
+	vs Base Bulk at ~23 m^3/cell in 54 cells. Player chooses footprint vs density.
+
+	Vanilla bulk cargo container source:
+		[SE]\Content\Data\CubeBlocks\CubeBlocks_Economy2Pack.sbc
+	All three are 6x3x3 L-grid Large blocks; mount points identical across tiers.
+-->
+
+		<!-- ====================================================== -->
+		<!-- BASE TIER: Bulk Cargo Container (was "B")              -->
+		<!-- 1.5x vanilla bulk cost, 15 SC tax, 1.5x NJFL inventory -->
+		<!-- ====================================================== -->
+		<Definition xsi:type="MyObjectBuilder_CargoContainerDefinition">
+			<Id>
+				<TypeId>CargoContainer</TypeId>
+				<SubtypeId>LargeBlockBulkContainerB</SubtypeId>
+			</Id>
+			<!-- Base tier: 1.5x vanilla bulk components, 15 SC tax, 1.5x NJFL Upgraded Industrial inventory -->
+			<DisplayName>Bulk Cargo Container</DisplayName> <!-- Renamed from "Bulk Cargo Container B" -->
+			<Icon>Textures\GUI\Icons\Cubes\BulkCargoContainerB.dds</Icon>
+			<Description>Description_LargeCargoContainer</Description>
+			<CubeSize>Large</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="6" y="3" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\BulkCargoContainerB.mwm</Model>
+			<Components>
+				<Component Subtype="InteriorPlate" Count="900" /> <!-- 1.5x from 600 -->
+				<Component Subtype="Construction" Count="180" /> <!-- 1.5x from 120 -->
+				<Component Subtype="MetalGrid" Count="75" /> <!-- 1.5x from 50 -->
+				<Component Subtype="SmallTube" Count="180" /> <!-- 1.5x from 120 -->
+				<Component Subtype="Motor" Count="60" /> <!-- 1.5x from 40 -->
+				<Component Subtype="Display" Count="3" /> <!-- 1.5x from 2 -->
+				<Component Subtype="Computer" Count="15" /> <!-- 1.5x from 10 -->
+				<Component Subtype="Superconductor" Count="15" /> <!-- Tax (Base tier, L-grid Large block, scaled with 1.5x) -->
+				<Component Subtype="Construction" Count="60" /> <!-- 1.5x from 40 -->
+				<Component Subtype="InteriorPlate" Count="180" /> <!-- 1.5x from 120 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
+			<MountPoints>
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="2" EndY="0.3" />
+				<MountPoint Side="Top" StartX="4" StartY="0" EndX="6" EndY="0.3" />
+				<MountPoint Side="Top" StartX="0" StartY="2.7" EndX="2" EndY="3" />
+				<MountPoint Side="Top" StartX="4" StartY="2.7" EndX="6" EndY="3" />
+				<MountPoint Side="Top" StartX="2.8" StartY="0" EndX="3.2" EndY="3" />
+				<MountPoint Side="Bottom" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Right" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Left" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Front" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="6" EndY="3" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\BulkCargoContainerConstruction_1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\BulkCargoContainerConstruction_2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\BulkCargoContainerBConstruction_3.mwm" />
+			</BuildProgressModels>
+			<BlockPairName>BulkCargoContainerB</BlockPairName>
+			<MirroringY>X</MirroringY>
+			<MirroringX>Y</MirroringX>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>60</BuildTimeSeconds>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>10</PCU>
+			<DLC>Economy2</DLC>
+		</Definition>
+
+		<!-- ====================================================== -->
+		<!-- UPGRADED TIER: Upgraded Bulk Cargo Container (was "A") -->
+		<!-- 3x vanilla bulk cost, 20 SC + 5 RC tax, 3x NJFL inv    -->
+		<!-- ====================================================== -->
+		<Definition xsi:type="MyObjectBuilder_CargoContainerDefinition">
+			<Id>
+				<TypeId>CargoContainer</TypeId>
+				<SubtypeId>LargeBlockBulkContainerA</SubtypeId>
+			</Id>
+			<!-- Upgraded tier: 3x vanilla bulk components, 20 SC + 5 RC tax, 3x NJFL Upgraded Industrial inventory (2x Base) -->
+			<DisplayName>Upgraded Bulk Cargo Container</DisplayName> <!-- Renamed from "Bulk Cargo Container A" -->
+			<Icon>Textures\GUI\Icons\Cubes\BulkCargoContainer.dds</Icon>
+			<Description>Description_LargeCargoContainer</Description>
+			<CubeSize>Large</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="6" y="3" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\BulkCargoContainer.mwm</Model>
+			<Components>
+				<Component Subtype="InteriorPlate" Count="1800" /> <!-- 3x from 600 -->
+				<Component Subtype="Construction" Count="360" /> <!-- 3x from 120 -->
+				<Component Subtype="MetalGrid" Count="150" /> <!-- 3x from 50 -->
+				<Component Subtype="SmallTube" Count="360" /> <!-- 3x from 120 -->
+				<Component Subtype="Motor" Count="120" /> <!-- 3x from 40 -->
+				<Component Subtype="Display" Count="6" /> <!-- 3x from 2 -->
+				<Component Subtype="Computer" Count="30" /> <!-- 3x from 10 -->
+				<Component Subtype="Superconductor" Count="20" /> <!-- SC tax (Upgraded tier) -->
+				<Component Subtype="Reactor" Count="5" /> <!-- Reactor (platinum) tax (Upgraded tier) -->
+				<Component Subtype="Construction" Count="120" /> <!-- 3x from 40 -->
+				<Component Subtype="InteriorPlate" Count="360" /> <!-- 3x from 120 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
+			<MountPoints>
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="2" EndY="0.3" />
+				<MountPoint Side="Top" StartX="4" StartY="0" EndX="6" EndY="0.3" />
+				<MountPoint Side="Top" StartX="0" StartY="2.7" EndX="2" EndY="3" />
+				<MountPoint Side="Top" StartX="4" StartY="2.7" EndX="6" EndY="3" />
+				<MountPoint Side="Top" StartX="2.8" StartY="0" EndX="3.2" EndY="3" />
+				<MountPoint Side="Bottom" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Right" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Left" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Front" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="6" EndY="3" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\BulkCargoContainerConstruction_1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\BulkCargoContainerConstruction_2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\BulkCargoContainerConstruction_3.mwm" />
+			</BuildProgressModels>
+			<BlockPairName>BulkCargoContainerA</BlockPairName>
+			<MirroringY>X</MirroringY>
+			<MirroringX>Y</MirroringX>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>60</BuildTimeSeconds>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>10</PCU>
+			<DLC>Economy2</DLC>
+		</Definition>
+
+		<!-- ====================================================== -->
+		<!-- ADVANCED TIER: Advanced Bulk Cargo Container (was "C") -->
+		<!-- 4.5x vanilla bulk cost, 25 SC + 10 RC tax, 4.5x NJFL  -->
+		<!-- ====================================================== -->
+		<Definition xsi:type="MyObjectBuilder_CargoContainerDefinition">
+			<Id>
+				<TypeId>CargoContainer</TypeId>
+				<SubtypeId>LargeBlockBulkContainerC</SubtypeId>
+			</Id>
+			<!-- Advanced tier: 4.5x vanilla bulk components, 25 SC + 10 RC tax, 4.5x NJFL Upgraded Industrial inventory (3x Base) -->
+			<DisplayName>Advanced Bulk Cargo Container</DisplayName> <!-- Renamed from "Bulk Cargo Container C" -->
+			<Icon>Textures\GUI\Icons\Cubes\BulkCargoContainerC.dds</Icon>
+			<Description>Description_LargeCargoContainer</Description>
+			<CubeSize>Large</CubeSize>
+			<GuiVisible>false</GuiVisible>
+			<BlockTopology>TriangleMesh</BlockTopology>
+			<Size x="6" y="3" z="3" />
+			<ModelOffset x="0" y="0" z="0" />
+			<Model>Models\Cubes\Large\BulkCargoContainerC.mwm</Model>
+			<Components>
+				<Component Subtype="InteriorPlate" Count="2700" /> <!-- 4.5x from 600 -->
+				<Component Subtype="Construction" Count="540" /> <!-- 4.5x from 120 -->
+				<Component Subtype="MetalGrid" Count="225" /> <!-- 4.5x from 50 -->
+				<Component Subtype="SmallTube" Count="540" /> <!-- 4.5x from 120 -->
+				<Component Subtype="Motor" Count="180" /> <!-- 4.5x from 40 -->
+				<Component Subtype="Display" Count="9" /> <!-- 4.5x from 2 -->
+				<Component Subtype="Computer" Count="45" /> <!-- 4.5x from 10 -->
+				<Component Subtype="Superconductor" Count="25" /> <!-- SC tax (Advanced tier) -->
+				<Component Subtype="Reactor" Count="10" /> <!-- Reactor (platinum) tax (Advanced tier) -->
+				<Component Subtype="Construction" Count="180" /> <!-- 4.5x from 40 -->
+				<Component Subtype="InteriorPlate" Count="540" /> <!-- 4.5x from 120 -->
+			</Components>
+			<CriticalComponent Subtype="Superconductor" Index="0" /> <!-- Updated -->
+			<MountPoints>
+				<MountPoint Side="Top" StartX="0" StartY="0" EndX="2" EndY="0.3" />
+				<MountPoint Side="Top" StartX="4" StartY="0" EndX="6" EndY="0.3" />
+				<MountPoint Side="Top" StartX="0" StartY="2.7" EndX="2" EndY="3" />
+				<MountPoint Side="Top" StartX="4" StartY="2.7" EndX="6" EndY="3" />
+				<MountPoint Side="Top" StartX="2.8" StartY="0" EndX="3.2" EndY="3" />
+				<MountPoint Side="Bottom" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Right" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Left" StartX="0" StartY="0" EndX="3" EndY="3" />
+				<MountPoint Side="Front" StartX="0" StartY="0" EndX="6" EndY="3" />
+				<MountPoint Side="Back" StartX="0" StartY="0" EndX="6" EndY="3" />
+			</MountPoints>
+			<BuildProgressModels>
+				<Model BuildPercentUpperBound="0.33" File="Models\Cubes\Large\BulkCargoContainerConstruction_1.mwm" />
+				<Model BuildPercentUpperBound="0.66" File="Models\Cubes\Large\BulkCargoContainerConstruction_2.mwm" />
+				<Model BuildPercentUpperBound="1.00" File="Models\Cubes\Large\BulkCargoContainerCConstruction_3.mwm" />
+			</BuildProgressModels>
+			<BlockPairName>BulkCargoContainerC</BlockPairName>
+			<MirroringY>X</MirroringY>
+			<MirroringX>Y</MirroringX>
+			<EdgeType>Light</EdgeType>
+			<BuildTimeSeconds>60</BuildTimeSeconds>
+			<DamageEffectName>Damage_HeavyMech_Damaged</DamageEffectName>
+			<DamagedSound>ParticleHeavyMech</DamagedSound>
+			<DestroyEffect>BlockDestroyedExplosion_Large</DestroyEffect>
+			<DestroySound>WepSmallWarheadExpl</DestroySound>
+			<PCU>10</PCU>
+			<DLC>Economy2</DLC>
+		</Definition>
+
+	</CubeBlocks>
+</Definitions>
