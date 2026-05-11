@@ -23,6 +23,7 @@ Ok, so what did I actually do...
 [*]Warfare Reactors produce 2x power AND consume half the fuel per MW. Each Uranium ingot lasts 4x longer than vanilla. Heavier SC tax (200 / 100 / 20 / 5) to balance.
 [*]Sci-Fi Hydrogen Engine has 2x fuel capacity and half H2 consumption per MW. 4x total runtime on a full tank.
 [*]Twin Blade Wind Turbine produces 2x the power of vanilla.
+[*]Safe Zone Generator spins up in half the time (60s instead of 120s) and burns half the upkeep (1 Zone Chip per 2 hours instead of 1 per hour).
 [/list]
 [*]For weapons, damage was not increased
 [list]
@@ -118,6 +119,10 @@ Below is a list of the impacted blocks. As more blocks come out, ill add them to
 [*]These became x3, [u]Advanced[/u] hydrogen thrusters
 [/list]
 [*]Sci-Fi Hydrogen Engine
+[/list]
+[b]Economy 2[/b]
+[list]
+[*]Safe Zone Generator
 [/list]
 
 [hr][/hr]
