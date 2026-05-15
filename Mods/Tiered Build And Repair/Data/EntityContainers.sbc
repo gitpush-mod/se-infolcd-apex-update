@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <EntityContainers>
+      <Container>
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotBaseLarge</SubtypeId>
+         </Id>
+         <DefaultComponents>
+            <Component BuilderType="MyObjectBuilder_ModStorageComponent" SubtypeId="TieredBuildAndRepairMod" ForceCreate="true"/>
+         </DefaultComponents>
+      </Container>
+      <Container>
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotUpgradedLarge</SubtypeId>
+         </Id>
+         <DefaultComponents>
+            <Component BuilderType="MyObjectBuilder_ModStorageComponent" SubtypeId="TieredBuildAndRepairMod" ForceCreate="true"/>
+         </DefaultComponents>
+      </Container>
+      <Container>
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotUpgradedSmall</SubtypeId>
+         </Id>
+         <DefaultComponents>
+            <Component BuilderType="MyObjectBuilder_ModStorageComponent" SubtypeId="TieredBuildAndRepairMod" ForceCreate="true"/>
+         </DefaultComponents>
+      </Container>
+      <Container>
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotAdvancedLarge</SubtypeId>
+         </Id>
+         <DefaultComponents>
+            <Component BuilderType="MyObjectBuilder_ModStorageComponent" SubtypeId="TieredBuildAndRepairMod" ForceCreate="true"/>
+         </DefaultComponents>
+      </Container>
+      <Container>
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotAdvancedSmall</SubtypeId>
+         </Id>
+         <DefaultComponents>
+            <Component BuilderType="MyObjectBuilder_ModStorageComponent" SubtypeId="TieredBuildAndRepairMod" ForceCreate="true"/>
+         </DefaultComponents>
+      </Container>
+   </EntityContainers>
+</Definitions>

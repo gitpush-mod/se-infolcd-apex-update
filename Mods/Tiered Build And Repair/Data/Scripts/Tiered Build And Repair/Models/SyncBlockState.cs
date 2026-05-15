@@ -1,0 +1,727 @@
+using ProtoBuf;
+using Sandbox.ModAPI;
+using STGTieredBuildAndRepair.Collections;
+using STGTieredBuildAndRepair.Utils;
+using System;
+using System.Collections.Generic;
+using VRage.Game.ModAPI;
+using VRage.ModAPI;
+using VRageMath;
+
+namespace STGTieredBuildAndRepair.Models
+{
+    /// <summary>
+    /// Current State of block
+    /// </summary>
+    [ProtoContract(SkipConstructor = true, UseProtoMembersOnly = true)]
+    public class SyncBlockState
+    {
+        public const int MaxSyncItems = 24;
+        private bool _Ready;
+        private bool _Welding;
+        private bool _NeedWelding;
+        private bool _Grinding;
+        private bool _NeedGrinding;
+        private bool _NeedCollecting;
+        private bool _Transporting;
+        private bool _InventoryFull;
+        private bool _LimitsExceeded;
+        private bool _SafeZoneAllowsWelding;
+        private bool _SafeZoneAllowsBuildingProjections;
+        private bool _SafeZoneAllowsGrinding;
+        private bool _IsShielded;
+        private bool _SafeZoneAndShieldsChecked;
+
+        private List<SyncComponents> _MissingComponentsSync;
+        private List<SyncTargetEntityData> _PossibleWeldTargetsSync;
+        private List<SyncTargetEntityData> _PossibleGrindTargetsSync;
+        private List<SyncTargetEntityData> _PossibleFloatingTargetsSync;
+        private IMySlimBlock _CurrentWeldingBlock;
+        private IMySlimBlock _CurrentGrindingBlock;
+
+        private Vector3D? _CurrentTransportTarget;
+        private Vector3D? _LastTransportTarget;
+        private bool _CurrentTransportIsPick;
+        private bool _CurrentTransportIsCollecting;
+        private TimeSpan _CurrentTransportTime = TimeSpan.Zero;
+        private TimeSpan _CurrentTransportStartTime = TimeSpan.Zero;
+
+        public bool Changed { get; private set; }
+
+        // Delta sync: track list hashes at last transmit to skip unchanged lists.
+        private long _lastTransmittedMissingHash;
+        private long _lastTransmittedWeldHash;
+        private long _lastTransmittedGrindHash;
+        private long _lastTransmittedFloatHash;
+        private int _fullSyncCounter;
+        private const int FullSyncInterval = 5;
+
+        public override string ToString()
+        {
+            return string.Format("Ready={0}, Welding={1}/{2}, Grinding={3}/{4}, MissingComponentsCount={5}, PossibleWeldTargetsCount={6}, PossibleGrindTargetsCount={7}, PossibleFloatingTargetsCount={8}, CurrentWeldingBlock={9}, CurrentGrindingBlock={10}, CurrentTransportTarget={11}",
+               Ready, Welding, NeedWelding, Grinding, NeedGrinding, MissingComponentsSync != null ? MissingComponentsSync.Count : -1, PossibleWeldTargetsSync != null ? PossibleWeldTargetsSync.Count : -1, PossibleGrindTargetsSync != null ? PossibleGrindTargetsSync.Count : -1, PossibleFloatingTargetsSync != null ? PossibleFloatingTargetsSync.Count : -1,
+               Logging.BlockName(CurrentWeldingBlock, Logging.BlockNameOptions.None), Logging.BlockName(CurrentGrindingBlock, Logging.BlockNameOptions.None), CurrentTransportTarget);
+        }
+
+        [ProtoMember(1)]
+        public bool Ready
+        {
+            get { return _Ready; }
+            set
+            {
+                if (value != _Ready)
+                {
+                    _Ready = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(2)]
+        public bool Welding
+        {
+            get { return _Welding; }
+            set
+            {
+                if (value != _Welding)
+                {
+                    _Welding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(3)]
+        public bool NeedWelding
+        {
+            get { return _NeedWelding; }
+            set
+            {
+                if (value != _NeedWelding)
+                {
+                    _NeedWelding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(4)]
+        public bool Grinding
+        {
+            get { return _Grinding; }
+            set
+            {
+                if (value != _Grinding)
+                {
+                    _Grinding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(5)]
+        public bool NeedGrinding
+        {
+            get { return _NeedGrinding; }
+            set
+            {
+                if (value != _NeedGrinding)
+                {
+                    _NeedGrinding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(44)]
+        public bool NeedCollecting
+        {
+            get { return _NeedCollecting; }
+            set
+            {
+                if (value != _NeedCollecting)
+                {
+                    _NeedCollecting = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(6)]
+        public bool Transporting
+        {
+            get { return _Transporting; }
+            set
+            {
+                if (value != _Transporting)
+                {
+                    _Transporting = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(7)]
+        public TimeSpan LastTransmitted { get; set; }
+
+        public IMySlimBlock CurrentWeldingBlock
+        {
+            get { return _CurrentWeldingBlock; }
+            set
+            {
+                if (value != _CurrentWeldingBlock)
+                {
+                    if (MyAPIGateway.Session != null && MyAPIGateway.Session.IsServer)
+                    {
+                        // BUG-097: When the welding loop refreshes the lock-on reference for
+                        // the SAME physical block (background scan produces new IMySlimBlock
+                        // instances every cycle — IsSameBlock matches on grid+position), the
+                        // old and new references share a CubeGrid EntityId. Skip the Dec/Inc
+                        // pair in that case — otherwise GridSystemCount briefly dips by 1
+                        // between the two AddOrUpdate calls and a concurrent
+                        // GetCachedSystemCountOnGrid call from another BaR could pass the
+                        // MaxSystemsPerTargetGrid check during the dip.
+                        var oldGridId = (_CurrentWeldingBlock != null && _CurrentWeldingBlock.CubeGrid != null)
+                            ? _CurrentWeldingBlock.CubeGrid.EntityId : 0L;
+                        var newGridId = (value != null && value.CubeGrid != null)
+                            ? value.CubeGrid.EntityId : 0L;
+                        if (oldGridId != newGridId)
+                        {
+                            if (oldGridId != 0L) Mod.DecrementGridCount(oldGridId);
+                            if (newGridId != 0L) Mod.IncrementGridCount(newGridId);
+                        }
+                    }
+                    _CurrentWeldingBlock = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(10)]
+        public SyncEntityId CurrentWeldingBlockSync
+        {
+            get
+            {
+                return SyncEntityId.GetSyncId(_CurrentWeldingBlock);
+            }
+            set
+            {
+                CurrentWeldingBlock = SyncEntityId.GetItemAsSlimBlock(value);
+            }
+        }
+
+        public IMySlimBlock CurrentGrindingBlock
+        {
+            get { return _CurrentGrindingBlock; }
+            set
+            {
+                if (value != _CurrentGrindingBlock)
+                {
+                    if (MyAPIGateway.Session != null && MyAPIGateway.Session.IsServer)
+                    {
+                        // BUG-097: see CurrentWeldingBlock comment above — same-grid
+                        // reference swap must skip the Dec/Inc pair to avoid the count-dip
+                        // race against concurrent GetCachedSystemCountOnGrid callers.
+                        var oldGridId = (_CurrentGrindingBlock != null && _CurrentGrindingBlock.CubeGrid != null)
+                            ? _CurrentGrindingBlock.CubeGrid.EntityId : 0L;
+                        var newGridId = (value != null && value.CubeGrid != null)
+                            ? value.CubeGrid.EntityId : 0L;
+                        if (oldGridId != newGridId)
+                        {
+                            if (oldGridId != 0L) Mod.DecrementGridCount(oldGridId);
+                            if (newGridId != 0L) Mod.IncrementGridCount(newGridId);
+                        }
+                    }
+                    _CurrentGrindingBlock = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(15)]
+        public SyncEntityId CurrentGrindingBlockSync
+        {
+            get
+            {
+                return SyncEntityId.GetSyncId(_CurrentGrindingBlock);
+            }
+            set
+            {
+                CurrentGrindingBlock = SyncEntityId.GetItemAsSlimBlock(value);
+            }
+        }
+
+        [ProtoMember(16)]
+        public Vector3D? CurrentTransportTarget
+        {
+            get { return _CurrentTransportTarget; }
+            set
+            {
+                if (value != _CurrentTransportTarget)
+                {
+                    _CurrentTransportTarget = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(17)]
+        public Vector3D? LastTransportTarget
+        {
+            get { return _LastTransportTarget; }
+            set
+            {
+                if (value != _LastTransportTarget)
+                {
+                    _LastTransportTarget = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(18)]
+        public bool CurrentTransportIsPick
+        {
+            get { return _CurrentTransportIsPick; }
+            set
+            {
+                if (value != _CurrentTransportIsPick)
+                {
+                    _CurrentTransportIsPick = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Server-only: true when the current pick-transport originated from collecting (not grinding).
+        /// </summary>
+        public bool CurrentTransportIsCollecting
+        {
+            get { return _CurrentTransportIsCollecting; }
+            set { _CurrentTransportIsCollecting = value; }
+        }
+
+        [ProtoMember(19)]
+        public TimeSpan CurrentTransportTime
+        {
+            get { return _CurrentTransportTime; }
+            set
+            {
+                if (value != _CurrentTransportTime)
+                {
+                    _CurrentTransportTime = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(20)]
+        public TimeSpan CurrentTransportStartTime
+        {
+            get { return _CurrentTransportStartTime; }
+            set
+            {
+                if (value != _CurrentTransportStartTime)
+                {
+                    _CurrentTransportStartTime = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        public DefinitionIdHashDictionary MissingComponents { get; private set; }
+
+        [ProtoMember(21)]
+        public List<SyncComponents> MissingComponentsSync
+        {
+            get
+            {
+                if ((ExcludedLists & 1) != 0) return null;
+                if (_MissingComponentsSync == null)
+                {
+                    if (MissingComponents != null) _MissingComponentsSync = MissingComponents.GetSyncList();
+                    else _MissingComponentsSync = new List<SyncComponents>();
+                }
+                return _MissingComponentsSync;
+            }
+        }
+
+        [ProtoMember(22)]
+        public bool InventoryFull
+        {
+            get { return _InventoryFull; }
+            set
+            {
+                if (value != _InventoryFull)
+                {
+                    _InventoryFull = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(23)]
+        public bool LimitsExceeded
+        {
+            get { return _LimitsExceeded; }
+            set
+            {
+                if (value != _LimitsExceeded)
+                {
+                    _LimitsExceeded = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        public TargetBlockDataHashList PossibleWeldTargets { get; private set; }
+
+        [ProtoMember(30)]
+        public List<SyncTargetEntityData> PossibleWeldTargetsSync
+        {
+            get
+            {
+                if ((ExcludedLists & 2) != 0) return null;
+                if (_PossibleWeldTargetsSync == null)
+                {
+                    if (PossibleWeldTargets != null) _PossibleWeldTargetsSync = PossibleWeldTargets.GetSyncList();
+                    else _PossibleWeldTargetsSync = new List<SyncTargetEntityData>();
+                }
+                return _PossibleWeldTargetsSync;
+            }
+        }
+
+        public TargetBlockDataHashList PossibleGrindTargets { get; private set; }
+
+        [ProtoMember(35)]
+        public List<SyncTargetEntityData> PossibleGrindTargetsSync
+        {
+            get
+            {
+                if ((ExcludedLists & 4) != 0) return null;
+                if (_PossibleGrindTargetsSync == null)
+                {
+                    if (PossibleGrindTargets != null) _PossibleGrindTargetsSync = PossibleGrindTargets.GetSyncList();
+                    else _PossibleGrindTargetsSync = new List<SyncTargetEntityData>();
+                }
+                return _PossibleGrindTargetsSync;
+            }
+        }
+
+        public TargetEntityDataHashList PossibleFloatingTargets { get; private set; }
+
+        [ProtoMember(36)]
+        public List<SyncTargetEntityData> PossibleFloatingTargetsSync
+        {
+            get
+            {
+                if ((ExcludedLists & 8) != 0) return null;
+                if (_PossibleFloatingTargetsSync == null)
+                {
+                    if (PossibleFloatingTargets != null) _PossibleFloatingTargetsSync = PossibleFloatingTargets.GetSyncList();
+                    else _PossibleFloatingTargetsSync = new List<SyncTargetEntityData>();
+                }
+                return _PossibleFloatingTargetsSync;
+            }
+        }
+
+        [ProtoMember(40)]
+        public bool SafeZoneAllowsWelding
+        {
+            get { return _SafeZoneAllowsWelding; }
+            set
+            {
+                if (value != _SafeZoneAllowsWelding)
+                {
+                    _SafeZoneAllowsWelding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(41)]
+        public bool SafeZoneAllowsGrinding
+        {
+            get { return _SafeZoneAllowsGrinding; }
+            set
+            {
+                if (value != _SafeZoneAllowsGrinding)
+                {
+                    _SafeZoneAllowsGrinding = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(42)]
+        public bool SafeZoneAllowsBuildingProjections
+        {
+            get { return _SafeZoneAllowsBuildingProjections; }
+            set
+            {
+                if (value != _SafeZoneAllowsBuildingProjections)
+                {
+                    _SafeZoneAllowsBuildingProjections = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        [ProtoMember(43)]
+        public bool IsShielded
+        {
+            get { return _IsShielded; }
+            set
+            {
+                if (value != _IsShielded)
+                {
+                    _IsShielded = value;
+                    Changed = true;
+                }
+            }
+        }
+
+        public bool SafeZoneAndShieldsChecked
+        {
+            get { return _SafeZoneAndShieldsChecked; }
+            set { _SafeZoneAndShieldsChecked = value; }
+        }
+
+        [ProtoMember(50)]
+        public byte ExcludedLists { get; set; }
+
+        public SyncBlockState()
+        {
+            MissingComponents = new DefinitionIdHashDictionary();
+            PossibleWeldTargets = new TargetBlockDataHashList();
+            PossibleGrindTargets = new TargetBlockDataHashList();
+            PossibleFloatingTargets = new TargetEntityDataHashList();
+        }
+
+        internal void HasChanged()
+        {
+            Changed = true;
+        }
+
+        internal bool IsTransmitNeeded()
+        {
+            return Changed && MyAPIGateway.Session.ElapsedPlayTime.Subtract(LastTransmitted).TotalSeconds >= 1;
+        }
+
+        internal SyncBlockState GetTransmit()
+        {
+            // Delta sync: skip lists whose hash hasn't changed since last transmit.
+            // Every FullSyncInterval transmits, force full data to correct any drift.
+            _fullSyncCounter++;
+            var forceFull = _fullSyncCounter >= FullSyncInterval;
+            if (forceFull) _fullSyncCounter = 0;
+
+            byte excluded = 0;
+            _MissingComponentsSync = null;
+            _PossibleWeldTargetsSync = null;
+            _PossibleGrindTargetsSync = null;
+            _PossibleFloatingTargetsSync = null;
+
+            if (!forceFull)
+            {
+                var missingHash = MissingComponents.CurrentHash;
+                if (missingHash == _lastTransmittedMissingHash)
+                {
+                    excluded |= 1;
+                }
+                else
+                {
+                    _lastTransmittedMissingHash = missingHash;
+                }
+
+                var weldHash = PossibleWeldTargets.CurrentHash;
+                if (weldHash == _lastTransmittedWeldHash)
+                {
+                    excluded |= 2;
+                }
+                else
+                {
+                    _lastTransmittedWeldHash = weldHash;
+                }
+
+                var grindHash = PossibleGrindTargets.CurrentHash;
+                if (grindHash == _lastTransmittedGrindHash)
+                {
+                    excluded |= 4;
+                }
+                else
+                {
+                    _lastTransmittedGrindHash = grindHash;
+                }
+
+                var floatHash = PossibleFloatingTargets.CurrentHash;
+                if (floatHash == _lastTransmittedFloatHash)
+                {
+                    excluded |= 8;
+                }
+                else
+                {
+                    _lastTransmittedFloatHash = floatHash;
+                }
+            }
+            else
+            {
+                // Full sync — update all hashes
+                _lastTransmittedMissingHash = MissingComponents.CurrentHash;
+                _lastTransmittedWeldHash = PossibleWeldTargets.CurrentHash;
+                _lastTransmittedGrindHash = PossibleGrindTargets.CurrentHash;
+                _lastTransmittedFloatHash = PossibleFloatingTargets.CurrentHash;
+            }
+
+            ExcludedLists = excluded;
+            LastTransmitted = MyAPIGateway.Session.ElapsedPlayTime;
+            Changed = false;
+            return this;
+        }
+
+        internal void ForceFullTransmit()
+        {
+            Changed = true;
+            _fullSyncCounter = FullSyncInterval; // Next transmit will be full
+        }
+
+        internal void AssignReceived(SyncBlockState newState)
+        {
+            _Ready = newState.Ready;
+            _Welding = newState.Welding;
+            _NeedWelding = newState.NeedWelding;
+            _Grinding = newState.Grinding;
+            _NeedGrinding = newState.NeedGrinding;
+            _NeedCollecting = newState.NeedCollecting;
+            _Transporting = newState.Transporting;
+            _InventoryFull = newState.InventoryFull;
+            _LimitsExceeded = newState.LimitsExceeded;
+            _CurrentTransportStartTime = MyAPIGateway.Session.ElapsedPlayTime - (newState.LastTransmitted - newState.CurrentTransportStartTime);
+            _CurrentTransportTime = newState.CurrentTransportTime;
+
+            _CurrentWeldingBlock = SyncEntityId.GetItemAsSlimBlock(newState.CurrentWeldingBlockSync);
+            _CurrentGrindingBlock = SyncEntityId.GetItemAsSlimBlock(newState.CurrentGrindingBlockSync);
+            _CurrentTransportTarget = newState.CurrentTransportTarget;
+            _CurrentTransportIsPick = newState.CurrentTransportIsPick;
+
+            // Delta sync: ExcludedLists bits indicate which lists were omitted
+            // because they haven't changed. Keep existing client data for those.
+            var excluded = newState.ExcludedLists;
+
+            if ((excluded & 1) == 0)
+            {
+                MissingComponents.Clear();
+                var missingComponentsSync = newState.MissingComponentsSync;
+                if (missingComponentsSync != null)
+                {
+                    foreach (var item in missingComponentsSync)
+                    {
+                        MissingComponents.Add(item.Component, item.Amount);
+                    }
+                }
+            }
+
+            if ((excluded & 2) == 0)
+            {
+                PossibleWeldTargets.Clear();
+                var possibleWeldTargetsSync = newState.PossibleWeldTargetsSync;
+
+                if (possibleWeldTargetsSync != null)
+                {
+                    foreach (var item in possibleWeldTargetsSync)
+                    {
+                        if (item.Entity == null)
+                            continue;
+
+                        if (item.Entity.EntityId == 0)
+                        {
+                            if (!item.Entity.Position.HasValue) continue;
+                            IMyEntity gridEntity;
+                            if (MyAPIGateway.Entities.TryGetEntityById(item.Entity.GridId, out gridEntity))
+                            {
+                                var grid = gridEntity as IMyCubeGrid;
+                                var block = grid?.GetCubeBlock(item.Entity.Position.Value);
+                                if (block != null)
+                                {
+                                    PossibleWeldTargets.Add(new TargetBlockData(block, item.Distance, 0));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var slimBlock = SyncEntityId.GetItemAsSlimBlock(item.Entity);
+                            if (slimBlock != null)
+                                PossibleWeldTargets.Add(new TargetBlockData(slimBlock, item.Distance, 0));
+                        }
+                    }
+                }
+            }
+
+            if ((excluded & 4) == 0)
+            {
+                PossibleGrindTargets.Clear();
+                var possibleGrindTargetsSync = newState.PossibleGrindTargetsSync;
+
+                if (possibleGrindTargetsSync != null)
+                {
+                    foreach (var item in possibleGrindTargetsSync)
+                    {
+                        if (item.Entity == null)
+                            continue;
+
+                        if (item.Entity.EntityId == 0)
+                        {
+                            if (!item.Entity.Position.HasValue) continue;
+                            IMyEntity gridEntity;
+                            if (MyAPIGateway.Entities.TryGetEntityById(item.Entity.GridId, out gridEntity))
+                            {
+                                var grid = gridEntity as IMyCubeGrid;
+                                var block = grid?.GetCubeBlock(item.Entity.Position.Value);
+                                if (block != null)
+                                {
+                                    PossibleGrindTargets.Add(new TargetBlockData(block, item.Distance, 0));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            var slimBlock = SyncEntityId.GetItemAsSlimBlock(item.Entity);
+                            if (slimBlock != null)
+                                PossibleGrindTargets.Add(new TargetBlockData(slimBlock, item.Distance, 0));
+                        }
+                    }
+                }
+            }
+
+            if ((excluded & 8) == 0)
+            {
+                PossibleFloatingTargets.Clear();
+                var possibleFloatingTargetsSync = newState.PossibleFloatingTargetsSync;
+
+                if (possibleFloatingTargetsSync != null)
+                {
+                    foreach (var item in possibleFloatingTargetsSync)
+                    {
+                        var floatingObj = SyncEntityId.GetItemAs<Sandbox.Game.Entities.MyFloatingObject>(item.Entity);
+                        if (floatingObj != null)
+                            PossibleFloatingTargets.Add(new TargetEntityData(floatingObj, item.Distance));
+                    }
+                }
+            }
+
+            _IsShielded = newState.IsShielded;
+            _SafeZoneAllowsGrinding = newState.SafeZoneAllowsGrinding;
+            _SafeZoneAllowsBuildingProjections = newState.SafeZoneAllowsBuildingProjections;
+            _SafeZoneAllowsWelding = newState.SafeZoneAllowsWelding;
+            _SafeZoneAndShieldsChecked = true;
+
+            Changed = true;
+        }
+
+        internal void ResetChanged()
+        {
+            Changed = false;
+        }
+    }
+}

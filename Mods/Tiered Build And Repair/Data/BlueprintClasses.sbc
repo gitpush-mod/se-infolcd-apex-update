@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <BlueprintClassEntries>
+      <Entry Class="LargeBlocks" BlueprintSubtypeId="ShipWelder/STG_NanobotBaseLarge" />
+      <Entry Class="LargeBlocks" BlueprintSubtypeId="ShipWelder/STG_NanobotUpgradedLarge" />
+      <Entry Class="LargeBlocks" BlueprintSubtypeId="ShipWelder/STG_NanobotAdvancedLarge" />
+      <Entry Class="SmallBlocks" BlueprintSubtypeId="ShipWelder/STG_NanobotUpgradedSmall" />
+      <Entry Class="SmallBlocks" BlueprintSubtypeId="ShipWelder/STG_NanobotAdvancedSmall" />
+   </BlueprintClassEntries>
+</Definitions>

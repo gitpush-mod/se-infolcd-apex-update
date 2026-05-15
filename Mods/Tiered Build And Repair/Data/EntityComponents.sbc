@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <EntityComponents>
+      <EntityComponent xsi:type="MyObjectBuilder_ModStorageComponentDefinition">
+         <Id>
+            <TypeId>ModStorageComponent</TypeId>
+            <SubtypeId>TieredBuildAndRepairMod</SubtypeId>
+         </Id>
+         <RegisteredStorageGuids>
+            <guid>BC7CF2B5-3622-4E66-9C0C-AD0E97A1430A</guid>
+         </RegisteredStorageGuids>
+      </EntityComponent>
+   </EntityComponents>
+</Definitions>

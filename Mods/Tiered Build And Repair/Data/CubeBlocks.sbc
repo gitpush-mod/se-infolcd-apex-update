@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <CubeBlocks>
+
+      <!-- ================================================================== -->
+      <!-- TIER 1: BASE — Build And Repair (LG only, static grids only)       -->
+      <!-- Walk Mode (connected grids only), Weld Only, no janitor, no idle   -->
+      <!-- collect. Standard vanilla Nanobot cost.                            -->
+      <!-- ================================================================== -->
+      <Definition xsi:type="MyObjectBuilder_ShipWelderDefinition">
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotBaseLarge</SubtypeId>
+         </Id>
+         <DisplayName>Build And Repair</DisplayName>
+         <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+         <Description>Auto-welds the host grid and any mechanically connected sub-grids (Walk Mode). Welding only — no grinding or floating-object pickup. Stations only.</Description>
+         <CubeSize>Large</CubeSize>
+         <BlockTopology>TriangleMesh</BlockTopology>
+         <Size x="1" y="1" z="2" />
+         <ModelOffset x="0" y="0" z="0" />
+         <Center x="0" y="0" z="0" />
+         <Model>Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem.mwm</Model>
+         <Components>
+            <Component Subtype="SteelPlate" Count="400" />
+            <Component Subtype="Construction" Count="1200" />
+            <Component Subtype="InteriorPlate" Count="250" />
+            <Component Subtype="SmallTube" Count="600" />
+            <Component Subtype="LargeTube" Count="100" />
+            <Component Subtype="Computer" Count="200" />
+            <Component Subtype="Motor" Count="400" />
+            <Component Subtype="Superconductor" Count="120" />
+            <Component Subtype="Construction" Count="120" />
+         </Components>
+         <CriticalComponent Subtype="Superconductor" Index="0" />
+         <MountPoints>
+            <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Right" StartX="1.00" StartY="0.00" EndX="2.00" EndY="1.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" Default="true"/>
+            <MountPoint Side="Top" StartX="0.00" StartY="1.00" EndX="1.00" EndY="2.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="1.58" EndX="1.00" EndY="1.68" />
+            <MountPoint Side="Top" StartX="0.00" StartY="0.32" EndX="1.00" EndY="0.42" />
+            <MountPoint Side="Left" StartX="1.57" StartY="0.00" EndX="1.68" EndY="1.00" />
+            <MountPoint Side="Right" StartX="0.32" StartY="0.00" EndX="0.42" EndY="1.00" />
+         </MountPoints>
+         <BuildProgressModels>
+            <Model BuildPercentUpperBound="0.33" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr1.mwm" />
+            <Model BuildPercentUpperBound="0.67" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr2.mwm" />
+            <Model BuildPercentUpperBound="1.00" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr3.mwm" />
+         </BuildProgressModels>
+         <BuildTimeSeconds>60</BuildTimeSeconds>
+         <BlockPairName>STG_NanobotBase</BlockPairName>
+         <MirroringX>None</MirroringX>
+         <MirroringY>None</MirroringY>
+         <MirroringZ>None</MirroringZ>
+         <EdgeType>Light</EdgeType>
+         <PrimarySound>BlockModuleEfficiency</PrimarySound>
+         <DamageEffectId>212</DamageEffectId>
+         <DamagedSound>ParticleHeavyMech</DamagedSound>
+         <SensorRadius>0.00001</SensorRadius>
+         <SensorOffset>0.0</SensorOffset>
+         <PCU>100</PCU>
+      </Definition>
+
+      <!-- ================================================================== -->
+      <!-- TIER 2: UPGRADED — Upgraded Build And Repair (LG + SG, any grid)   -->
+      <!-- Walk + Fly Mode, Weld Only, no janitor, no idle collect.           -->
+      <!-- 2x vanilla Nanobot cost.                                           -->
+      <!-- ================================================================== -->
+      <Definition xsi:type="MyObjectBuilder_ShipWelderDefinition">
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotUpgradedLarge</SubtypeId>
+         </Id>
+         <DisplayName>Upgraded Build And Repair</DisplayName>
+         <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+         <Description>Auto-welds the host grid, connected sub-grids, and nearby disconnected ships (Fly Mode). Welding only — no grinding. Builds on ships or stations.</Description>
+         <CubeSize>Large</CubeSize>
+         <BlockTopology>TriangleMesh</BlockTopology>
+         <Size x="1" y="1" z="2" />
+         <ModelOffset x="0" y="0" z="0" />
+         <Center x="0" y="0" z="0" />
+         <Model>Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem.mwm</Model>
+         <Components>
+            <Component Subtype="SteelPlate" Count="800" />
+            <Component Subtype="Construction" Count="2400" />
+            <Component Subtype="InteriorPlate" Count="500" />
+            <Component Subtype="SmallTube" Count="1200" />
+            <Component Subtype="LargeTube" Count="200" />
+            <Component Subtype="Computer" Count="400" />
+            <Component Subtype="Motor" Count="800" />
+            <Component Subtype="Superconductor" Count="240" />
+            <Component Subtype="Construction" Count="240" />
+         </Components>
+         <CriticalComponent Subtype="Superconductor" Index="0" />
+         <MountPoints>
+            <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Right" StartX="1.00" StartY="0.00" EndX="2.00" EndY="1.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" Default="true"/>
+            <MountPoint Side="Top" StartX="0.00" StartY="1.00" EndX="1.00" EndY="2.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="1.58" EndX="1.00" EndY="1.68" />
+            <MountPoint Side="Top" StartX="0.00" StartY="0.32" EndX="1.00" EndY="0.42" />
+            <MountPoint Side="Left" StartX="1.57" StartY="0.00" EndX="1.68" EndY="1.00" />
+            <MountPoint Side="Right" StartX="0.32" StartY="0.00" EndX="0.42" EndY="1.00" />
+         </MountPoints>
+         <BuildProgressModels>
+            <Model BuildPercentUpperBound="0.33" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr1.mwm" />
+            <Model BuildPercentUpperBound="0.67" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr2.mwm" />
+            <Model BuildPercentUpperBound="1.00" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr3.mwm" />
+         </BuildProgressModels>
+         <BuildTimeSeconds>120</BuildTimeSeconds>
+         <BlockPairName>STG_NanobotUpgraded</BlockPairName>
+         <MirroringX>None</MirroringX>
+         <MirroringY>None</MirroringY>
+         <MirroringZ>None</MirroringZ>
+         <EdgeType>Light</EdgeType>
+         <PrimarySound>BlockModuleEfficiency</PrimarySound>
+         <DamageEffectId>212</DamageEffectId>
+         <DamagedSound>ParticleHeavyMech</DamagedSound>
+         <SensorRadius>0.00001</SensorRadius>
+         <SensorOffset>0.0</SensorOffset>
+         <PCU>200</PCU>
+      </Definition>
+
+      <Definition xsi:type="MyObjectBuilder_ShipWelderDefinition">
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotUpgradedSmall</SubtypeId>
+         </Id>
+         <DisplayName>Upgraded Build And Repair</DisplayName>
+         <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+         <Description>Auto-welds the host grid, connected sub-grids, and nearby disconnected ships (Fly Mode). Welding only — no grinding. Builds on ships or stations.</Description>
+         <CubeSize>Small</CubeSize>
+         <BlockTopology>TriangleMesh</BlockTopology>
+         <Size x="3" y="3" z="1" />
+         <ModelOffset x="0" y="0" z="0" />
+         <Model>Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem.mwm</Model>
+         <Components>
+            <Component Subtype="SteelPlate" Count="300" />
+            <Component Subtype="Construction" Count="800" />
+            <Component Subtype="InteriorPlate" Count="160" />
+            <Component Subtype="SmallTube" Count="400" />
+            <Component Subtype="LargeTube" Count="40" />
+            <Component Subtype="Computer" Count="200" />
+            <Component Subtype="Motor" Count="240" />
+            <Component Subtype="Superconductor" Count="80" />
+            <Component Subtype="Construction" Count="200" />
+         </Components>
+         <CriticalComponent Subtype="Superconductor" Index="0" />
+         <MountPoints>
+            <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="3.00" EndY="3.00" />
+            <MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="3.00" />
+            <MountPoint Side="Right" StartX="0.00" StartY="0.00" EndX="1.00" EndY="3.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="3.00" EndY="1.00" />
+            <MountPoint Side="Top" StartX="0.00" StartY="0.00" EndX="3.00" EndY="1.00" />
+            <MountPoint Side="Back" StartX="0.00" StartY="0.00" EndX="3.00" EndY="3.00" Default="true"/>
+         </MountPoints>
+         <BuildProgressModels>
+            <Model BuildPercentUpperBound="0.33" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr1.mwm" />
+            <Model BuildPercentUpperBound="0.67" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr2.mwm" />
+            <Model BuildPercentUpperBound="1.00" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr3.mwm" />
+         </BuildProgressModels>
+         <BuildTimeSeconds>60</BuildTimeSeconds>
+         <BlockPairName>STG_NanobotUpgraded</BlockPairName>
+         <MirroringX>None</MirroringX>
+         <MirroringY>None</MirroringY>
+         <MirroringZ>None</MirroringZ>
+         <EdgeType>Light</EdgeType>
+         <PrimarySound>BlockModuleEfficiency</PrimarySound>
+         <DamageEffectId>212</DamageEffectId>
+         <DamagedSound>ParticleHeavyMech</DamagedSound>
+         <SensorRadius>0.00001</SensorRadius>
+         <SensorOffset>0.0</SensorOffset>
+         <PCU>200</PCU>
+      </Definition>
+
+      <!-- ================================================================== -->
+      <!-- TIER 3: ADVANCED — Advanced Build And Repair (LG + SG, any grid)   -->
+      <!-- Walk + Fly Mode, Weld + Grind unlocked, janitor + idle collect     -->
+      <!-- unlocked. 3x vanilla cost + prototech components.                  -->
+      <!-- ================================================================== -->
+      <Definition xsi:type="MyObjectBuilder_ShipWelderDefinition">
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotAdvancedLarge</SubtypeId>
+         </Id>
+         <DisplayName>Advanced Build And Repair</DisplayName>
+         <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+         <Description>Full-spectrum prototech nanobot system. Welds, grinds, and auto-grinds nearby enemy or abandoned blocks (Janitor). Can collect floating objects when idle. Builds on ships or stations.</Description>
+         <CubeSize>Large</CubeSize>
+         <BlockTopology>TriangleMesh</BlockTopology>
+         <Size x="1" y="1" z="2" />
+         <ModelOffset x="0" y="0" z="0" />
+         <Center x="0" y="0" z="0" />
+         <Model>Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem.mwm</Model>
+         <Components>
+            <Component Subtype="SteelPlate" Count="1200" />
+            <Component Subtype="Construction" Count="3600" />
+            <Component Subtype="InteriorPlate" Count="750" />
+            <Component Subtype="SmallTube" Count="1800" />
+            <Component Subtype="LargeTube" Count="300" />
+            <Component Subtype="Computer" Count="600" />
+            <Component Subtype="Motor" Count="1200" />
+            <Component Subtype="Superconductor" Count="360" />
+            <Component Subtype="PrototechPanel" Count="10" />
+            <Component Subtype="PrototechCapacitor" Count="4">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="PrototechMachinery" Count="10">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="PrototechCircuitry" Count="8">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="Construction" Count="360" />
+            <Component Subtype="PrototechFrame" Count="1">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+         </Components>
+         <CriticalComponent Subtype="PrototechFrame" Index="0" />
+         <MountPoints>
+            <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" />
+            <MountPoint Side="Right" StartX="1.00" StartY="0.00" EndX="2.00" EndY="1.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="1.00" EndY="1.00" Default="true"/>
+            <MountPoint Side="Top" StartX="0.00" StartY="1.00" EndX="1.00" EndY="2.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="1.58" EndX="1.00" EndY="1.68" />
+            <MountPoint Side="Top" StartX="0.00" StartY="0.32" EndX="1.00" EndY="0.42" />
+            <MountPoint Side="Left" StartX="1.57" StartY="0.00" EndX="1.68" EndY="1.00" />
+            <MountPoint Side="Right" StartX="0.32" StartY="0.00" EndX="0.42" EndY="1.00" />
+         </MountPoints>
+         <BuildProgressModels>
+            <Model BuildPercentUpperBound="0.33" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr1.mwm" />
+            <Model BuildPercentUpperBound="0.67" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr2.mwm" />
+            <Model BuildPercentUpperBound="1.00" File="Models\NanobotBuildAndRepairSystem\SELtdLargeNanobotBuildAndRepairSystem_Constr3.mwm" />
+         </BuildProgressModels>
+         <BuildTimeSeconds>240</BuildTimeSeconds>
+         <BlockPairName>STG_NanobotAdvanced</BlockPairName>
+         <MirroringX>None</MirroringX>
+         <MirroringY>None</MirroringY>
+         <MirroringZ>None</MirroringZ>
+         <EdgeType>Light</EdgeType>
+         <PrimarySound>BlockModuleEfficiency</PrimarySound>
+         <DamageEffectId>212</DamageEffectId>
+         <DamagedSound>ParticleHeavyMech</DamagedSound>
+         <SensorRadius>0.00001</SensorRadius>
+         <SensorOffset>0.0</SensorOffset>
+         <PCU>400</PCU>
+      </Definition>
+
+      <Definition xsi:type="MyObjectBuilder_ShipWelderDefinition">
+         <Id>
+            <TypeId>ShipWelder</TypeId>
+            <SubtypeId>STG_NanobotAdvancedSmall</SubtypeId>
+         </Id>
+         <DisplayName>Advanced Build And Repair</DisplayName>
+         <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+         <Description>Full-spectrum prototech nanobot system. Welds, grinds, and auto-grinds nearby enemy or abandoned blocks (Janitor). Can collect floating objects when idle. Builds on ships or stations.</Description>
+         <CubeSize>Small</CubeSize>
+         <BlockTopology>TriangleMesh</BlockTopology>
+         <Size x="3" y="3" z="1" />
+         <ModelOffset x="0" y="0" z="0" />
+         <Model>Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem.mwm</Model>
+         <Components>
+            <Component Subtype="SteelPlate" Count="450" />
+            <Component Subtype="Construction" Count="1200" />
+            <Component Subtype="InteriorPlate" Count="240" />
+            <Component Subtype="SmallTube" Count="600" />
+            <Component Subtype="LargeTube" Count="60" />
+            <Component Subtype="Computer" Count="300" />
+            <Component Subtype="Motor" Count="360" />
+            <Component Subtype="Superconductor" Count="120" />
+            <Component Subtype="PrototechPanel" Count="4" />
+            <Component Subtype="PrototechCapacitor" Count="2">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="PrototechMachinery" Count="4">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="PrototechCircuitry" Count="3">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+            <Component Subtype="Construction" Count="300" />
+            <Component Subtype="PrototechFrame" Count="1">
+               <DeconstructId>
+                  <TypeId>Ingot</TypeId>
+                  <SubtypeId>PrototechScrap</SubtypeId>
+               </DeconstructId>
+            </Component>
+         </Components>
+         <CriticalComponent Subtype="PrototechFrame" Index="0" />
+         <MountPoints>
+            <MountPoint Side="Front" StartX="0.00" StartY="0.00" EndX="3.00" EndY="3.00" />
+            <MountPoint Side="Left" StartX="0.00" StartY="0.00" EndX="1.00" EndY="3.00" />
+            <MountPoint Side="Right" StartX="0.00" StartY="0.00" EndX="1.00" EndY="3.00" />
+            <MountPoint Side="Bottom" StartX="0.00" StartY="0.00" EndX="3.00" EndY="1.00" />
+            <MountPoint Side="Top" StartX="0.00" StartY="0.00" EndX="3.00" EndY="1.00" />
+            <MountPoint Side="Back" StartX="0.00" StartY="0.00" EndX="3.00" EndY="3.00" Default="true"/>
+         </MountPoints>
+         <BuildProgressModels>
+            <Model BuildPercentUpperBound="0.33" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr1.mwm" />
+            <Model BuildPercentUpperBound="0.67" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr2.mwm" />
+            <Model BuildPercentUpperBound="1.00" File="Models\NanobotBuildAndRepairSystem\SELtdSmallNanobotBuildAndRepairSystem_Constr3.mwm" />
+         </BuildProgressModels>
+         <BuildTimeSeconds>90</BuildTimeSeconds>
+         <BlockPairName>STG_NanobotAdvanced</BlockPairName>
+         <MirroringX>None</MirroringX>
+         <MirroringY>None</MirroringY>
+         <MirroringZ>None</MirroringZ>
+         <EdgeType>Light</EdgeType>
+         <PrimarySound>BlockModuleEfficiency</PrimarySound>
+         <DamageEffectId>212</DamageEffectId>
+         <DamagedSound>ParticleHeavyMech</DamagedSound>
+         <SensorRadius>0.00001</SensorRadius>
+         <SensorOffset>0.0</SensorOffset>
+         <PCU>400</PCU>
+      </Definition>
+
+   </CubeBlocks>
+
+   <Sounds>
+      <Sound>
+         <Id>
+            <TypeId>MyObjectBuilder_AudioDefinition</TypeId>
+            <SubtypeId>ArcBaRUnable</SubtypeId>
+         </Id>
+         <Category>TOOL</Category>
+         <Volume>0.1</Volume>
+         <MaxDistance>35</MaxDistance>
+         <Loopable>true</Loopable>
+         <Waves>
+            <Wave Type="D2">
+               <Loop>Sounds\ArcBaRUnable2d.xwm</Loop>
+            </Wave>
+            <Wave Type="D3">
+               <Loop>Sounds\ArcBaRUnable3d.xwm</Loop>
+            </Wave>
+         </Waves>
+      </Sound>
+
+      <Sound>
+         <Id>
+            <TypeId>MyObjectBuilder_AudioDefinition</TypeId>
+            <SubtypeId>RealBaRUnable</SubtypeId>
+         </Id>
+         <Category>TOOL_R</Category>
+         <MaxDistance>5</MaxDistance>
+         <Volume>0.1</Volume>
+         <Pitch>-1</Pitch>
+         <Loopable>true</Loopable>
+         <Waves>
+            <Wave Type="D2">
+               <Loop>Sounds\RealBaRUnable2d.wav</Loop>
+            </Wave>
+            <Wave Type="D3">
+               <Loop>Sounds\RealBaRUnable3d.wav</Loop>
+            </Wave>
+         </Waves>
+      </Sound>
+   </Sounds>
+</Definitions>

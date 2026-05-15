@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <BlockVariantGroups>
+        <BlockVariantGroup>
+            <Id Type="MyObjectBuilder_BlockVariantGroup" Subtype="STG_NanobotVariantGroup" />
+            <Icon>Textures\Icons\SELtdNanobotBuildAndRepairSystem.dds</Icon>
+            <DisplayName>Build And Repair</DisplayName>
+            <Description>Tiered nanobot build and repair systems. Scroll variants to cycle Base / Upgraded / Advanced.</Description>
+            <Blocks>
+                <Block Type="MyObjectBuilder_ShipWelder" Subtype="STG_NanobotBaseLarge" />
+                <Block Type="MyObjectBuilder_ShipWelder" Subtype="STG_NanobotUpgradedLarge" />
+                <Block Type="MyObjectBuilder_ShipWelder" Subtype="STG_NanobotUpgradedSmall" />
+                <Block Type="MyObjectBuilder_ShipWelder" Subtype="STG_NanobotAdvancedLarge" />
+                <Block Type="MyObjectBuilder_ShipWelder" Subtype="STG_NanobotAdvancedSmall" />
+            </Blocks>
+        </BlockVariantGroup>
+    </BlockVariantGroups>
+</Definitions>
