@@ -25,6 +25,12 @@ namespace STGTieredBuildAndRepair
             try
             {
 
+            // Belt-and-suspenders tier guard: if this block's tier doesn't permit grinding
+            // (Base + Upgraded = WeldOnly only), refuse the call regardless of how WorkMode
+            // ended up set. Catches any race condition between WorkMode change and
+            // CheckLimits resetting it.
+            if (!TierConfig.IsGrindingAllowed(_Welder)) return;
+
             if (State.InventoryFull)
                 return;
 

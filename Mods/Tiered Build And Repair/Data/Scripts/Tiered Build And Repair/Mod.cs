@@ -21,7 +21,11 @@ namespace STGTieredBuildAndRepair
     [MySessionComponentDescriptor(MyUpdateOrder.BeforeSimulation)]
     public class Mod : MySessionComponentBase
     {
-        public static Guid ModGuid = new Guid("8B57046C-DA20-4DE1-8E35-513FD21E3B9F");
+        // BUG-FIX: was upstream's GUID, which is NOT registered in our
+        // EntityComponents.sbc → all per-block storage writes were silently dropped
+        // and settings never persisted across save/load. Must match the guid in
+        // EntityComponents.sbc <RegisteredStorageGuids>.
+        public static Guid ModGuid = new Guid("BC7CF2B5-3622-4E66-9C0C-AD0E97A1430A");
         public static bool DisableLocalization = false;
         public static bool SettingsValid = false;
         public static bool CustomSettingsLoaded = false;
