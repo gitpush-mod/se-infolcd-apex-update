@@ -540,7 +540,11 @@ namespace MahrianeIndustries.LCDInfo
 
                 if (showBatteries)
                 {
-                    SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, "BAT", batteries.Sum(block => block.CurrentStoredPower), batteries.Sum(block => block.MaxStoredPower), true, Unit.WattHours, true);
+                    // Filter to working batteries only — disabled/broken batteries still report
+                    // MaxStoredPower and CurrentStoredPower, which would inflate the total.
+                    // See MahLCDs_Summary_Power.cs DrawBatterySprite for the same fix.
+                    var activeBatteries = batteries.Where(b => b.IsWorking).ToList();
+                    SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, "BAT", activeBatteries.Sum(block => block.CurrentStoredPower), activeBatteries.Sum(block => block.MaxStoredPower), true, Unit.WattHours, true);
                 }
                 if (tanks.Count > 0)
                 {

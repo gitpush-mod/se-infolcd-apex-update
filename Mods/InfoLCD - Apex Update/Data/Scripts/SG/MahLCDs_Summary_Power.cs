@@ -664,11 +664,18 @@ namespace MahrianeIndustries.LCDInfo
         {
             try
             {
-                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, "BAT", batteries.Sum(block => block.CurrentStoredPower), batteries.Sum(block => block.MaxStoredPower), showInactive, Unit.WattHours, true);
+                // BUG-FIX (TheBelgarion 2026-05-17): disabled/broken batteries still report
+                // their MaxStoredPower and CurrentStoredPower, which silently inflated the
+                // BAT MWh totals during remote building. Reactors don't show this because
+                // reactor.CurrentOutput/MaxOutput are 0 when off, so summing zeros is a
+                // no-op. For batteries we have to filter explicitly to working blocks.
+                var activeBatteries = batteries.Where(b => b.IsWorking).ToList();
+
+                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, "BAT", activeBatteries.Sum(block => block.CurrentStoredPower), activeBatteries.Sum(block => block.MaxStoredPower), showInactive, Unit.WattHours, true);
 
                 // Always show battery output/input bars, even in compact mode
-                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, " <<", batteries.Sum(block => block.CurrentOutput), batteries.Sum(block => block.MaxOutput), showInactive, Unit.Watt, false);
-                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, " >>", batteries.Sum(block => block.CurrentInput), batteries.Sum(block => block.MaxInput), showInactive, Unit.Watt, false);
+                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, " <<", activeBatteries.Sum(block => block.CurrentOutput), activeBatteries.Sum(block => block.MaxOutput), showInactive, Unit.Watt, false);
+                SurfaceDrawer.DrawOutputSprite(ref frame, ref position, surfaceData, " >>", activeBatteries.Sum(block => block.CurrentInput), activeBatteries.Sum(block => block.MaxInput), showInactive, Unit.Watt, false);
 
                 // If this is a corner LCD, no more data will be visible after the battery section.
                 if (compactMode) return;

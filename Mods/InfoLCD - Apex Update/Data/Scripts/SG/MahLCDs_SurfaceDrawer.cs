@@ -714,8 +714,11 @@ namespace MahrianeIndustries.LCDInfo
                 }
                 position += surfaceData.newLine;
 
-                var current = jumpdrives.Sum(block => block.CurrentStoredPower);
-                var total = jumpdrives.Sum(block => block.MaxStoredPower);
+                // Filter to working drives — disabled jump drives still report stored power
+                // and capacity, but they can't contribute to a jump. Same pattern as batteries.
+                var activeDrives = jumpdrives.Where(d => d.IsWorking).ToList();
+                var current = activeDrives.Sum(block => block.CurrentStoredPower);
+                var total = activeDrives.Sum(block => block.MaxStoredPower);
                 var currentDistance = jumpdrives[0].MaxJumpDistanceMeters;
                 var maximumDistance = jumpdrives[0].MaxJumpDistanceMeters;
                 var state = "";

@@ -572,10 +572,25 @@ namespace MahrianeIndustries.LCDInfo
 
         public static string LiterFormat(double num)
         {
-            if (num >= 100000)
+            // FEAT (Kevin Starwaster 2026-05-30): scale to ML/GL for very large volumes
+            // (megabases push hydrogen tanks into the hundreds of millions of liters and
+            // the kL display overflows small/corner LCDs). Each tier drops one decimal as
+            // the magnitude grows so the rendered string stays roughly constant-width.
+            if (num >= 100000000000) // 100 GL+
+                return (num / 1000000000).ToString("0 GL");
+            if (num >= 10000000000)  // 10 GL+
+                return (num / 1000000000).ToString("0.0 GL");
+            if (num >= 1000000000)   // 1 GL+
+                return (num / 1000000000).ToString("0.00 GL");
+            if (num >= 100000000)    // 100 ML+
+                return (num / 1000000).ToString("0 ML");
+            if (num >= 10000000)     // 10 ML+
+                return (num / 1000000).ToString("0.0 ML");
+            if (num >= 1000000)      // 1 ML+
+                return (num / 1000000).ToString("0.00 ML");
+            if (num >= 100000)       // 100 kL+
                 return (num / 1000).ToString("0.0 kL");
-
-            if (num >= 10000)
+            if (num >= 10000)        // 10 kL+
                 return (num / 1000).ToString("0.00 kL");
 
             return num.ToString("0.00 L");
@@ -716,13 +731,16 @@ namespace MahrianeIndustries.LCDInfo
                         reactors.Add((IMyReactor)block);
                 }
 
-                // Calculate time left depending on stored Power in batteries
-                if (batteries.Count > 0)
+                // Calculate time left depending on stored Power in batteries.
+                // Filter to working batteries — disabled batteries' stored power isn't
+                // available to drain, so including them would overestimate runtime.
+                var activeBatteries = batteries.Where(b => b.IsWorking).ToList();
+                if (activeBatteries.Count > 0)
                 {
-                    var currentBatteryInput = batteries.Sum(block => block.CurrentInput);
-                    var currentBatteryOutput = batteries.Sum(block => block.CurrentOutput);
-                    var currentStoredPower = batteries.Sum(block => block.CurrentStoredPower);
-                    var maximumStoredPower = batteries.Sum(block => block.MaxStoredPower);
+                    var currentBatteryInput = activeBatteries.Sum(block => block.CurrentInput);
+                    var currentBatteryOutput = activeBatteries.Sum(block => block.CurrentOutput);
+                    var currentStoredPower = activeBatteries.Sum(block => block.CurrentStoredPower);
+                    var maximumStoredPower = activeBatteries.Sum(block => block.MaxStoredPower);
                     // Only take battery input into account, when actually loading, not when hopping forward and back <2% close to maxStorage to minimize output stutter.
                     var absoluteBatteryOutput = currentBatteryOutput - (currentStoredPower / maximumStoredPower > 0.98 ? 0 : currentBatteryInput);
 
@@ -1562,6 +1580,63 @@ namespace MahrianeIndustries.LCDInfo
             sb.AppendLine();
         }
 
+        /// <summary>
+        /// Writes the ItemFilter config field — restricts which item subtypes are shown
+        /// on item-summary screens (Ingots, Components, Ores, Items, Ammo, etc.).
+        /// Distinct from SearchId, which filters which BLOCKS' inventories get scanned.
+        /// </summary>
+        public static void AppendItemFilterConfig(StringBuilder sb, List<string> itemFilter, string defaultValue = "*")
+        {
+            string value = (itemFilter != null && itemFilter.Count > 0) ? String.Join(",", itemFilter.ToArray()) : defaultValue;
+            sb.AppendLine($"ItemFilter={value}");
+            sb.AppendLine("; Item subtype filter: Use '*' for all, or text to match item subtype IDs (case-insensitive substring match)");
+            sb.AppendLine("; Examples: 'Gold' shows only Gold items, 'Iron,Nickel' shows Iron and Nickel items");
+            sb.AppendLine();
+        }
+
+        /// <summary>
+        /// Parse the ItemFilter list out of a parsed MyIni config. Empty / "*" / missing
+        /// → empty list (caller should treat empty list as "no filter, show all").
+        /// </summary>
+        public static void ParseItemFilter(MyIni config, string section, List<string> itemFilter)
+        {
+            itemFilter.Clear();
+            if (!config.ContainsKey(section, "ItemFilter")) return;
+
+            string raw = config.Get(section, "ItemFilter").ToString();
+            if (string.IsNullOrWhiteSpace(raw)) return;
+
+            foreach (string s in raw.Split(','))
+            {
+                string t = s.Trim();
+                if (string.IsNullOrEmpty(t) || t == "*") continue;
+                itemFilter.Add(t);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the item should be shown — i.e. the filter is empty OR
+        /// the item's subtypeId/displayName contains at least one filter entry
+        /// (case-insensitive substring match, same semantics as SearchId/ExcludeIds).
+        /// </summary>
+        public static bool ItemPassesFilter(List<string> itemFilter, string subtypeId, string displayName = null)
+        {
+            if (itemFilter == null || itemFilter.Count == 0) return true;
+
+            string sub = subtypeId == null ? "" : subtypeId.ToLower();
+            string dn = displayName == null ? "" : displayName.ToLower();
+
+            foreach (string filter in itemFilter)
+            {
+                string f = filter.ToLower();
+                if (f.Length == 0) continue;
+                if (sub.Contains(f)) return true;
+                if (dn.Length > 0 && dn.Contains(f)) return true;
+            }
+
+            return false;
+        }
+
         public static void AppendShowHeaderConfig(StringBuilder sb, bool value)
         {
             sb.AppendLine($"ShowHeader={value}");
@@ -1622,6 +1697,21 @@ namespace MahrianeIndustries.LCDInfo
         {
             sb.AppendLine($"UseColors={value}");
             sb.AppendLine("; Enable color-coded status indicators (green=good, yellow=warning, red=critical)");
+            sb.AppendLine();
+        }
+
+        /// <summary>
+        /// Writes the InvertBarColors config field — flips the per-item bar color
+        /// severity (default red=low/green=high becomes green=low/red=high). Useful
+        /// for "too much of this item" trackers (e.g. monitor gravel buildup).
+        /// Only affects bars on item-summary screens (Ingots, Components, Ammo,
+        /// Items, Ores). Text and non-item bars are unaffected.
+        /// </summary>
+        public static void AppendInvertBarColorsConfig(StringBuilder sb, bool value)
+        {
+            sb.AppendLine($"InvertBarColors={value}");
+            sb.AppendLine("; Flip per-item bar colors: false=red when below threshold (inventory-low warning, default)");
+            sb.AppendLine("; true=red when at or above threshold (overflow warning, e.g. 'too much gravel')");
             sb.AppendLine();
         }
 

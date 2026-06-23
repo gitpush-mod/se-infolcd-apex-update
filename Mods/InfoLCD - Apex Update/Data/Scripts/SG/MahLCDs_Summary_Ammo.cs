@@ -125,6 +125,7 @@ namespace MahrianeIndustries.LCDInfo
             sb.AppendLine($"SearchId={(!string.IsNullOrEmpty(searchId) ? searchId : "*")}");
             sb.AppendLine("; Block name filter: Use '*' for all, or text to match block names (case-insensitive substring match)");
             sb.AppendLine("; Examples: 'Cargo' matches 'Main Cargo', 'Engineering,Medical' matches blocks containing either word");
+            ConfigHelpers.AppendItemFilterConfig(sb, itemFilter);
             sb.AppendLine($"ExcludeIds={string.Join(",", excludeIds)}");
             sb.AppendLine("; Exclude blocks containing these words (comma-separated, case-insensitive)");
             sb.AppendLine("; Example: 'Airlock,Backup' excludes blocks with 'Airlock' or 'Backup' in their names");
@@ -137,6 +138,7 @@ namespace MahrianeIndustries.LCDInfo
             ConfigHelpers.AppendSubgridUpdateFrequencyConfig(sb, surfaceData.subgridUpdateFrequency);
             ConfigHelpers.AppendShowDockedConfig(sb, surfaceData.showDocked);
             ConfigHelpers.AppendUseColorsConfig(sb, surfaceData.useColors);
+            ConfigHelpers.AppendInvertBarColorsConfig(sb, invertBarColors);
 
             sb.AppendLine();
             ConfigHelpers.AppendScrollingConfig(sb, "AMMO");
@@ -200,7 +202,10 @@ namespace MahrianeIndustries.LCDInfo
                     MahUtillities.TryGetConfigFloat(config, CONFIG_SECTION_ID, "ViewPortOffsetY", ref surfaceData.viewPortOffsetY, ref configError);
 
                     MahUtillities.TryGetConfigBool(config, CONFIG_SECTION_ID, "UseColors", ref surfaceData.useColors, ref configError);
-                    
+                    // Optional, defaults to false. Backward-compat with pre-update configs (no error if missing).
+                    if (config.ContainsKey(CONFIG_SECTION_ID, "InvertBarColors"))
+                        invertBarColors = config.Get(CONFIG_SECTION_ID, "InvertBarColors").ToBoolean();
+
                     // UseSubtypeId is optional for backward compatibility
                     if (config.ContainsKey(CONFIG_SECTION_ID, "UseSubtypeId"))
                         surfaceData.useSubtypeId = config.Get(CONFIG_SECTION_ID, "UseSubtypeId").ToBoolean();
@@ -232,6 +237,7 @@ namespace MahrianeIndustries.LCDInfo
                         configError = true;
 
                     CreateExcludeIdsList();
+                    ConfigHelpers.ParseItemFilter(config, CONFIG_SECTION_ID, itemFilter);
 
                     // Is Corner LCD?
                     if (compactMode)
@@ -317,6 +323,8 @@ namespace MahrianeIndustries.LCDInfo
         IMyTerminalBlock myTerminalBlock;
 
         List<string> excludeIds = new List<string>();
+        List<string> itemFilter = new List<string>();
+        bool invertBarColors = false;
         List<CargoItemDefinition> itemDefinitions = new List<CargoItemDefinition>();
         List<CargoItemDefinition> unknownItemDefinitions = new List<CargoItemDefinition>();
         List<IMyInventory> inventories = new List<IMyInventory>();
@@ -498,6 +506,11 @@ namespace MahrianeIndustries.LCDInfo
 
                         if (item_types.Contains(typeId))
                         {
+                            // Item-level filter (separate from SearchId, which filters BLOCKS).
+                            // Skip items whose subtype doesn't match the ItemFilter list.
+                            if (!ConfigHelpers.ItemPassesFilter(itemFilter, subtypeId))
+                                continue;
+
                             if (!cargo.ContainsKey(subtypeId))
                             {
                                 cargo.Add(subtypeId, new CargoItemType { item = item, amount = currentAmount });
@@ -644,8 +657,9 @@ namespace MahrianeIndustries.LCDInfo
                 {
                     if (itemDefinition == null) continue;
                     if (IgnoreDefinition(itemDefinition)) continue;
+                    if (!ConfigHelpers.ItemPassesFilter(itemFilter, itemDefinition.subtypeId, itemDefinition.displayName)) continue;
                     if (!IncludeBySortId(itemDefinition.sortId)) continue;
-                    
+
                     allItems.Add(itemDefinition);
                 }
 
@@ -657,8 +671,9 @@ namespace MahrianeIndustries.LCDInfo
                 {
                     if (itemDefinition == null) continue;
                     if (IgnoreDefinition(itemDefinition)) continue;
+                    if (!ConfigHelpers.ItemPassesFilter(itemFilter, itemDefinition.subtypeId, itemDefinition.displayName)) continue;
                     if (!IncludeBySortId(itemDefinition.sortId)) continue;
-                    
+
                     allItems.Add(itemDefinition);
                 }
 
@@ -697,8 +712,8 @@ namespace MahrianeIndustries.LCDInfo
                         displayText,
                         cargo.ContainsKey(itemDefinition.subtypeId) ? cargo[itemDefinition.subtypeId].amount : 0,
                         itemDefinition.minAmount,
-                        true);
-                    
+                        !invertBarColors);
+
                     linesDrawn++;
                 }
             }
@@ -788,8 +803,8 @@ namespace MahrianeIndustries.LCDInfo
                         displayText,
                         cargo.ContainsKey(itemDefinition.subtypeId) ? cargo[itemDefinition.subtypeId].amount : 0,
                         itemDefinition.minAmount,
-                        true);
-                    
+                        !invertBarColors);
+
                     linesDrawn++;
                 }
             }

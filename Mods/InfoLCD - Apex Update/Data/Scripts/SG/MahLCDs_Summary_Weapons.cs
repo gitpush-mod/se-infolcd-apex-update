@@ -121,6 +121,7 @@ namespace MahrianeIndustries.LCDInfo
             sb.AppendLine();
             sb.AppendLine("; [ WEAPONS - GENERAL OPTIONS ]");
             ConfigHelpers.AppendSearchIdConfig(sb, searchId);
+            ConfigHelpers.AppendItemFilterConfig(sb, itemFilter);
             ConfigHelpers.AppendExcludeIdsConfig(sb, excludeIds);
             ConfigHelpers.AppendShowHeaderConfig(sb, surfaceData.showHeader);
             ConfigHelpers.AppendShowSubgridsConfig(sb, surfaceData.showSubgrids);
@@ -213,6 +214,7 @@ namespace MahrianeIndustries.LCDInfo
                         maxListLines = Math.Max(0, config.Get(CONFIG_SECTION_ID, "MaxListLines").ToInt32(5));
 
                     CreateExcludeIdsList();
+                    ConfigHelpers.ParseItemFilter(config, CONFIG_SECTION_ID, itemFilter);
                 }
                 else
                 {
@@ -273,6 +275,7 @@ namespace MahrianeIndustries.LCDInfo
         IMyTerminalBlock myTerminalBlock;
 
         List<string> excludeIds = new List<string>();
+        List<string> itemFilter = new List<string>();
         List<CargoItemDefinition> itemDefinitions = new List<CargoItemDefinition>();
         List<CargoItemDefinition> unknownItemDefinitions = new List<CargoItemDefinition>();
         List<IMyInventory> inventories = new List<IMyInventory>();
@@ -571,6 +574,11 @@ namespace MahrianeIndustries.LCDInfo
 
                         if (item_types.Contains(typeId))
                         {
+                            // Item-level filter (separate from SearchId, which filters BLOCKS).
+                            // Skip items whose subtype doesn't match the ItemFilter list.
+                            if (!ConfigHelpers.ItemPassesFilter(itemFilter, subtypeId))
+                                continue;
+
                             if (!cargo.ContainsKey(subtypeId))
                             {
                                 cargo.Add(subtypeId, new CargoItemType { item = item, amount = currentAmount });
