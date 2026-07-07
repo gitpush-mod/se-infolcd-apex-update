@@ -231,6 +231,7 @@ namespace STGTieredBuildAndRepair
                     return false;
 
                 if (((Settings.Flags & SyncBlockSettings.Settings.AllowBuild) != 0) &&
+                   (!useIgnoreColor || !IsColorNearlyEquals(ignoreColor, colorMask)) &&
                    (!useGrindColor || !IsColorNearlyEquals(grindColor, colorMask)) &&
                    DlcCheckHelper.IsBlockDlcAvailableForOwner(block, _Welder.OwnerId) &&
                    BlockWeldPriority.GetEnabled(block) &&
@@ -569,7 +570,13 @@ namespace STGTieredBuildAndRepair
                                         break;
                                     }
 
-                                    if (DlcCheckHelper.IsBlockDlcAvailableForOwner(block, _Welder.OwnerId) && BlockWeldPriority.GetEnabled(block) && block.CanBuild(false))
+                                    // Symmetric with AsyncAddBlockIfWeldTarget's projected-block guard: skip projections
+                                    // painted with the ignore/grind color. Was missing here, so the welder would still
+                                    // start-building ignore-colored projections on its own grid (Unruly's bug report).
+                                    var projColorMask = block.GetColorMask();
+                                    if ((!useIgnoreColor || !IsColorNearlyEquals(ignoreColor, projColorMask)) &&
+                                        (!useGrindColor || !IsColorNearlyEquals(grindColor, projColorMask)) &&
+                                        DlcCheckHelper.IsBlockDlcAvailableForOwner(block, _Welder.OwnerId) && BlockWeldPriority.GetEnabled(block) && block.CanBuild(false))
                                     {
                                         double distance;
                                         if (skipRangeCheck || block.IsInRange(ref areaBox, out distance))
