@@ -140,6 +140,11 @@ namespace MahrianeIndustries.LCDInfo
             if (MyAPIGateway.Utilities?.IsDedicated ?? false)
                 return;
 
+            // Fix for issue #11 (leftover legacy sibling app sections can trigger
+            // a hang tied to grid-state changes like merge blocks). Cheap no-op
+            // unless a foreign [Settings*] section is actually present.
+            ConfigHelpers.PurgeLegacyAppSections(myTerminalBlock, CONFIG_SECTION_ID);
+
             try
             {
                 base.Run();

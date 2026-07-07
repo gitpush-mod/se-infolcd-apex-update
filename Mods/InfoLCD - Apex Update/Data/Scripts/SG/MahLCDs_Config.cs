@@ -1752,5 +1752,77 @@ namespace MahrianeIndustries.LCDInfo
                 cd = cd.Replace("\n\n\n", "\n\n");
             block.CustomData = cd;
         }
+
+        // Known InfoLCD config section IDs — one per app. Kept in one place so
+        // PurgeLegacyAppSections doesn't accidentally strip anything else that
+        // happens to sit in the LCD's CustomData (other mods, user notes, etc.).
+        static readonly string[] _knownAppSections = new[] {
+            "SettingsAirlockMonitorStatus", "SettingsAmmoSummary", "SettingsCargoSummary",
+            "SettingsComponentsSummary", "SettingsContainerSummary", "SettingsDamageMonitorStatus",
+            "SettingsDetailedInfoStatus", "SettingsDoorMonitorStatus", "SettingsFarmingSummary",
+            "SettingsGasGenerationStatus", "SettingsGridInfoStatus", "SettingsIngotsSummary",
+            "SettingsItemsSummary", "SettingsLifeSupportStatus", "SettingsOresSummary",
+            "SettingsPowerStatus", "SettingsProductionStatus", "SettingsSystemsStatus",
+            "SettingsWeaponsSummary"
+        };
+
+        /// <summary>
+        /// Strips any leftover InfoLCD app config sections from an LCD's CustomData
+        /// EXCEPT the section belonging to the currently-active app. Meant to be
+        /// called once per Run() cycle; it's a no-op (single Contains check) when
+        /// nothing needs cleaning.
+        ///
+        /// Motivates GitHub issue #11: leftover [SettingsDetailedInfoStatus] data
+        /// on an LCD running the Power app was causing a game hang when a nearby
+        /// merge block door merged. Removing the stale section by hand fixed the
+        /// hang; this method automates that cleanup so users don't have to.
+        /// </summary>
+        public static void PurgeLegacyAppSections(IMyTerminalBlock block, string currentSectionId)
+        {
+            if (block == null) return;
+            string cd = block.CustomData;
+            if (string.IsNullOrEmpty(cd)) return;
+
+            bool anyLegacyPresent = false;
+            for (int i = 0; i < _knownAppSections.Length; i++)
+            {
+                var s = _knownAppSections[i];
+                if (s == currentSectionId) continue;
+                if (cd.Contains("[" + s + "]")) { anyLegacyPresent = true; break; }
+            }
+            if (!anyLegacyPresent) return;
+
+            // Split into sections. A "section" starts at a line that begins with '['
+            // (an INI section header) and runs until the next such line or EOF.
+            var lines = cd.Split(new[] { '\n' }, StringSplitOptions.None);
+            var sb = new StringBuilder(cd.Length);
+            bool inLegacySection = false;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var trimmed = lines[i].TrimStart();
+                if (trimmed.StartsWith("["))
+                {
+                    // New section starts here. Decide whether to keep it.
+                    inLegacySection = false;
+                    for (int j = 0; j < _knownAppSections.Length; j++)
+                    {
+                        var s = _knownAppSections[j];
+                        if (s == currentSectionId) continue;
+                        if (trimmed.StartsWith("[" + s + "]")) { inLegacySection = true; break; }
+                    }
+                }
+                if (!inLegacySection)
+                {
+                    sb.Append(lines[i]);
+                    if (i < lines.Length - 1) sb.Append('\n');
+                }
+            }
+
+            var cleaned = sb.ToString();
+            // Collapse any double-blank-lines that stripping left behind.
+            while (cleaned.Contains("\n\n\n"))
+                cleaned = cleaned.Replace("\n\n\n", "\n\n");
+            block.CustomData = cleaned;
+        }
     }
 }
