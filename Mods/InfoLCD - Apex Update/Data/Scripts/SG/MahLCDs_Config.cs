@@ -1766,16 +1766,52 @@ namespace MahrianeIndustries.LCDInfo
             "SettingsWeaponsSummary"
         };
 
+        // Maps a MyTextSurfaceScript identifier (as stored in IMyTextSurface.Script when
+        // the surface is running one of our apps) to the corresponding CustomData section ID.
+        // Used by PurgeLegacyAppSections to enumerate every app currently rendering on any
+        // surface of a multi-surface block (Console Module LCD, cockpits, etc.) so those
+        // sections are preserved even though only one app's Run() is executing at a time.
+        static readonly Dictionary<string, string> _scriptToSectionId = new Dictionary<string, string>(19)
+        {
+            { "LCDInfoScreenAirlockMonitorSummary", "SettingsAirlockMonitorStatus" },
+            { "LCDInfoScreenAmmoSummary",           "SettingsAmmoSummary" },
+            { "LCDInfoScreenCargoSummary",          "SettingsCargoSummary" },
+            { "LCDInfoScreenComponentsSummary",     "SettingsComponentsSummary" },
+            { "LCDInfoScreenContainerSummary",      "SettingsContainerSummary" },
+            { "LCDInfoScreenDamageMonitorSummary",  "SettingsDamageMonitorStatus" },
+            { "LCDInfoScreenDetailedInfo",          "SettingsDetailedInfoStatus" },
+            { "LCDInfoScreenDoorMonitorSummary",    "SettingsDoorMonitorStatus" },
+            { "LCDInfoScreenFarmingSummary",        "SettingsFarmingSummary" },
+            { "LCDInfoScreenGasGenerationSummary",  "SettingsGasGenerationStatus" },
+            { "LCDInfoScreenGridInfoSummary",       "SettingsGridInfoStatus" },
+            { "LCDInfoScreenIngotsSummary",         "SettingsIngotsSummary" },
+            { "LCDInfoScreenItemsSummary",          "SettingsItemsSummary" },
+            { "LCDInfoScreenLifeSupportSummary",    "SettingsLifeSupportStatus" },
+            { "LCDInfoScreenOresSummary",           "SettingsOresSummary" },
+            { "LCDInfoScreenPowerSummary",          "SettingsPowerStatus" },
+            { "LCDInfoScreenProductionSummary",     "SettingsProductionStatus" },
+            { "LCDInfoScreenSystemsSummary",        "SettingsSystemsStatus" },
+            { "LCDInfoScreenWeaponsSummary",        "SettingsWeaponsSummary" },
+        };
+
         /// <summary>
-        /// Strips any leftover InfoLCD app config sections from an LCD's CustomData
-        /// EXCEPT the section belonging to the currently-active app. Meant to be
-        /// called once per Run() cycle; it's a no-op (single Contains check) when
-        /// nothing needs cleaning.
+        /// Strips leftover InfoLCD app config sections from an LCD's CustomData
+        /// while preserving every section that is currently in use by any surface
+        /// of the block (not just the caller's section — critical for multi-surface
+        /// blocks like Console Module LCDs, cockpits, and other IMyTextSurfaceProviders
+        /// where different surfaces render different InfoLCD apps sharing one CustomData).
         ///
-        /// Motivates GitHub issue #11: leftover [SettingsDetailedInfoStatus] data
-        /// on an LCD running the Power app was causing a game hang when a nearby
-        /// merge block door merged. Removing the stale section by hand fixed the
-        /// hang; this method automates that cleanup so users don't have to.
+        /// Meant to be called once per Run() cycle; it's a no-op (single Contains check)
+        /// when nothing needs cleaning.
+        ///
+        /// History:
+        /// - GitHub issue #11: leftover [SettingsDetailedInfoStatus] on a Power LCD
+        ///   caused a game hang on merge-block state changes. First fix stripped every
+        ///   section except the caller's — which regressed multi-surface blocks (DoctorJ,
+        ///   Steam Workshop, 2026-07-08): each surface's app kept purging the OTHER
+        ///   surfaces' sections every tick, so user edits couldn't persist. This
+        ///   revision enumerates the block's surfaces to build the actual "in use"
+        ///   set before stripping anything.
         /// </summary>
         public static void PurgeLegacyAppSections(IMyTerminalBlock block, string currentSectionId)
         {
@@ -1783,11 +1819,33 @@ namespace MahrianeIndustries.LCDInfo
             string cd = block.CustomData;
             if (string.IsNullOrEmpty(cd)) return;
 
+            // Build the "keep" set: current app's section, plus every section
+            // whose app is actively assigned to any surface on this block.
+            var keepSections = new HashSet<string>();
+            if (!string.IsNullOrEmpty(currentSectionId))
+                keepSections.Add(currentSectionId);
+            var surfaceProvider = block as Sandbox.ModAPI.Ingame.IMyTextSurfaceProvider;
+            if (surfaceProvider != null)
+            {
+                var count = surfaceProvider.SurfaceCount;
+                for (int i = 0; i < count; i++)
+                {
+                    var surface = surfaceProvider.GetSurface(i);
+                    if (surface == null) continue;
+                    var scriptName = surface.Script;
+                    if (string.IsNullOrEmpty(scriptName)) continue;
+                    string sectionId;
+                    if (_scriptToSectionId.TryGetValue(scriptName, out sectionId))
+                        keepSections.Add(sectionId);
+                }
+            }
+
+            // Fast pre-check: any known section present that ISN'T in keep set?
             bool anyLegacyPresent = false;
             for (int i = 0; i < _knownAppSections.Length; i++)
             {
                 var s = _knownAppSections[i];
-                if (s == currentSectionId) continue;
+                if (keepSections.Contains(s)) continue;
                 if (cd.Contains("[" + s + "]")) { anyLegacyPresent = true; break; }
             }
             if (!anyLegacyPresent) return;
@@ -1802,12 +1860,13 @@ namespace MahrianeIndustries.LCDInfo
                 var trimmed = lines[i].TrimStart();
                 if (trimmed.StartsWith("["))
                 {
-                    // New section starts here. Decide whether to keep it.
+                    // New section starts here. Legacy iff it's a KNOWN app section AND
+                    // not currently in use by any surface of this block.
                     inLegacySection = false;
                     for (int j = 0; j < _knownAppSections.Length; j++)
                     {
                         var s = _knownAppSections[j];
-                        if (s == currentSectionId) continue;
+                        if (keepSections.Contains(s)) continue;
                         if (trimmed.StartsWith("[" + s + "]")) { inLegacySection = true; break; }
                     }
                 }
