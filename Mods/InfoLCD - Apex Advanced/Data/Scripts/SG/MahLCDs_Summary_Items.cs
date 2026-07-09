@@ -405,6 +405,10 @@ namespace MahrianeIndustries.LCDInfo
             if (Sandbox.ModAPI.MyAPIGateway.Utilities?.IsDedicated ?? false)
                 return;
 
+            // Fix for issue #11 + multi-surface regression fix (mirrors Apex Update).
+            // Cheap no-op unless a foreign [Settings*] section is present on this block.
+            ConfigHelpers.PurgeLegacyAppSections(myTerminalBlock, CONFIG_SECTION_ID);
+
             MahDefinitions.LoadExternalItems();
             
             // Clear unknown definitions at start of each run to prevent stale fallback definitions

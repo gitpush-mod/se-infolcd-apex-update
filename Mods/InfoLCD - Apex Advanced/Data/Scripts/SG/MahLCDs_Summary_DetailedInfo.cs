@@ -121,6 +121,10 @@ namespace MahrianeIndustries.LCDInfo
         {
             try
             {
+                // Fix for issue #11 + multi-surface regression fix (mirrors Apex Update).
+                // Cheap no-op unless a foreign [Settings*] section is present on this block.
+                ConfigHelpers.PurgeLegacyAppSections(myTerminalBlock, CONFIG_SECTION_ID);
+
                 base.Run();
 
                 TryCreateSurfaceData();

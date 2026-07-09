@@ -1750,4 +1750,134 @@ namespace MahrianeIndustries.LCDInfo
         public double CurrentVolume => inventories.Sum(x => (double)x.CurrentVolume);
         public double MaxVolume => inventories.Sum(x => (double)x.MaxVolume);
     }
+
+    public static class ConfigHelpers
+    {
+        // Known InfoLCD (Apex Advanced) config section IDs — one per app.
+        // NOTE: this variant ships an extra "Extension" app that Apex Update doesn't have,
+        // so any sync between the two must update BOTH the section list and the script
+        // mapping below.
+        static readonly string[] _knownAppSections = new[] {
+            "SettingsAirlockMonitorStatus", "SettingsAmmoSummary", "SettingsCargoSummary",
+            "SettingsComponentsSummary", "SettingsContainerSummary", "SettingsDamageMonitorStatus",
+            "SettingsDetailedInfoStatus", "SettingsDoorMonitorStatus", "SettingsExtension",
+            "SettingsFarmingSummary", "SettingsGasGenerationStatus", "SettingsGridInfoStatus",
+            "SettingsIngotsSummary", "SettingsItemsSummary", "SettingsLifeSupportStatus",
+            "SettingsOresSummary", "SettingsPowerStatus", "SettingsProductionStatus",
+            "SettingsSystemsStatus", "SettingsWeaponsSummary"
+        };
+
+        // Maps a MyTextSurfaceScript identifier (as stored in IMyTextSurface.Script when
+        // the surface is running one of our apps) to the corresponding CustomData section ID.
+        // Used by PurgeLegacyAppSections to enumerate every app currently rendering on any
+        // surface of a multi-surface block (Console Module LCD, cockpits, etc.) so those
+        // sections are preserved even though only one app's Run() is executing at a time.
+        static readonly Dictionary<string, string> _scriptToSectionId = new Dictionary<string, string>(20)
+        {
+            { "LCDInfoScreenAirlockMonitorSummary", "SettingsAirlockMonitorStatus" },
+            { "LCDInfoScreenAmmoSummary",           "SettingsAmmoSummary" },
+            { "LCDInfoScreenCargoSummary",          "SettingsCargoSummary" },
+            { "LCDInfoScreenComponentsSummary",     "SettingsComponentsSummary" },
+            { "LCDInfoScreenContainerSummary",      "SettingsContainerSummary" },
+            { "LCDInfoScreenDamageMonitorSummary",  "SettingsDamageMonitorStatus" },
+            { "LCDInfoScreenDetailedInfo",          "SettingsDetailedInfoStatus" },
+            { "LCDInfoScreenDoorMonitorSummary",    "SettingsDoorMonitorStatus" },
+            { "LCDInfoScreenExtension",             "SettingsExtension" },
+            { "LCDInfoScreenFarmingSummary",        "SettingsFarmingSummary" },
+            { "LCDInfoScreenGasGenerationSummary",  "SettingsGasGenerationStatus" },
+            { "LCDInfoScreenGridInfoSummary",       "SettingsGridInfoStatus" },
+            { "LCDInfoScreenIngotsSummary",         "SettingsIngotsSummary" },
+            { "LCDInfoScreenItemsSummary",          "SettingsItemsSummary" },
+            { "LCDInfoScreenLifeSupportSummary",    "SettingsLifeSupportStatus" },
+            { "LCDInfoScreenOresSummary",           "SettingsOresSummary" },
+            { "LCDInfoScreenPowerSummary",          "SettingsPowerStatus" },
+            { "LCDInfoScreenProductionSummary",     "SettingsProductionStatus" },
+            { "LCDInfoScreenSystemsSummary",        "SettingsSystemsStatus" },
+            { "LCDInfoScreenWeaponsSummary",        "SettingsWeaponsSummary" },
+        };
+
+        /// <summary>
+        /// Strips leftover InfoLCD app config sections from an LCD's CustomData
+        /// while preserving every section that is currently in use by any surface
+        /// of the block (not just the caller's section — critical for multi-surface
+        /// blocks like Console Module LCDs, cockpits, and other IMyTextSurfaceProviders
+        /// where different surfaces render different InfoLCD apps sharing one CustomData).
+        ///
+        /// Meant to be called once per Run() cycle; it's a no-op (single Contains check)
+        /// when nothing needs cleaning.
+        ///
+        /// Mirrors the same fix in Apex Update (commits 399f9bd + 527c11f) with the
+        /// Extension app added to both the section list and the script mapping.
+        /// </summary>
+        public static void PurgeLegacyAppSections(IMyTerminalBlock block, string currentSectionId)
+        {
+            if (block == null) return;
+            string cd = block.CustomData;
+            if (string.IsNullOrEmpty(cd)) return;
+
+            // Build the "keep" set: current app's section, plus every section
+            // whose app is actively assigned to any surface on this block.
+            var keepSections = new HashSet<string>();
+            if (!string.IsNullOrEmpty(currentSectionId))
+                keepSections.Add(currentSectionId);
+            var surfaceProvider = block as Sandbox.ModAPI.Ingame.IMyTextSurfaceProvider;
+            if (surfaceProvider != null)
+            {
+                var count = surfaceProvider.SurfaceCount;
+                for (int i = 0; i < count; i++)
+                {
+                    var surface = surfaceProvider.GetSurface(i);
+                    if (surface == null) continue;
+                    var scriptName = surface.Script;
+                    if (string.IsNullOrEmpty(scriptName)) continue;
+                    string sectionId;
+                    if (_scriptToSectionId.TryGetValue(scriptName, out sectionId))
+                        keepSections.Add(sectionId);
+                }
+            }
+
+            // Fast pre-check: any known section present that ISN'T in keep set?
+            bool anyLegacyPresent = false;
+            for (int i = 0; i < _knownAppSections.Length; i++)
+            {
+                var s = _knownAppSections[i];
+                if (keepSections.Contains(s)) continue;
+                if (cd.Contains("[" + s + "]")) { anyLegacyPresent = true; break; }
+            }
+            if (!anyLegacyPresent) return;
+
+            // Split into sections. A "section" starts at a line that begins with '['
+            // (an INI section header) and runs until the next such line or EOF.
+            var lines = cd.Split(new[] { '\n' }, StringSplitOptions.None);
+            var sb = new StringBuilder(cd.Length);
+            bool inLegacySection = false;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var trimmed = lines[i].TrimStart();
+                if (trimmed.StartsWith("["))
+                {
+                    // New section starts here. Legacy iff it's a KNOWN app section AND
+                    // not currently in use by any surface of this block.
+                    inLegacySection = false;
+                    for (int j = 0; j < _knownAppSections.Length; j++)
+                    {
+                        var s = _knownAppSections[j];
+                        if (keepSections.Contains(s)) continue;
+                        if (trimmed.StartsWith("[" + s + "]")) { inLegacySection = true; break; }
+                    }
+                }
+                if (!inLegacySection)
+                {
+                    sb.Append(lines[i]);
+                    if (i < lines.Length - 1) sb.Append('\n');
+                }
+            }
+
+            var cleaned = sb.ToString();
+            // Collapse any double-blank-lines that stripping left behind.
+            while (cleaned.Contains("\n\n\n"))
+                cleaned = cleaned.Replace("\n\n\n", "\n\n");
+            block.CustomData = cleaned;
+        }
+    }
 }
