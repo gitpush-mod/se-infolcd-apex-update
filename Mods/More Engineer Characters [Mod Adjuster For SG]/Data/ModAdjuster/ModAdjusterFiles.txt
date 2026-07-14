@@ -1,3 +1,0 @@
-Characters.xml
-FemaleCharacters.xml
-Stats.xml

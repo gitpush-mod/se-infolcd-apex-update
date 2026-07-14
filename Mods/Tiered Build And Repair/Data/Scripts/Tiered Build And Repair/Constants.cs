@@ -1,7 +1,0 @@
-namespace STGTieredBuildAndRepair
-{
-    public static class Constants
-    {
-        public const string ModVersion = "2.5.3";
-    }
-}

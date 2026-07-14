@@ -1,3 +1,0 @@
-Algae_Blueprints.xml
-Algae_CubeBlocks.xml
-Algae_PhysicalItems.xml
