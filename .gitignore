@@ -1,4 +1,10 @@
-MOD_CATALOGUE.md
-CLAUDE.md
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local working notes (untracked by convention)
 *NOTES*.md
-*STYLE_GUIDE*.md
