@@ -23,6 +23,7 @@ Concrete rules — same as TCS ticket-first:
 
 - **Starting work?** Open a ticket in this repo, add to the board, set Status = **In Progress**, then start.
 - **Have an idea for later?** Ticket in **Backlog**. Not in memory, not in a README, not in NOTES.md.
+- **Need Chris to check something before closing?** Move the ticket to **In QA** and comment with exactly what he needs to look at. Do NOT set to Done — that's Chris's call after review.
 - **Finished?** Close the ticket with a closing summary comment (what you did / problems + solutions / anything NOT done).
 - **Same-session micro-work?** Open + close in the same session — but the ticket exists.
 - **Older than 30 days in Done?** The weekly cron in this repo moves it to Archived. The closed ticket + CHANGELOG entry persist.
@@ -63,6 +64,14 @@ Automation: closing a Done ticket auto-appends an entry to this repo's `CHANGELO
   `MyTextSurfaceScriptBase` and get full game API access (no ingame API)
 - `Data/AdditionalItems.ini` — config
 - `metadata.mod`, `modinfo.sbmi`, `thumb.jpg` — Workshop metadata
+
+## How to verify (before flagging In QA or closing)
+
+- **Load in-game.** Enable this mod in a real world (creative or survival). Place the affected block(s). Watch what happens on the LCD / block / behavior for at least 30 seconds.
+- **Client-only check.** Verify no SessionComponent / server-side code was added. If the mod is meant to be client-side (InfoLCD variants), test in a dedicated-server context too — the mod should still work for the client without any server-side install.
+- **Save-safety.** Load an existing world, add or remove the mod, verify no CustomData strings broke and no blocks vanished.
+- **Look for LINQ or per-tick allocations** in scripts before pushing — SE MP performance is brutal on hot paths.
+- **Watch `%AppData%\SpaceEngineers\SpaceEngineers_*.log`** — any red or yellow lines mention the mod? If yes, quote them in the ticket.
 
 ## MUST NOT
 
