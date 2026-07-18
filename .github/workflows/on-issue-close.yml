@@ -4,6 +4,15 @@ on:
   issues:
     types: [closed]
 
+# Explicit contents: write is required — the reusable workflow requests
+# contents: write on its own job, but the caller's GITHUB_TOKEN permissions
+# ceiling defaults to `read` at the repo level, and a callee cannot request
+# permissions higher than what the caller grants. Without this block, the
+# reusable workflow fails at startup ("This run likely failed because of a
+# workflow file issue").
+permissions:
+  contents: write
+
 jobs:
   call-append:
     # Reusable workflow lives in gitpush-mod/.github. It bootstraps CHANGELOG.md,
