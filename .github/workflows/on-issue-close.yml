@@ -4,20 +4,17 @@ on:
   issues:
     types: [closed]
 
-# Explicit contents: write is required — the reusable workflow requests
-# contents: write on its own job, but the caller's GITHUB_TOKEN permissions
-# ceiling defaults to `read` at the repo level, and a callee cannot request
-# permissions higher than what the caller grants. Without this block, the
-# reusable workflow fails at startup ("This run likely failed because of a
-# workflow file issue").
+# The reusable workflow needs contents: write to commit + push, and
+# pull-requests: write to open the changelog PR (PR flow was introduced
+# 2026-08-18; direct-push fallback requires no branch protection). Both
+# permissions must be granted at the caller — a called workflow can't
+# escalate above what the caller declared.
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   call-append:
-    # Reusable workflow lives in gitpush-mod/.github. It bootstraps CHANGELOG.md,
-    # inserts a Keep-a-Changelog "Unreleased" entry, commits + pushes to main.
-    # secrets: inherit → makes MOD_PROJECT_TOKEN (org secret) available to it.
     uses: gitpush-mod/.github/.github/workflows/append-changelog.yml@main
     secrets: inherit
     with:
