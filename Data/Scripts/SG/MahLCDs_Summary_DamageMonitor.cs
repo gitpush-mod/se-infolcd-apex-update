@@ -427,8 +427,10 @@ namespace MahrianeIndustries.LCDInfo
 
                 structuralScanTick++;
                 // Recompute based on SubgridUpdateFrequency config; compute immediately on first activation
-                // Divide by 10 to account for Update10 timing (runs every 10 ticks, not every tick)
-                if (structuralScanTick % (surfaceData.subgridUpdateFrequency / 10) != 0 && structuralBlockCount > 0)
+                // Divide by 10 to account for Update10 timing (runs every 10 ticks, not every tick).
+                // Math.Max(1, ...) guards the modulus: SubgridUpdateFrequency is documented as accepting
+                // 1 (fastest), and 1/10 == 0 integer-divides to a DivideByZeroException here.
+                if (structuralScanTick % Math.Max(1, surfaceData.subgridUpdateFrequency / 10) != 0 && structuralBlockCount > 0)
                     return;
 
                 double cur = 0d;
