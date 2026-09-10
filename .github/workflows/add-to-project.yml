@@ -1,0 +1,38 @@
+# Auto-add every newly opened issue + PR in this repo to its mod project board.
+#
+# Mirrors the pattern already in use across the The-Canadian-Space repos
+# (see The-Canadian-Space/.github/.github/workflows/add-to-project.yml and the
+# per-repo copies). This is NOT a reusable workflow -- `on: issues` only fires in
+# the repo the file lives in, so each mod repo carries its own copy pointed at
+# its own board.
+#
+# Uses the org-level MOD_PROJECT_TOKEN secret (visibility=all). The referenced
+# PAT needs org projects: read/write on gitpush-mod.
+#
+# Added because user-filed bug reports were never reaching the boards: AGENTS.md
+# assumes an agent adds the ticket by hand, which does not happen for issues
+# opened from the bug template. See se-infolcd-apex-update#13.
+
+name: Add to project board
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    # Dependabot PRs run in a sandboxed secrets context that cannot see
+    # MOD_PROJECT_TOKEN, so the step would fail with
+    # "Input required and not supplied: github-token". Skip them.
+    if: github.actor != 'dependabot[bot]'
+    steps:
+      - uses: actions/add-to-project@v2.0.0
+        with:
+          project-url: https://github.com/orgs/gitpush-mod/projects/3
+          github-token: ${{ secrets.MOD_PROJECT_TOKEN }}
