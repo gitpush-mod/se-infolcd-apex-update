@@ -1112,15 +1112,31 @@ namespace MahrianeIndustries.LCDInfo
             return s;
         }
 
-        public static List<MyCubeBlock> GetBlocks (MyCubeGrid cubeGrid, string searchId, List<string> excludeIds, ref Sandbox.ModAPI.Ingame.MyShipMass gridMass, bool includeSubGrids = false, bool includeDocked = false)
+        public static List<MyCubeBlock> GetBlocks (MyCubeGrid cubeGrid, string searchId, List<string> excludeIds, ref Sandbox.ModAPI.Ingame.MyShipMass gridMass, bool includeSubGrids = false, bool includeDocked = false, HashSet<MyCubeGrid> visitedGrids = null, int depth = 0)
         {
-            if (cubeGrid == null) return null;
+            List<MyCubeBlock> allBlocks = new List<MyCubeBlock>();
+
+            if (cubeGrid == null) return allBlocks;
+
+            // Cycle guard (issue #13). A mechanical connection whose top part ends up on the same
+            // grid as its base - e.g. a subgrid merged back onto the main grid - makes the
+            // includeSubGrids branch below recurse into this same grid forever. That overflows the
+            // stack, and StackOverflowException CANNOT be caught, so the try/catch below is
+            // powerless and the game dies with no log line. This visited set is shared across the
+            // whole traversal, unlike the old per-call scanned-grid list which was rebuilt on every
+            // recursive call and so could never guard anything.
+            if (visitedGrids == null) visitedGrids = new HashSet<MyCubeGrid>();
+            if (!visitedGrids.Add(cubeGrid)) return allBlocks;
+
+            // Defence in depth: bound recursion even for a topology the visited set somehow misses.
+            const int MaxGridRecursionDepth = 64;
+            if (depth >= MaxGridRecursionDepth)
+            {
+                MyLog.Default.WriteLine($"MahrianeIndustries.LCDInfo.MahUtillities: GetBlocks hit max recursion depth ({MaxGridRecursionDepth}); aborting this branch.");
+                return allBlocks;
+            }
 
             var myFatBlocks = cubeGrid.GetFatBlocks().Where(block => block is IMyTerminalBlock);
-            List<MyCubeBlock> allBlocks = new List<MyCubeBlock>();
-            List<MyCubeGrid> scannedGrids = new List<MyCubeGrid>();
-
-            scannedGrids.Add(cubeGrid);
             
             try
             {
@@ -1157,18 +1173,15 @@ namespace MahrianeIndustries.LCDInfo
                                     if (connectedGrid != null)
                                     {
                                         // Abort if the grid of the base has been scanned before.
-                                        if (!scannedGrids.Contains(connectedGrid))
+                                        if (!visitedGrids.Contains(connectedGrid))
                                         {
                                             // Scan all blocks from the connectedGrid, but disable showDocked for this scan...otherwise an endless loop is produced crashing the game.
-                                            var connectedBlocks = GetBlocks(connectedGrid, searchId, excludeIds, ref gridMass, includeSubGrids, false);
+                                            var connectedBlocks = GetBlocks(connectedGrid, searchId, excludeIds, ref gridMass, includeSubGrids, false, visitedGrids, depth + 1);
                                             if (connectedBlocks != null)
                                             {
                                                 allBlocks.AddRange(connectedBlocks);
                                             }
                                         }
-
-                                        // Add the other grid to the allready scanned grids.
-                                        scannedGrids.Add(connectedGrid);
                                     }
                                 }
                             }
@@ -1193,7 +1206,7 @@ namespace MahrianeIndustries.LCDInfo
                             // Scan all blocks of that top/subGrid (only if subGrid is valid).
                             if (subGrid != null)
                             {
-                                var subGridBlocks = GetBlocks(subGrid, searchId, excludeIds, ref gridMass, true, includeDocked);
+                                var subGridBlocks = GetBlocks(subGrid, searchId, excludeIds, ref gridMass, true, includeDocked, visitedGrids, depth + 1);
                                 if (subGridBlocks != null)
                                 {
                                     allBlocks.AddRange(subGridBlocks);
