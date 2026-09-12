@@ -1,0 +1,23 @@
+# Syntax-check this mod's scripts on every push and PR.
+#
+# SE compiles Data/Scripts into a single assembly at world load, so one syntax error
+# fails the WHOLE mod. This repo family previously shipped a non-building tree for
+# months without noticing (se-infolcd-apex-advanced#2).
+#
+# Syntax-only: Keen's Bin64 assemblies are proprietary and unavailable on runners, so a
+# full semantic build cannot run in CI. Run tools/build-check.ps1 locally for that.
+
+name: Syntax check
+
+on:
+  push:
+    paths: ['**.cs', '.github/workflows/syntax-check.yml']
+  pull_request:
+    paths: ['**.cs', '.github/workflows/syntax-check.yml']
+  workflow_dispatch:
+
+jobs:
+  syntax:
+    uses: gitpush-mod/.github/.github/workflows/syntax-check.yml@main
+    with:
+      scripts_path: 'Data/Scripts'
