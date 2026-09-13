@@ -73,6 +73,14 @@ Automation: closing a Done ticket auto-appends an entry to this repo's `CHANGELO
 - **Look for LINQ or per-tick allocations** in scripts before pushing — SE MP performance is brutal on hot paths.
 - **Watch `%AppData%\SpaceEngineers\SpaceEngineers_*.log`** — any red or yellow lines mention the mod? If yes, quote them in the ticket.
 
+## Publishing + feedback flow
+
+Wired into the [TCS Discord bot](https://github.com/The-Canadian-Space/tcs-forum-watcher). Full flow (what mirrors when, tag map, gotchas): [`mods/AGENTS.md` → Publishing + feedback flow](../AGENTS.md) or the wiki at [`discord/release-and-feedback-flow`](https://docs.thecanadian.space/discord/release-and-feedback-flow/).
+
+- Issues labelled `bug` or `suggestion` → `🐛-mod-feedback` (auto).
+- GitHub releases → persistent thread in `📦-mod-updates`. **Public.**
+- **Releases are user-driven.** Do NOT run `gh release create` or push a release tag autonomously. If the work looks releasable, **ask** — describe the release notes and let Chris decide.
+
 ## MUST NOT
 
 - Modify vanilla SE game files (`steamapps/common/SpaceEngineers/`)
