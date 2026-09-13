@@ -45,7 +45,6 @@
 - ✅ **Existing saves** — safe to add or remove; scripts fall back to blank if disabled
 - ✅ **Other LCD mods** — coexists (only touches Apex LCD blocks specifically)
 - ❌ **InfoLCD — Apex Advanced** — do not run both; they register the same scripts
-- ⚠️ **Non-Apex LCD blocks** — not supported by design
 
 ## 🧑‍🤝‍🧑 Sibling mod
 
