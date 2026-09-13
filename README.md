@@ -44,11 +44,14 @@
 - ✅ **Multiplayer** — works on dedicated servers because it does nothing server-side
 - ✅ **Existing saves** — safe to add or remove; scripts fall back to blank if disabled
 - ✅ **Other LCD mods** — coexists (only touches Apex LCD blocks specifically)
-- ⚠️ **Non-Apex LCD blocks** — not supported by design (see the [Apex Advanced sibling](https://github.com/gitpush-mod/se-infolcd-apex-advanced) for broader LCD coverage)
+- ❌ **InfoLCD — Apex Advanced** — do not run both; they register the same scripts
+- ⚠️ **Non-Apex LCD blocks** — not supported by design
 
 ## 🧑‍🤝‍🧑 Sibling mod
 
-A more feature-rich variant with expanded readouts lives at [**se-infolcd-apex-advanced**](https://github.com/gitpush-mod/se-infolcd-apex-advanced). Both are maintained in parallel; shared features stay in sync.
+[**se-infolcd-apex-advanced**](https://github.com/gitpush-mod/se-infolcd-apex-advanced) is the same mod built for the [APEX.Advanced!](https://steamcommunity.com/sharedfiles/filedetails/?id=3570977190) survival overhaul — it tracks HydroSolution instead of water, understands Nutrient Pellets and Composters, and adds a screen-overflow app.
+
+Pick whichever matches your world, and **run only one**: the two register the same script names. Since v2.0 they share a single codebase, so neither is behind the other on features.
 
 ## 🐛 Found a bug?
 
