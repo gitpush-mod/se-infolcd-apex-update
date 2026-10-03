@@ -417,17 +417,8 @@ namespace MahrianeIndustries.LCDInfo
             UpdateInventories();
             UpdateContents();
 
-            // Auto-add newly discovered modded items to config
-            foreach (CargoItemDefinition def in unknownItemDefinitions)
-            {
-                if (!config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
-                {
-                    CreateConfig();
-                    MyIniParseResult r;
-                    config.TryParse(myTerminalBlock.CustomData, CONFIG_SECTION_ID, out r);
-                    break;
-                }
-            }
+            // No auto-add of newly discovered modded items: Cargo has no per-item config keys, so its
+            // siblings' check could never be satisfied here (gitpush-mod/se-infolcd-apex-update#16).
 
             // Update scroll position if enabled
             if (toggleScroll)

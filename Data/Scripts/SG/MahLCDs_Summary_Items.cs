@@ -431,17 +431,22 @@ namespace MahrianeIndustries.LCDInfo
             UpdateInventories();
             UpdateContents();
 
-            // Auto-add newly discovered modded items to config
+            // Auto-add newly discovered modded items to config. Only the missing keys are
+            // appended; see ConfigHelpers.AppendKeysToSection for why this no longer regenerates.
+            List<string> missingKeys = null;
             foreach (CargoItemDefinition def in unknownItemDefinitions)
             {
                 string configKey = $"{def.typeId}_{def.subtypeId}";
-                if (!config.ContainsKey(CONFIG_SECTION_ID, configKey) && !config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
+                if (ConfigHelpers.IsSafeIniKey(configKey) && !config.ContainsKey(CONFIG_SECTION_ID, configKey) && !config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
                 {
-                    CreateConfig();
-                    MyIniParseResult r;
-                    config.TryParse(myTerminalBlock.CustomData, CONFIG_SECTION_ID, out r);
-                    break;
+                    if (missingKeys == null) missingKeys = new List<string>();
+                    missingKeys.Add($"{configKey}={def.minAmount}");
                 }
+            }
+            if (missingKeys != null && ConfigHelpers.AppendKeysToSection(myTerminalBlock, CONFIG_SECTION_ID, missingKeys))
+            {
+                MyIniParseResult r;
+                config.TryParse(myTerminalBlock.CustomData, CONFIG_SECTION_ID, out r);
             }
 
             // Update scroll offset if scrolling is enabled
@@ -581,7 +586,9 @@ namespace MahrianeIndustries.LCDInfo
                                     itemDefinition.subtypeId = subtypeId;
                                     itemDefinition.displayName = subtypeId.Length >= 15 ? subtypeId.Substring(0, 15) : subtypeId;
                                     itemDefinition.volume = .1f;
-                                    itemDefinition.minAmount = config.ContainsKey(CONFIG_SECTION_ID, subtypeId) ? config.Get(CONFIG_SECTION_ID, subtypeId).ToInt32() : 1000;
+                                    // typeId_subtypeId is what the auto-add writes (like the known items); the plain subtypeId is the old key
+                                    string thresholdKey = config.ContainsKey(CONFIG_SECTION_ID, cargoKey) ? cargoKey : subtypeId;
+                                    itemDefinition.minAmount = config.ContainsKey(CONFIG_SECTION_ID, thresholdKey) ? config.Get(CONFIG_SECTION_ID, thresholdKey).ToInt32() : 1000;
                                     itemDefinition.sortId = "misc"; // default category
 
                                     itemDefinitions.Add(itemDefinition);

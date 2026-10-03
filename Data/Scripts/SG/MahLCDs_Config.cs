@@ -1766,6 +1766,99 @@ namespace MahrianeIndustries.LCDInfo
             block.CustomData = cd;
         }
 
+        /// <summary>
+        /// Appends "key=value" lines to the end of one section of the block's CustomData,
+        /// leaving everything else (the player's values, comments, other sections) as it is.
+        /// Used to auto-add newly discovered modded items to an app's thresholds. The apps
+        /// used to regenerate their whole section for that, which reset every threshold to
+        /// its default, and since the new item was never written the regeneration repeated
+        /// every update (gitpush-mod/se-infolcd-apex-update#16).
+        /// Existing lines are never changed or removed. Keys already in the section (MyIni
+        /// keys are case-insensitive), repeats and unsafe keys (see IsSafeIniKey) are skipped.
+        /// Nothing is written unless MyIni parses the result, reads every new key and sees every
+        /// existing value unchanged, so a section that doesn't parse (a player's typo) is left
+        /// exactly as it is. Returns true if CustomData changed.
+        /// </summary>
+        public static bool AppendKeysToSection(IMyTerminalBlock block, string sectionId, List<string> keyValueLines)
+        {
+            if (block == null || keyValueLines == null || keyValueLines.Count == 0) return false;
+            string cd = block.CustomData;
+            if (string.IsNullOrEmpty(cd)) return false;
+
+            // Find the section the way MyIni does: the first header that starts a line ("[name]",
+            // any case, trailing spaces allowed), up to the next line that begins with '['.
+            var lines = new List<string>(cd.Split(new[] { '\n' }, StringSplitOptions.None));
+            string header = "[" + sectionId + "]";
+            int sectionStart = -1;
+            int insertAt = -1;
+            var presentKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < lines.Count; i++)
+            {
+                if (sectionStart < 0)
+                {
+                    if (lines[i].StartsWith("[") && string.Equals(lines[i].TrimEnd(), header, StringComparison.OrdinalIgnoreCase)) { sectionStart = i; insertAt = i + 1; }
+                    continue;
+                }
+                var trimmed = lines[i].Trim();
+                if (trimmed.StartsWith("[")) break;  // next section starts: ours has ended
+                if (trimmed.Length == 0) continue;
+
+                insertAt = i + 1;  // after the section's last non-blank line
+                int eq = trimmed.IndexOf('=');
+                if (eq > 0 && !trimmed.StartsWith(";"))
+                    presentKeys.Add(trimmed.Substring(0, eq).Trim());
+            }
+            if (sectionStart < 0) return false;
+
+            // New lines take the line ending of the line they follow.
+            string eol = lines[insertAt - 1].EndsWith("\r") ? "\r" : "";
+            var newKeys = new List<string>();
+            var newLines = new List<string>();
+            foreach (var line in keyValueLines)
+            {
+                int eq = line.IndexOf('=');
+                if (eq <= 0) continue;
+                string key = line.Substring(0, eq);
+                // Add() also rejects a repeat within this batch (two subtypes differing only by case).
+                if (!IsSafeIniKey(key) || !presentKeys.Add(key)) continue;
+                newKeys.Add(key);
+                newLines.Add(line + eol);
+            }
+            if (newLines.Count == 0) return false;
+
+            lines.InsertRange(insertAt, newLines);
+            string updated = string.Join("\n", lines);
+
+            // Write only if MyIni parses both versions, reads every new key and sees every
+            // existing value in the section unchanged.
+            var before = new MyIni();
+            var after = new MyIni();
+            MyIniParseResult result;
+            if (!before.TryParse(cd, sectionId, out result) || !after.TryParse(updated, sectionId, out result)) return false;
+            foreach (var key in newKeys)
+                if (!after.ContainsKey(sectionId, key)) return false;
+            var existingKeys = new List<MyIniKey>();
+            before.GetKeys(sectionId, existingKeys);
+            foreach (var key in existingKeys)
+                if (after.Get(sectionId, key.Name).ToString() != before.Get(sectionId, key.Name).ToString()) return false;
+
+            block.CustomData = updated;
+            return true;
+        }
+
+        /// <summary>
+        /// True if MyIni can store this key and read it back unchanged: not empty or padded,
+        /// none of the characters MyIni rejects in a key, and not starting with ';', which
+        /// would turn the line into a comment. MyIni.ContainsKey throws ArgumentException for
+        /// a key with a rejected character, so check this before calling it on an item's id.
+        /// </summary>
+        public static bool IsSafeIniKey(string key)
+        {
+            if (string.IsNullOrEmpty(key) || key != key.Trim() || key[0] == ';') return false;
+            return key.IndexOfAny(_iniKeyIllegalChars) < 0;
+        }
+        static readonly char[] _iniKeyIllegalChars = { '\r', '\n', '|', '=', '[', ']' };
+
         // Known InfoLCD config section IDs — one per app. Kept in one place so
         // PurgeLegacyAppSections doesn't accidentally strip anything else that
         // happens to sit in the LCD's CustomData (other mods, user notes, etc.).

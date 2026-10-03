@@ -381,16 +381,21 @@ namespace MahrianeIndustries.LCDInfo
             UpdateInventories();
             UpdateContents();
 
-            // Auto-add newly discovered modded items to config
+            // Auto-add newly discovered modded items to config. Only the missing keys are
+            // appended; see ConfigHelpers.AppendKeysToSection for why this no longer regenerates.
+            List<string> missingKeys = null;
             foreach (CargoItemDefinition def in unknownItemDefinitions)
             {
-                if (!config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
+                if (ConfigHelpers.IsSafeIniKey(def.subtypeId) && !config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
                 {
-                    CreateConfig();
-                    MyIniParseResult r;
-                    config.TryParse(myTerminalBlock.CustomData, CONFIG_SECTION_ID, out r);
-                    break;
+                    if (missingKeys == null) missingKeys = new List<string>();
+                    missingKeys.Add($"{def.subtypeId}={def.minAmount}");
                 }
+            }
+            if (missingKeys != null && ConfigHelpers.AppendKeysToSection(myTerminalBlock, CONFIG_SECTION_ID, missingKeys))
+            {
+                MyIniParseResult r;
+                config.TryParse(myTerminalBlock.CustomData, CONFIG_SECTION_ID, out r);
             }
 
             // Update scroll offset if scrolling is enabled
