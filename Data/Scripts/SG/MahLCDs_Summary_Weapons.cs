@@ -147,9 +147,13 @@ namespace MahrianeIndustries.LCDInfo
 
             sb.AppendLine();
             sb.AppendLine("; [ WEAPONS - AMMO ENTRIES (auto-populated) ]");
+            var writtenKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (CargoItemDefinition itemDefinition in unknownItemDefinitions)
             {
-                sb.AppendLine($"{itemDefinition.subtypeId}=0");
+                // Skip an id MyIni can't hold as a key, or one already written in any case (MyIni
+                // keys are case-insensitive): either would break the whole section.
+                if (ConfigHelpers.IsSafeIniKey(itemDefinition.subtypeId) && writtenKeys.Add(itemDefinition.subtypeId))
+                    sb.AppendLine($"{itemDefinition.subtypeId}=0");
             }
 
             sb.AppendLine();
@@ -612,7 +616,8 @@ namespace MahrianeIndustries.LCDInfo
                             }
                             else
                             {
-                                cargo[subtypeId].definition.minAmount = (int)config.Get("SettingsWeaponsSummary", $"{item.Type.SubtypeId}").ToInt64();
+                                if (ConfigHelpers.IsSafeIniKey(item.Type.SubtypeId))  // MyIni.Get throws for an id it can't hold as a key
+                                    cargo[subtypeId].definition.minAmount = (int)config.Get("SettingsWeaponsSummary", $"{item.Type.SubtypeId}").ToInt64();
                                 cargo[subtypeId].amount += currentAmount;
                             }
 

@@ -159,9 +159,13 @@ namespace MahrianeIndustries.LCDInfo
 
             CreateCargoItemDefinitionList();
 
+            var writtenKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (CargoItemDefinition itemDefinition in itemDefinitions)
             {
-                sb.AppendLine($"{itemDefinition.subtypeId}={itemDefinition.minAmount}");
+                // Skip an id MyIni can't hold as a key, or one already written in any case (MyIni
+                // keys are case-insensitive): either would break the whole section.
+                if (ConfigHelpers.IsSafeIniKey(itemDefinition.subtypeId) && writtenKeys.Add(itemDefinition.subtypeId))
+                    sb.AppendLine($"{itemDefinition.subtypeId}={itemDefinition.minAmount}");
             }
 
             sb.AppendLine();
@@ -259,14 +263,14 @@ namespace MahrianeIndustries.LCDInfo
                 // Check Ingots config
                 foreach (CargoItemDefinition definition in itemDefinitions)
                 {
-                    if (config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt32();
                 }
 
                 // Check unknownIngots config
                 foreach (CargoItemDefinition definition in unknownItemDefinitions)
                 {
-                    if (config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt32();
                 }
             }
@@ -309,7 +313,7 @@ namespace MahrianeIndustries.LCDInfo
             {
                 if (item_types.Contains(definition.typeId))
                 {
-                    int minAmount = config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId) ? (int)config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt64() : definition.minAmount;
+                    int minAmount = ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId) ? (int)config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt64() : definition.minAmount;
                     itemDefinitions.Add(new CargoItemDefinition { typeId = definition.typeId, subtypeId = definition.subtypeId, displayName = definition.displayName, volume = definition.volume, minAmount = minAmount, sortId = definition.sortId });
                 }
             }
@@ -535,7 +539,7 @@ namespace MahrianeIndustries.LCDInfo
                                     itemDefinition.subtypeId = subtypeId;
                                     itemDefinition.displayName = subtypeId.Length >= 15 ? subtypeId.Substring(0, 15) : subtypeId;
                                     itemDefinition.volume = .1f;
-                                    itemDefinition.minAmount = config.ContainsKey(CONFIG_SECTION_ID, subtypeId) ? config.Get(CONFIG_SECTION_ID, subtypeId).ToInt32() : 1000;
+                                    itemDefinition.minAmount = ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, subtypeId) ? config.Get(CONFIG_SECTION_ID, subtypeId).ToInt32() : 1000;
                                     itemDefinition.sortId = "misc"; // default category
 
                                     itemDefinitions.Add(itemDefinition);

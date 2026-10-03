@@ -197,10 +197,14 @@ namespace MahrianeIndustries.LCDInfo
 
             sb.AppendLine();
             sb.AppendLine("; [ CARGO - SCREEN OPTIONS ]");
+            var writtenKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var kv in showCategory)
             {
                 string keyName = ToConfigKey(kv.Key);
-                sb.AppendLine($"{keyName}={kv.Value}");
+                // Skip a key MyIni can't hold, or one already written in any case (two category
+                // names can map to the same key); that category keeps its default visibility.
+                if (ConfigHelpers.IsSafeIniKey(keyName) && writtenKeys.Add(keyName))
+                    sb.AppendLine($"{keyName}={kv.Value}");
             }
 
             sb.AppendLine();
@@ -243,7 +247,7 @@ namespace MahrianeIndustries.LCDInfo
                     foreach (var key in categoryOrder)
                     {
                         string cfgKey = ToConfigKey(key);
-                        if (config.ContainsKey(CONFIG_SECTION_ID, cfgKey))
+                        if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, cfgKey))
                         {
                             bool val = config.Get(CONFIG_SECTION_ID, cfgKey).ToBoolean();
                             showCategory[key] = val;
@@ -299,14 +303,14 @@ namespace MahrianeIndustries.LCDInfo
                 // Check Cargo config
                 foreach (CargoItemDefinition definition in MahDefinitions.OrderedCargoItems(itemDefinitions))
                 {
-                    if (config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt32();
                 }
 
                 // Check unknownCargo config
                 foreach (CargoItemDefinition definition in unknownItemDefinitions)
                 {
-                    if (config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt32();
                 }
             }

@@ -177,11 +177,15 @@ namespace MahrianeIndustries.LCDInfo
 
             CreateCargoItemDefinitionList();
 
+            var writtenKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (CargoItemDefinition itemDefinition in itemDefinitions)
             {
                 // Use typeId_subtypeId format to avoid duplicate keys (e.g., ConsumableItem_Fruit vs SeedItem_Fruit)
                 string configKey = $"{itemDefinition.typeId}_{itemDefinition.subtypeId}";
-                sb.AppendLine($"{configKey}={itemDefinition.minAmount}");
+                // Skip an id MyIni can't hold as a key, or one already written in any case (MyIni
+                // keys are case-insensitive): either would break the whole section.
+                if (ConfigHelpers.IsSafeIniKey(configKey) && writtenKeys.Add(configKey))
+                    sb.AppendLine($"{configKey}={itemDefinition.minAmount}");
             }
 
             sb.AppendLine();
@@ -296,9 +300,9 @@ namespace MahrianeIndustries.LCDInfo
                     string newKey = $"{definition.typeId}_{definition.subtypeId}";
                     string oldKey = definition.subtypeId;
                     
-                    if (config.ContainsKey(CONFIG_SECTION_ID, newKey))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, newKey))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, newKey).ToInt32();
-                    else if (config.ContainsKey(CONFIG_SECTION_ID, oldKey))
+                    else if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, oldKey))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, oldKey).ToInt32();
                 }
 
@@ -308,9 +312,9 @@ namespace MahrianeIndustries.LCDInfo
                     string newKey = $"{definition.typeId}_{definition.subtypeId}";
                     string oldKey = definition.subtypeId;
                     
-                    if (config.ContainsKey(CONFIG_SECTION_ID, newKey))
+                    if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, newKey))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, newKey).ToInt32();
-                    else if (config.ContainsKey(CONFIG_SECTION_ID, oldKey))
+                    else if (ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, oldKey))
                         definition.minAmount = config.Get(CONFIG_SECTION_ID, oldKey).ToInt32();
                 }
             }
@@ -354,7 +358,7 @@ namespace MahrianeIndustries.LCDInfo
                 // Include standard Items categories, plus special-case ZoneChip (Component) for display on Items screen
                 if (item_types.Contains(definition.typeId) || (definition.typeId == "Component" && definition.subtypeId == "ZoneChip"))
                 {
-                    int minAmount = config.ContainsKey(CONFIG_SECTION_ID, definition.subtypeId) ? (int)config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt64() : definition.minAmount;
+                    int minAmount = ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, definition.subtypeId) ? (int)config.Get(CONFIG_SECTION_ID, definition.subtypeId).ToInt64() : definition.minAmount;
                     
                     itemDefinitions.Add(new CargoItemDefinition { typeId = definition.typeId, subtypeId = definition.subtypeId, displayName = definition.displayName, volume = definition.volume, minAmount = minAmount, sortId = definition.sortId });
                 }
@@ -437,7 +441,7 @@ namespace MahrianeIndustries.LCDInfo
             foreach (CargoItemDefinition def in unknownItemDefinitions)
             {
                 string configKey = $"{def.typeId}_{def.subtypeId}";
-                if (ConfigHelpers.IsSafeIniKey(configKey) && !config.ContainsKey(CONFIG_SECTION_ID, configKey) && !config.ContainsKey(CONFIG_SECTION_ID, def.subtypeId))
+                if (ConfigHelpers.IsSafeIniKey(configKey) && !config.ContainsKey(CONFIG_SECTION_ID, configKey) && !ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, def.subtypeId))
                 {
                     if (missingKeys == null) missingKeys = new List<string>();
                     missingKeys.Add($"{configKey}={def.minAmount}");
@@ -587,8 +591,8 @@ namespace MahrianeIndustries.LCDInfo
                                     itemDefinition.displayName = subtypeId.Length >= 15 ? subtypeId.Substring(0, 15) : subtypeId;
                                     itemDefinition.volume = .1f;
                                     // typeId_subtypeId is what the auto-add writes (like the known items); the plain subtypeId is the old key
-                                    string thresholdKey = config.ContainsKey(CONFIG_SECTION_ID, cargoKey) ? cargoKey : subtypeId;
-                                    itemDefinition.minAmount = config.ContainsKey(CONFIG_SECTION_ID, thresholdKey) ? config.Get(CONFIG_SECTION_ID, thresholdKey).ToInt32() : 1000;
+                                    string thresholdKey = ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, cargoKey) ? cargoKey : subtypeId;
+                                    itemDefinition.minAmount = ConfigHelpers.SafeContainsKey(config, CONFIG_SECTION_ID, thresholdKey) ? config.Get(CONFIG_SECTION_ID, thresholdKey).ToInt32() : 1000;
                                     itemDefinition.sortId = "misc"; // default category
 
                                     itemDefinitions.Add(itemDefinition);

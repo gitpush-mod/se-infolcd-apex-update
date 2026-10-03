@@ -1859,6 +1859,16 @@ namespace MahrianeIndustries.LCDInfo
         }
         static readonly char[] _iniKeyIllegalChars = { '\r', '\n', '|', '=', '[', ']' };
 
+        /// <summary>
+        /// MyIni.ContainsKey that returns false instead of throwing for a key MyIni can't hold
+        /// (see IsSafeIniKey). Use it for keys built from item ids or category names, which come
+        /// from other mods and AdditionalItems.ini (gitpush-mod/se-infolcd-apex-update#17).
+        /// </summary>
+        public static bool SafeContainsKey(MyIni config, string section, string key)
+        {
+            return IsSafeIniKey(key) && config.ContainsKey(section, key);
+        }
+
         // Known InfoLCD config section IDs — one per app. Kept in one place so
         // PurgeLegacyAppSections doesn't accidentally strip anything else that
         // happens to sit in the LCD's CustomData (other mods, user notes, etc.).
