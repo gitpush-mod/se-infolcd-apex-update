@@ -6,7 +6,7 @@
 # the repo the file lives in, so each mod repo carries its own copy pointed at
 # its own board.
 #
-# Uses the org-level MOD_PROJECT_TOKEN secret (visibility=all). The referenced
+# Uses the org-level PAT_MOD_PROJECT secret (visibility=all). The referenced
 # PAT needs org projects: read/write on gitpush-mod.
 #
 # Added because user-filed bug reports were never reaching the boards: AGENTS.md
@@ -28,11 +28,11 @@ jobs:
   add-to-project:
     runs-on: ubuntu-latest
     # Dependabot PRs run in a sandboxed secrets context that cannot see
-    # MOD_PROJECT_TOKEN, so the step would fail with
+    # PAT_MOD_PROJECT, so the step would fail with
     # "Input required and not supplied: github-token". Skip them.
     if: github.actor != 'dependabot[bot]'
     steps:
       - uses: actions/add-to-project@v2.0.0
         with:
           project-url: https://github.com/orgs/gitpush-mod/projects/3
-          github-token: ${{ secrets.MOD_PROJECT_TOKEN }}
+          github-token: ${{ secrets.PAT_MOD_PROJECT }}
